@@ -1,0 +1,305 @@
+/* Hero Section Styles - Professional Oil Product Design */
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4rem 4rem;
+  overflow: visible;
+  background: linear-gradient(135deg, #FFF8DC 0%, #FFE4B5 100%);
+}
+
+.hero-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: 200% 200%;
+  z-index: 0;
+  transition: background 1.5s ease-in-out;
+}
+
+/* Floating Particles */
+.floating-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  will-change: transform, opacity;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 500px;
+  padding: 2rem 0;
+}
+
+.hero-title {
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  font-weight: 900;
+  line-height: 1;
+  color: #ffffff;
+  margin: 0 0 1rem 0;
+  letter-spacing: -2px;
+  text-shadow: 0 6px 30px rgba(0, 0, 0, 0.3);
+  text-transform: uppercase;
+}
+
+.hero-subtitle {
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  color: #ffffff;
+  line-height: 1.4;
+  margin: 0 0 1rem 0;
+  font-weight: 500;
+  text-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+}
+
+.hero-description {
+  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1.6;
+  margin: 0 0 2.5rem 0;
+  font-weight: 400;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #F4D03F 0%, #D4AF37 100%);
+  color: #1a1a1a;
+  border: none;
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(244, 208, 63, 0.3);
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(244, 208, 63, 0.4);
+}
+
+.btn-primary:active {
+  transform: translateY(-1px);
+}
+
+.hero-bottle-container {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+}
+
+.bottle-wrapper {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+  position: relative;
+  padding: 2rem 0;
+  transform-style: preserve-3d;
+}
+
+.bottle-wrapper > div {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+/* Decorative Elements Around Bottle */
+.decorative-element {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.1));
+  z-index: 5;
+}
+
+.bottle-svg {
+  filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.2));
+  max-width: 100%;
+  height: auto;
+  min-height: 450px;
+  width: 350px;
+  transform-style: preserve-3d;
+  backface-visibility: visible;
+}
+
+/* Oil Information Display */
+.oil-info {
+  position: absolute;
+  bottom: -140px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  width: 100%;
+  max-width: 300px;
+}
+
+.oil-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.5px;
+}
+
+.oil-description {
+  font-size: 0.95rem;
+  color: #4a4a4a;
+  margin: 0 0 1rem 0;
+  font-weight: 500;
+}
+
+.oil-indicator {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.indicator-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #F4D03F 0%, #D4AF37 100%);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.indicator-dot.active {
+  box-shadow: 0 0 15px rgba(244, 208, 63, 0.6);
+}
+
+/* Navigation Arrows */
+.oil-navigation {
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 3rem;
+  z-index: 20;
+  align-items: center;
+}
+
+.nav-arrow {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.nav-arrow:hover {
+  background: rgba(255, 255, 255, 0.4);
+  border-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
+}
+
+.nav-arrow:active {
+  transform: scale(0.95);
+}
+
+.nav-arrow svg {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.scroll-indicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  color: #D4AF37;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    padding: 2rem 1.5rem;
+    min-height: auto;
+  }
+
+  .hero-bottle-container {
+    margin-top: 3rem;
+    max-height: 300px;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .bottle-wrapper {
+    position: relative;
+  }
+
+  .oil-info {
+    bottom: -100px;
+    max-width: 250px;
+  }
+
+  .oil-name {
+    font-size: 1.2rem;
+  }
+
+  .oil-description {
+    font-size: 0.85rem;
+  }
+
+  .oil-navigation {
+    bottom: 80px;
+    gap: 1.5rem;
+  }
+
+  .nav-arrow {
+    width: 50px;
+    height: 50px;
+  }
+
+  .nav-arrow svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .scroll-indicator {
+    bottom: 1rem;
+  }
+}
