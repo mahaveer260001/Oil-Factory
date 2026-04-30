@@ -13,7 +13,7 @@
   gap: 0.5rem;
 }
 
-/* Animated BG */
+/* Animated BG — subtle tinted gradient, no particles */
 .hero-bg-gradient {
   position: absolute;
   inset: 0;
@@ -21,36 +21,20 @@
   pointer-events: none;
 }
 
-/* Ambient Glow */
+/* Ambient Glow — subtle ground reflection */
 .hero-ambient-glow {
   position: absolute;
-  bottom: -150px;
+  bottom: -120px;
   left: 50%;
   transform: translateX(-50%);
-  width: 700px;
-  height: 350px;
+  width: 600px;
+  height: 250px;
   border-radius: 50%;
-  filter: blur(120px);
-  opacity: 0.2;
+  filter: blur(100px);
+  opacity: 0.12;
   z-index: 0;
   pointer-events: none;
-  transition: background 0.8s;
-}
-
-/* Particles */
-.hero-particles {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.hero-particle {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(30px);
-  opacity: 0.15;
+  transition: background 1s ease;
 }
 
 /* ===================================================================
@@ -67,32 +51,29 @@
   min-height: 0;
 }
 
-/* ===== BIG NAME TEXT — Dead center of the stage, behind bottle ===== */
+/* ===== BIG NAME TEXT — Watermark style, behind bottle ===== */
 .hero-bg-name {
   position: absolute;
-  left: 50%;
+  left: 0;
+  width: 100%;
   top: 50%;
-  transform: translate(-50%, -50%);
+  text-align: center;
   font-family: 'Playfair Display', serif;
-  font-size: clamp(7rem, 16vw, 16rem);
-  font-weight: 900;
+  font-size: clamp(6rem, 10vw, 10rem);
+  font-weight: 700;
   white-space: nowrap;
   user-select: none;
   pointer-events: none;
   z-index: 1;
   text-transform: uppercase;
   letter-spacing: 10px;
-  opacity: 0.35;
-  text-shadow:
-    0 0 60px currentColor,
-    0 0 120px currentColor;
+  opacity: 0.05;
 }
 
-/* ===== BOTTLE — Center, in front of name (z-index 5) ===== */
+/* ===== BOTTLE — Center, in front of name ===== */
 .bottle-perspective-wrapper {
   position: relative;
   z-index: 5;
-  perspective: 1200px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -103,36 +84,32 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transform-style: preserve-3d;
 }
 
 .bottle-hero-image {
   width: auto;
   height: clamp(300px, 48vh, 480px);
   object-fit: contain;
-  filter:
-    drop-shadow(0 20px 60px rgba(0, 0, 0, 0.5))
-    drop-shadow(0 0 30px rgba(212, 175, 55, 0.12));
-  transform-style: preserve-3d;
+  filter: drop-shadow(0 15px 40px rgba(0, 0, 0, 0.45));
   border-radius: 12px;
 }
 
-/* Bottle Glow */
+/* Bottle Glow — very subtle base shadow */
 .bottle-glow {
   position: absolute;
   bottom: -30px;
   left: 50%;
   transform: translateX(-50%);
-  width: 280px;
-  height: 100px;
+  width: 250px;
+  height: 80px;
   border-radius: 50%;
   filter: blur(40px);
-  opacity: 0.45;
+  opacity: 0.25;
   pointer-events: none;
   z-index: -1;
 }
 
-/* ===== NAVIGATION CONTROLS — between bottle and info ===== */
+/* ===== NAVIGATION CONTROLS ===== */
 .hero-controls {
   position: relative;
   z-index: 20;
@@ -146,20 +123,19 @@
   width: 46px;
   height: 46px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   color: var(--text-white);
   display: flex;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(8px);
   transition: all 0.3s;
 }
 
 .hero-nav-btn:hover {
-  background: rgba(212, 175, 55, 0.2);
-  border-color: var(--gold-primary);
-  color: var(--gold-light);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
 }
 
 .hero-nav-btn svg {
