@@ -39,7 +39,7 @@ const Hero = () => {
       accentColor: '#E65100',
       glowColor: 'rgba(255, 152, 0, 0.3)',
       nameBgColor: '#FF9800',
-    }
+    },
   ]
 
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -250,21 +250,6 @@ const Hero = () => {
             animate="center"
             exit="exit"
           >
-            <span
-              className="hero-badge"
-              style={{ borderColor: current.accentColor, color: current.accentColor }}
-            >
-              Gold Mairani
-            </span>
-
-            <h1 className="hero-main-title">{current.fullName}</h1>
-
-            <p className="hero-tagline" style={{ color: current.accentColor }}>
-              {current.tagline}
-            </p>
-
-            <p className="hero-desc">{current.description}</p>
-
             <div className="hero-cta-group">
               <motion.a
                 href="#products"

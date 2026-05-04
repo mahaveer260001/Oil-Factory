@@ -1,60 +1,57 @@
-import React, { useRef } from 'react'
+import React from 'react'
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Autoplay, Pagination, EffectFade } from 'swiper/modules'
+import { Autoplay, Navigation, Pagination, FreeMode } from 'swiper/modules'
 import 'swiper/css'
+import 'swiper/css/navigation'
 import 'swiper/css/pagination'
-import 'swiper/css/effect-fade'
 import '../styles/ProductCarousels.css'
 
 const ProductCarousels = () => {
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true })
 
-  const carouselData = [
+  const productData = [
     {
       id: 'mustard',
-      title: 'Pure Mustard Oil',
-      subtitle: 'Gold Mairani Kachi Ghani',
+      name: 'Pure Mustard Oil',
+      fullName: 'Gold Mairani Kachi Ghani Pure Mustard Oil',
+      subtitle: 'Swad Ka Powerful Blast!',
+      description: 'Traditional cold-pressed purity for every Indian kitchen.',
+      benefits: ['Cold-Pressed Purity', 'Rich in Omega-3', 'Traditional Method', 'No Additives'],
       accentColor: '#D32F2F',
-      gradientBg: 'linear-gradient(135deg, #1a0505 0%, #2d0a0a 100%)',
-      borderColor: 'rgba(211, 47, 47, 0.3)',
-      posters: [
-        { src: '/images/Slogan.jpeg', alt: 'Gold Mairani Mustard Oil - Swad Ka Powerful Blast' },
-        { src: '/images/mustard_poster_1.png', alt: 'Gold Mairani Pure Mustard Oil' },
-        { src: '/images/mustard_poster_2.png', alt: 'Gold Mairani Mustard Oil - Kitchen' },
-        { src: '/images/mustard_poster_3.png', alt: 'Gold Mairani Mustard Oil - Gold Standard' },
-      ]
+      gradientBg: 'linear-gradient(180deg, rgba(211,47,47,0.13) 0%, rgba(211,47,47,0.03) 100%)',
+      borderColor: 'rgba(211,47,47,0.30)',
+      image: '/images/mustard_oil_bottle.png',
+      poster: '/images/mustard_poster_1.png',
     },
     {
       id: 'soyabean',
-      title: 'Refined Soya Oil',
+      name: 'Refined Soya Oil',
+      fullName: 'Gold Mairani Refined Soya Bean Oil',
       subtitle: 'Rich in Taste & Purity',
+      description: 'Light, healthy & rich in essential nutrients for wholesome cooking.',
+      benefits: ['Light & Healthy', 'Rich in Omega', 'Neutral Taste', 'High Smoke Point'],
       accentColor: '#4CAF50',
-      gradientBg: 'linear-gradient(135deg, #051a05 0%, #0a2d0a 100%)',
-      borderColor: 'rgba(76, 175, 80, 0.3)',
-      posters: [
-        { src: '/images/RefinedSoyaOil.jpeg', alt: 'Gold Mairani Refined Soya Oil' },
-        { src: '/images/SoyaBeanOil.jpeg', alt: 'Gold Mairani Soya Bean Oil' },
-        { src: '/images/soya_poster_1.png', alt: 'Gold Mairani Soya Oil - Rich in Taste' },
-        { src: '/images/soya_poster_2.png', alt: 'Gold Mairani Soya Oil - Family' },
-        { src: '/images/soya_poster_3.png', alt: 'Gold Mairani Soya Oil - Farm' },
-      ]
+      gradientBg: 'linear-gradient(180deg, rgba(76,175,80,0.13) 0%, rgba(76,175,80,0.03) 100%)',
+      borderColor: 'rgba(76,175,80,0.30)',
+      image: '/images/soyabean_oil_bottle.png',
+      poster: '/images/RefinedSoyaOil.jpeg',
     },
     {
       id: 'cottonseed',
-      title: 'Refined Cottonseed Oil',
+      name: 'Refined Cottonseed Oil',
+      fullName: 'Gold Mairani Refined Cottonseed Oil',
       subtitle: 'Pure & Light Cooking',
+      description: 'Naturally light, pure and perfect for crispy, healthy frying.',
+      benefits: ['Naturally Light', 'Perfect for Frying', 'Pure & Clean', 'Consistent Quality'],
       accentColor: '#FF9800',
-      gradientBg: 'linear-gradient(135deg, #1a0e00 0%, #2d1a05 100%)',
-      borderColor: 'rgba(255, 152, 0, 0.3)',
-      posters: [
-        { src: '/images/KitchenBg.jpeg', alt: 'Gold Mairani Cottonseed Oil Kitchen' },
-        { src: '/images/cotton_poster_1.png', alt: 'Gold Mairani Cottonseed Oil' },
-        { src: '/images/cotton_poster_2.png', alt: 'Gold Mairani Cottonseed Oil - Lifestyle' },
-        { src: '/images/cotton_poster_3.png', alt: 'Gold Mairani Cottonseed Oil - Nature' },
-      ]
-    }
+      gradientBg: 'linear-gradient(180deg, rgba(255,152,0,0.13) 0%, rgba(255,152,0,0.03) 100%)',
+      borderColor: 'rgba(255,152,0,0.30)',
+      image: '/images/cottonseed_oil_bottle.png',
+      poster: '/images/KitchenBg.jpeg',
+    },
   ]
 
   return (
@@ -65,6 +62,7 @@ const ProductCarousels = () => {
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       >
+        {/* Header */}
         <h2 className="section-title">
           Our <span className="gold-text">Premium Products</span>
         </h2>
@@ -72,70 +70,112 @@ const ProductCarousels = () => {
           Discover the Gold Mairani range — trusted quality for every Indian kitchen
         </p>
 
-        <div className="carousels-grid">
-          {carouselData.map((carousel, i) => (
-            <motion.div
-              key={carousel.id}
-              className="carousel-card"
-              initial={{ opacity: 0, y: 50 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.2 + i * 0.15, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              style={{
-                background: carousel.gradientBg,
-                borderColor: carousel.borderColor
-              }}
-            >
-              {/* Carousel Header */}
-              <div className="carousel-header">
-                <div className="carousel-dot" style={{ background: carousel.accentColor }} />
-                <div>
-                  <h3 className="carousel-title" style={{ color: carousel.accentColor }}>
-                    {carousel.title}
-                  </h3>
-                  <p className="carousel-subtitle">{carousel.subtitle}</p>
-                </div>
-              </div>
-
-              {/* Swiper Carousel */}
-              <div className="carousel-swiper-wrapper">
-                <Swiper
-                  modules={[Autoplay, Pagination]}
-                  spaceBetween={0}
-                  slidesPerView={1}
-                  loop={true}
-                  autoplay={{
-                    delay: 3000 + i * 500,
-                    disableOnInteraction: false,
+        {/* Horizontal Card Slider */}
+        <div className="pc-slider-wrapper">
+          <Swiper
+            modules={[Autoplay, Navigation, Pagination, FreeMode]}
+            spaceBetween={28}
+            slidesPerView={1.15}
+            centeredSlides={false}
+            loop={false}
+            freeMode={{ enabled: true, sticky: false }}
+            autoplay={{ delay: 3500, disableOnInteraction: true, pauseOnMouseEnter: true }}
+            navigation={{
+              nextEl: '.pc-next',
+              prevEl: '.pc-prev',
+            }}
+            pagination={{ clickable: true, dynamicBullets: true, el: '.pc-pagination' }}
+            breakpoints={{
+              640:  { slidesPerView: 1.6, spaceBetween: 24 },
+              900:  { slidesPerView: 2.2, spaceBetween: 28 },
+              1200: { slidesPerView: 3,   spaceBetween: 32 },
+            }}
+            className="pc-swiper"
+          >
+            {productData.map((product, index) => (
+              <SwiperSlide key={product.id}>
+                <motion.div
+                  className="pc-card"
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={inView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ delay: 0.15 + index * 0.15, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                  whileHover={{ y: -8, transition: { duration: 0.3 } }}
+                  style={{
+                    background: product.gradientBg,
+                    borderColor: product.borderColor,
                   }}
-                  pagination={{
-                    clickable: true,
-                    dynamicBullets: true,
-                  }}
-                  className={`product-swiper product-swiper-${carousel.id}`}
                 >
-                  {carousel.posters.map((poster, j) => (
-                    <SwiperSlide key={j}>
-                      <div className="carousel-slide">
-                        <img
-                          src={poster.src}
-                          alt={poster.alt}
-                          className="carousel-poster"
-                          loading="lazy"
-                        />
-                        <div 
-                          className="carousel-poster-overlay"
-                          style={{
-                            background: `linear-gradient(to top, ${carousel.accentColor}33 0%, transparent 60%)`
-                          }}
-                        />
-                      </div>
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
-              </div>
-            </motion.div>
-          ))}
+                  {/* Card Image */}
+                  <div className="pc-card-image-wrap">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="pc-card-bottle"
+                      loading="lazy"
+                    />
+                    {/* Glow under bottle */}
+                    <div
+                      className="pc-card-glow"
+                      style={{ background: `radial-gradient(ellipse, ${product.borderColor} 0%, transparent 70%)` }}
+                    />
+                    {/* Top badge */}
+                    <span
+                      className="pc-card-badge"
+                      style={{ color: product.accentColor, borderColor: product.borderColor, background: 'rgba(0,0,0,0.55)' }}
+                    >
+                      Gold Mairani
+                    </span>
+                  </div>
+
+                  {/* Card Body */}
+                  <div className="pc-card-body">
+                    <h3 className="pc-card-name" style={{ color: product.accentColor }}>
+                      {product.name}
+                    </h3>
+                    <p className="pc-card-tagline" style={{ color: product.accentColor }}>
+                      {product.subtitle}
+                    </p>
+                    <p className="pc-card-desc">{product.description}</p>
+
+                    {/* Benefits */}
+                    <ul className="pc-card-benefits">
+                      {product.benefits.map((b, i) => (
+                        <li key={i} className="pc-benefit-item">
+                          <span className="pc-benefit-dot" style={{ background: product.accentColor }} />
+                          {b}
+                        </li>
+                      ))}
+                    </ul>
+
+                    <Link
+                      to={`/product/${product.id}`}
+                      className="pc-card-btn"
+                      style={{ background: product.accentColor }}
+                    >
+                      View Details →
+                    </Link>
+                  </div>
+                </motion.div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+
+          {/* Custom Nav Buttons */}
+          <button className="pc-nav-btn pc-prev" aria-label="Previous">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </button>
+          <button className="pc-nav-btn pc-next" aria-label="Next">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+              <path d="M9 18l6-6-6-6" />
+            </svg>
+          </button>
         </div>
+
+        {/* Pagination dots */}
+        <div className="pc-pagination" />
+
       </motion.div>
     </section>
   )
