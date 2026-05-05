@@ -157,7 +157,22 @@ const Hero = () => {
 
   return (
     <section className="hero" id="hero">
-      {/* Subtle Background Tint */}
+      {/* Video Background */}
+      <div className="hero-video-wrapper">
+        <video
+          className="hero-video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+        >
+          <source src="/images/mustardvideo.mp4" type="video/mp4" />
+        </video>
+        <div className="hero-video-overlay" />
+      </div>
+
+      {/* Color Tint on top of video */}
       <AnimatePresence mode="wait">
         <motion.div
           key={`bg-${currentIndex}`}
