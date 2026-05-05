@@ -1,19 +1,19 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import '../styles/Hero.css'
 
 const Hero = () => {
-  const oilProducts = [
+  const oilProducts = useMemo(() => [
     {
       id: 'mustard',
       name: 'MUSTARD',
       fullName: 'Pure Mustard Oil',
       tagline: 'Swad Ka Powerful Blast!',
       description: 'Gold Mairani Kachi Ghani Pure Mustard Oil — traditional cold-pressed purity for every Indian kitchen.',
-      image: '/images/mustard_oil_bottle.png',
-      bgGradient: 'radial-gradient(ellipse at 50% 40%, rgba(211, 47, 47, 0.10) 0%, transparent 60%)',
+      image: '/images/mustard850.png',
+      bgGradient: 'radial-gradient(ellipse at 50% 30%, rgba(211, 47, 47, 0.25) 0%, rgba(211, 47, 47, 0.08) 50%, transparent 75%)',
       accentColor: '#D32F2F',
-      glowColor: 'rgba(211, 47, 47, 0.3)',
+      glowColor: 'rgba(211, 47, 47, 0.45)',
       nameBgColor: '#D32F2F',
     },
     {
@@ -22,10 +22,10 @@ const Hero = () => {
       fullName: 'Refined Soya Oil',
       tagline: 'Rich in Taste & Purity',
       description: 'Gold Mairani Refined Soya Bean Oil — light, healthy & rich in essential nutrients for wholesome cooking.',
-      image: '/images/soyabean_oil_bottle.png',
-      bgGradient: 'radial-gradient(ellipse at 50% 40%, rgba(27, 94, 32, 0.10) 0%, transparent 60%)',
+      image: '/images/soyabean850.png',
+      bgGradient: 'radial-gradient(ellipse at 50% 30%, rgba(76, 175, 80, 0.22) 0%, rgba(27, 94, 32, 0.08) 50%, transparent 75%)',
       accentColor: '#1B5E20',
-      glowColor: 'rgba(76, 175, 80, 0.3)',
+      glowColor: 'rgba(76, 175, 80, 0.45)',
       nameBgColor: '#4CAF50',
     },
     {
@@ -34,31 +34,61 @@ const Hero = () => {
       fullName: 'Refined Cottonseed Oil',
       tagline: 'Pure & Light Cooking',
       description: 'Gold Mairani Refined Cottonseed Oil — naturally light, pure and perfect for crispy, healthy frying.',
-      image: '/images/cottonseed_oil_bottle.png',
-      bgGradient: 'radial-gradient(ellipse at 50% 40%, rgba(230, 81, 0, 0.10) 0%, transparent 60%)',
+      image: '/images/cottonseed850.png',
+      bgGradient: 'radial-gradient(ellipse at 50% 30%, rgba(255, 152, 0, 0.22) 0%, rgba(230, 81, 0, 0.08) 50%, transparent 75%)',
       accentColor: '#E65100',
-      glowColor: 'rgba(255, 152, 0, 0.3)',
+      glowColor: 'rgba(255, 152, 0, 0.45)',
       nameBgColor: '#FF9800',
     },
-  ]
+  ], [])
+
+  const productCount = oilProducts.length
 
   const [currentIndex, setCurrentIndex] = useState(0)
   const [direction, setDirection] = useState(1)
+  const autoSlideTimer = useRef(null)
+  const pauseTimeout = useRef(null)
+  const [isPaused, setIsPaused] = useState(false)
+
+  // Auto-slide every 4 seconds
+  useEffect(() => {
+    if (isPaused) return
+    autoSlideTimer.current = setInterval(() => {
+      setDirection(1)
+      setCurrentIndex(prev => (prev + 1) % productCount)
+    }, 4000)
+    return () => clearInterval(autoSlideTimer.current)
+  }, [isPaused, productCount])
+
+  // Cleanup pause timeout on unmount
+  useEffect(() => {
+    return () => clearTimeout(pauseTimeout.current)
+  }, [])
+
+  // Pause auto-slide on manual interaction, resume after 6s
+  const pauseAutoSlide = useCallback(() => {
+    setIsPaused(true)
+    clearTimeout(pauseTimeout.current)
+    pauseTimeout.current = setTimeout(() => setIsPaused(false), 6000)
+  }, [])
 
   const handleNext = useCallback(() => {
+    pauseAutoSlide()
     setDirection(1)
-    setCurrentIndex(prev => (prev + 1) % oilProducts.length)
-  }, [oilProducts.length])
+    setCurrentIndex(prev => (prev + 1) % productCount)
+  }, [productCount, pauseAutoSlide])
 
   const handlePrev = useCallback(() => {
+    pauseAutoSlide()
     setDirection(-1)
-    setCurrentIndex(prev => (prev - 1 + oilProducts.length) % oilProducts.length)
-  }, [oilProducts.length])
+    setCurrentIndex(prev => (prev - 1 + productCount) % productCount)
+  }, [productCount, pauseAutoSlide])
 
   const handleSelect = useCallback((index) => {
+    pauseAutoSlide()
     setDirection(index > currentIndex ? 1 : -1)
     setCurrentIndex(index)
-  }, [currentIndex])
+  }, [currentIndex, pauseAutoSlide])
 
   const current = oilProducts[currentIndex]
 

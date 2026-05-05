@@ -6,10 +6,7 @@
   overflow: hidden;
 }
 
-.section-container {
-  max-width: 1300px;
-  margin: 0 auto;
-}
+.section-container { max-width: 1300px; margin: 0 auto; }
 
 .section-title {
   font-family: 'Playfair Display', serif;
@@ -21,9 +18,7 @@
   color: var(--text-white);
 }
 
-.section-title .gold-text {
-  color: var(--gold-primary);
-}
+.section-title .gold-text { color: var(--gold-primary); }
 
 .section-subtitle {
   font-size: 1rem;
@@ -32,33 +27,15 @@
   margin-bottom: 3.5rem;
 }
 
-/* =====================================================
-   SLIDER WRAPPER — holds swiper + nav buttons
-   ===================================================== */
-.pc-slider-wrapper {
-  position: relative;
-  padding: 0 0 1rem;
-}
+/* SLIDER WRAPPER */
+.pc-slider-wrapper { position: relative; padding: 0 0 1rem; }
 
-/* =====================================================
-   SWIPER OVERRIDES
-   ===================================================== */
-.pc-swiper {
-  padding: 1rem 0.5rem 3.5rem !important;
-  overflow: visible !important;
-}
+/* SWIPER OVERRIDES */
+.pc-swiper { padding: 1rem 0.5rem 3.5rem !important; overflow: visible !important; }
+.pc-swiper .swiper-wrapper { align-items: stretch; }
+.pc-swiper .swiper-slide { height: auto; }
 
-.pc-swiper .swiper-wrapper {
-  align-items: stretch;
-}
-
-.pc-swiper .swiper-slide {
-  height: auto;
-}
-
-/* =====================================================
-   VERTICAL PRODUCT CARD
-   ===================================================== */
+/* VERTICAL PRODUCT CARD */
 .pc-card {
   display: flex;
   flex-direction: column;
@@ -72,11 +49,9 @@
   position: relative;
 }
 
-.pc-card:hover {
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
-}
+.pc-card:hover { box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5); }
 
-/* ── Image Section (top ~50% of card) ── */
+/* Image Section */
 .pc-card-image-wrap {
   position: relative;
   width: 100%;
@@ -100,11 +75,8 @@
   z-index: 2;
 }
 
-.pc-card:hover .pc-card-bottle {
-  transform: scale(1.06) translateY(-6px);
-}
+.pc-card:hover .pc-card-bottle { transform: scale(1.06) translateY(-6px); }
 
-/* Glow under bottle */
 .pc-card-glow {
   position: absolute;
   bottom: 0;
@@ -119,7 +91,6 @@
   pointer-events: none;
 }
 
-/* Top-left badge */
 .pc-card-badge {
   position: absolute;
   top: 1rem;
@@ -135,7 +106,7 @@
   backdrop-filter: blur(8px);
 }
 
-/* ── Body Section (bottom ~50% of card) ── */
+/* Body Section */
 .pc-card-body {
   display: flex;
   flex-direction: column;
@@ -154,22 +125,9 @@
   margin: 0;
 }
 
-.pc-card-tagline {
-  font-size: 0.88rem;
-  font-weight: 700;
-  letter-spacing: 0.3px;
-  margin: 0;
-  opacity: 0.9;
-}
+.pc-card-tagline { font-size: 0.88rem; font-weight: 700; letter-spacing: 0.3px; margin: 0; opacity: 0.9; }
+.pc-card-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.7; margin: 0; }
 
-.pc-card-desc {
-  font-size: 0.88rem;
-  color: var(--text-muted);
-  line-height: 1.7;
-  margin: 0;
-}
-
-/* Benefits list */
 .pc-card-benefits {
   list-style: none;
   padding: 0;
@@ -188,14 +146,8 @@
   font-weight: 500;
 }
 
-.pc-benefit-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
+.pc-benefit-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 
-/* CTA Button */
 .pc-card-btn {
   display: inline-flex;
   align-items: center;
@@ -212,14 +164,9 @@
   letter-spacing: 0.3px;
 }
 
-.pc-card-btn:hover {
-  opacity: 0.88;
-  transform: translateX(3px);
-}
+.pc-card-btn:hover { opacity: 0.88; transform: translateX(3px); }
 
-/* =====================================================
-   CUSTOM NAV BUTTONS
-   ===================================================== */
+/* CUSTOM NAV BUTTONS */
 .pc-nav-btn {
   position: absolute;
   top: 38%;
@@ -247,71 +194,57 @@
 
 .pc-prev { left: -22px; }
 .pc-next { right: -22px; }
+.pc-nav-btn.swiper-button-disabled { opacity: 0.25; pointer-events: none; }
 
-.pc-nav-btn.swiper-button-disabled {
-  opacity: 0.25;
-  pointer-events: none;
-}
-
-/* =====================================================
-   PAGINATION DOTS
-   ===================================================== */
-.pc-pagination {
-  display: flex;
-  justify-content: center;
-  gap: 6px;
-  margin-top: 0.5rem;
-}
+/* PAGINATION */
+.pc-pagination { display: flex; justify-content: center; gap: 6px; margin-top: 0.5rem; }
 
 .pc-pagination .swiper-pagination-bullet {
-  width: 8px;
-  height: 8px;
-  border-radius: 50px;
-  background: rgba(255, 255, 255, 0.25);
-  opacity: 1;
-  transition: all 0.3s;
-  cursor: pointer;
+  width: 8px; height: 8px; border-radius: 50px;
+  background: rgba(255, 255, 255, 0.25); opacity: 1;
+  transition: all 0.3s; cursor: pointer;
 }
 
 .pc-pagination .swiper-pagination-bullet-active {
-  background: var(--gold-primary);
-  width: 24px;
+  background: var(--gold-primary); width: 24px;
 }
 
-/* =====================================================
-   RESPONSIVE
-   ===================================================== */
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .product-carousels { padding: 5rem 1.5rem 4rem; }
+  .pc-prev { left: -12px; }
+  .pc-next { right: -12px; }
+  .pc-nav-btn { width: 42px; height: 42px; }
+}
+
 @media (max-width: 900px) {
   .pc-prev { left: -10px; }
   .pc-next { right: -10px; }
+  .pc-card { min-height: 520px; }
+}
 
-  .pc-card {
-    min-height: 520px;
-  }
+@media (max-width: 768px) {
+  .product-carousels { padding: 4rem 1rem 3.5rem; }
+  .section-subtitle { margin-bottom: 2.5rem; }
+  .pc-card { min-height: 480px; }
+  .pc-card-body { padding: 1.2rem 1.2rem 1.5rem; }
+  .pc-prev { left: 0; }
+  .pc-next { right: 0; }
+  .pc-nav-btn { width: 38px; height: 38px; }
 }
 
 @media (max-width: 600px) {
-  .product-carousels {
-    padding: 4rem 1rem 4rem;
-  }
-
+  .product-carousels { padding: 3.5rem 0.75rem 3rem; }
   .pc-prev { left: 0; }
   .pc-next { right: 0; }
+  .pc-nav-btn { width: 36px; height: 36px; }
+  .pc-card { min-height: 460px; }
+  .pc-card-body { padding: 1rem; }
+  .pc-card-benefits { grid-template-columns: 1fr; }
+  .pc-card-btn { padding: 0.6rem 1.2rem; font-size: 0.82rem; }
+}
 
-  .pc-nav-btn {
-    width: 38px;
-    height: 38px;
-  }
-
-  .pc-card {
-    min-height: 480px;
-  }
-
-  .pc-card-body {
-    padding: 1.2rem;
-  }
-
-  .pc-card-benefits {
-    grid-template-columns: 1fr;
-  }
+@media (max-width: 400px) {
+  .pc-card { min-height: 420px; }
+  .pc-card-image-wrap { aspect-ratio: 4 / 5; }
 }

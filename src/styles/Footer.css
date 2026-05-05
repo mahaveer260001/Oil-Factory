@@ -6,9 +6,7 @@
   overflow: hidden;
 }
 
-.footer::before {
-  display: none;
-}
+.footer::before { display: none; }
 
 .footer-inner {
   max-width: 1400px;
@@ -71,9 +69,7 @@
   letter-spacing: 1px;
 }
 
-.footer-links li {
-  margin-bottom: 0.6rem;
-}
+.footer-links li { margin-bottom: 0.6rem; }
 
 .footer-links a {
   font-size: 0.9rem;
@@ -124,12 +120,38 @@
 @media (max-width: 1024px) {
   .footer-top {
     grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+  }
+
+  .footer-inner {
+    padding: 3.5rem 2rem 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-inner {
+    padding: 3rem 1.5rem 1.5rem;
+  }
+
+  .footer-top {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+
+  .footer-brand-desc {
+    max-width: 100%;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
   }
 }
 
 @media (max-width: 640px) {
   .footer-inner {
-    padding: 3rem 1.5rem 1.5rem;
+    padding: 2.5rem 1.25rem 1.25rem;
   }
 
   .footer-top {
@@ -137,9 +159,30 @@
     gap: 2rem;
   }
 
-  .footer-bottom {
-    flex-direction: column;
-    gap: 0.5rem;
-    text-align: center;
+  .footer-brand-name {
+    font-size: 1.15rem;
+  }
+
+  .footer-logo {
+    width: 42px;
+    height: 42px;
+  }
+}
+
+@media (max-width: 400px) {
+  .footer-inner {
+    padding: 2rem 1rem 1rem;
+  }
+
+  .footer-copyright {
+    font-size: 0.72rem;
+  }
+
+  .footer-tagline {
+    font-size: 0.78rem;
+  }
+
+  .footer-contact-info p {
+    font-size: 0.8rem;
   }
 }

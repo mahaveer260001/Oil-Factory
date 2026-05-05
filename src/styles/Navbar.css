@@ -176,7 +176,33 @@
   color: var(--gold-light);
 }
 
+/* ===== RESPONSIVE ===== */
+
+/* Tablet — hide nav links earlier, show hamburger */
+@media (max-width: 1024px) {
+  .navbar-links {
+    gap: 1.25rem;
+  }
+
+  .nav-link {
+    font-size: 0.88rem;
+  }
+
+  .navbar-cta {
+    padding: 0.5rem 1.2rem;
+    font-size: 0.82rem;
+  }
+}
+
 @media (max-width: 768px) {
+  .navbar {
+    padding: 0.8rem 1rem;
+  }
+
+  .navbar-scrolled {
+    padding: 0.5rem 1rem;
+  }
+
   .navbar-links, .navbar-cta {
     display: none;
   }
@@ -191,5 +217,53 @@
 
   .logo-sub {
     font-size: 0.55rem;
+  }
+
+  .logo-img {
+    width: 42px;
+    height: 42px;
+  }
+
+  .navbar-scrolled .logo-img {
+    width: 36px;
+    height: 36px;
+  }
+
+  .mobile-menu {
+    padding: 1rem 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 0.6rem 0.75rem;
+  }
+
+  .navbar-scrolled {
+    padding: 0.4rem 0.75rem;
+  }
+
+  .logo-img {
+    width: 38px;
+    height: 38px;
+  }
+
+  .navbar-scrolled .logo-img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .logo-brand {
+    font-size: 1rem;
+  }
+
+  .logo-sub {
+    font-size: 0.5rem;
+    letter-spacing: 1px;
+  }
+
+  .mobile-link {
+    font-size: 1rem;
+    padding: 0.7rem 0;
   }
 }

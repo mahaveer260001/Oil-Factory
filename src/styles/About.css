@@ -6,9 +6,7 @@
   overflow: hidden;
 }
 
-.about-section::before {
-  display: none;
-}
+.about-section::before { display: none; }
 
 /* Layout */
 .about-layout {
@@ -36,15 +34,8 @@
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
 }
 
-.about-logo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.about-logo-glow {
-  display: none;
-}
+.about-logo { width: 100%; height: 100%; object-fit: cover; }
+.about-logo-glow { display: none; }
 
 /* Stats */
 .about-stats {
@@ -81,9 +72,7 @@
 }
 
 /* Content Side */
-.about-content {
-  flex: 1;
-}
+.about-content { flex: 1; }
 
 .about-eyebrow {
   display: inline-block;
@@ -106,9 +95,7 @@
   margin-bottom: 1.5rem;
 }
 
-.about-title .gold-text {
-  color: var(--gold-primary);
-}
+.about-title .gold-text { color: var(--gold-primary); }
 
 .about-title-sub {
   font-size: 0.65em;
@@ -123,10 +110,7 @@
   margin-bottom: 1rem;
 }
 
-.about-text strong {
-  color: var(--gold-light);
-  font-weight: 600;
-}
+.about-text strong { color: var(--gold-light); font-weight: 600; }
 
 /* Highlights */
 .about-highlights {
@@ -188,15 +172,28 @@
   }
 }
 
-@media (max-width: 640px) {
-  .about-section {
-    padding: 4rem 0;
-  }
+@media (max-width: 768px) {
+  .about-section { padding: 4rem 0; }
 
-  .about-logo-frame {
-    width: 180px;
-    height: 180px;
-  }
+  .about-logo-frame { width: 200px; height: 200px; }
+
+  .about-stats { gap: 1rem; }
+
+  .about-stat { min-width: 90px; padding: 0.85rem 1rem; }
+
+  .stat-number { font-size: 1.5rem; }
+
+  .about-title { font-size: clamp(1.5rem, 4vw, 2rem); margin-bottom: 1.2rem; }
+
+  .about-text { font-size: 0.95rem; }
+
+  .about-highlight { font-size: 0.88rem; }
+}
+
+@media (max-width: 640px) {
+  .about-section { padding: 3.5rem 0; }
+
+  .about-logo-frame { width: 180px; height: 180px; }
 
   .about-stats {
     flex-wrap: wrap;
@@ -208,7 +205,19 @@
     padding: 0.75rem 1rem;
   }
 
-  .stat-number {
-    font-size: 1.4rem;
-  }
+  .stat-number { font-size: 1.4rem; }
+
+  .about-text { font-size: 0.9rem; }
+}
+
+@media (max-width: 400px) {
+  .about-logo-frame { width: 150px; height: 150px; }
+
+  .about-stat { min-width: 70px; padding: 0.6rem 0.75rem; }
+
+  .stat-number { font-size: 1.2rem; }
+
+  .stat-label { font-size: 0.65rem; letter-spacing: 0.5px; }
+
+  .about-eyebrow { font-size: 0.7rem; padding: 0.2rem 0.6rem; }
 }

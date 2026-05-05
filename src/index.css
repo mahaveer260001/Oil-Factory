@@ -82,3 +82,23 @@ ul, ol {
   --radius-xl: 32px;
   --radius-full: 9999px;
 }
+
+/* ===== RESPONSIVE DESIGN TOKENS ===== */
+@media (max-width: 1024px) {
+  :root {
+    --section-padding: 5rem 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --section-padding: 4rem 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --section-padding: 3rem 1rem;
+    --container-max: 100%;
+  }
+}

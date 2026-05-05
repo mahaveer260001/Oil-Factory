@@ -1,4 +1,4 @@
-/* ===== HERO SECTION — CENTER-ALIGNED LAYOUT ===== */
+/* ===== HERO SECTION ===== */
 .hero {
   position: relative;
   width: 100%;
@@ -13,7 +13,6 @@
   gap: 0.5rem;
 }
 
-/* Animated BG — subtle tinted gradient, no particles */
 .hero-bg-gradient {
   position: absolute;
   inset: 0;
@@ -21,7 +20,6 @@
   pointer-events: none;
 }
 
-/* Ambient Glow — subtle ground reflection */
 .hero-ambient-glow {
   position: absolute;
   bottom: -120px;
@@ -31,15 +29,12 @@
   height: 250px;
   border-radius: 50%;
   filter: blur(100px);
-  opacity: 0.12;
+  opacity: 0.25;
   z-index: 0;
   pointer-events: none;
   transition: background 1s ease;
 }
 
-/* ===================================================================
-   CENTER STAGE — Name text + Bottle at absolute center of screen
-   =================================================================== */
 .hero-center-stage {
   position: relative;
   z-index: 2;
@@ -51,7 +46,6 @@
   min-height: 0;
 }
 
-/* ===== BIG NAME TEXT — Watermark style, behind bottle ===== */
 .hero-bg-name {
   position: absolute;
   left: 0;
@@ -70,7 +64,6 @@
   opacity: 0.05;
 }
 
-/* ===== BOTTLE — Center, in front of name ===== */
 .bottle-perspective-wrapper {
   position: relative;
   z-index: 5;
@@ -94,7 +87,6 @@
   border-radius: 12px;
 }
 
-/* Bottle Glow — subtle back glow */
 .bottle-glow {
   position: absolute;
   top: 50%;
@@ -105,12 +97,11 @@
   border-radius: 50%;
   background: rgba(221, 186, 56, 0.15);
   filter: blur(80px);
-  opacity: 0.4;
+  opacity: 0.6;
   pointer-events: none;
   z-index: -1;
 }
 
-/* ===== NAVIGATION CONTROLS ===== */
 .hero-controls {
   position: relative;
   z-index: 20;
@@ -139,17 +130,9 @@
   border-color: rgba(255, 255, 255, 0.25);
 }
 
-.hero-nav-btn svg {
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
+.hero-nav-btn svg { stroke-linecap: round; stroke-linejoin: round; }
 
-/* Indicator Dots */
-.hero-indicators {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
+.hero-indicators { display: flex; align-items: center; gap: 6px; }
 
 .hero-dot {
   height: 10px;
@@ -160,9 +143,6 @@
   outline: none;
 }
 
-/* ===================================================================
-   INFO BAR — Below controls, centered text
-   =================================================================== */
 .hero-info-bar {
   position: relative;
   z-index: 10;
@@ -203,79 +183,46 @@
   line-height: 1.15;
 }
 
-.hero-tagline {
-  font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  transition: color 0.5s;
-}
+.hero-tagline { font-size: 1rem; font-weight: 700; letter-spacing: 0.5px; transition: color 0.5s; }
 
-.hero-desc {
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  line-height: 1.6;
-  max-width: 480px;
-}
+.hero-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; max-width: 480px; }
 
-.hero-cta-group {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 0.2rem;
-}
+.hero-cta-group { display: flex; align-items: center; gap: 1rem; margin-top: 0.2rem; }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
-  .hero-bg-name {
-    font-size: clamp(5rem, 14vw, 10rem);
-    letter-spacing: 8px;
-  }
+  .hero-bg-name { font-size: clamp(5rem, 14vw, 10rem); letter-spacing: 8px; }
+  .bottle-hero-image { height: clamp(240px, 55vh, 360px); }
+  .hero-main-title { font-size: clamp(1.4rem, 3vw, 2rem); }
+  .hero-ambient-glow { width: 400px; height: 180px; }
+  .bottle-glow { width: 300px; height: 300px; }
+}
 
-  .bottle-hero-image {
-    height: clamp(240px, 55vh, 360px);
-  }
-
-  .hero-main-title {
-    font-size: clamp(1.4rem, 3vw, 2rem);
-  }
+@media (max-width: 768px) {
+  .hero { padding: 80px 0 1.5rem; min-height: 100svh; }
+  .hero-bg-name { font-size: clamp(4rem, 15vw, 7rem); letter-spacing: 6px; }
+  .bottle-hero-image { height: clamp(220px, 45vh, 320px); }
+  .hero-main-title { font-size: 1.35rem; }
+  .hero-tagline { font-size: 0.95rem; }
+  .hero-desc { font-size: 0.85rem; max-width: 90%; }
+  .hero-info-bar { padding: 0 1.5rem 1rem; }
+  .hero-controls { gap: 1.25rem; }
+  .hero-nav-btn { width: 42px; height: 42px; }
+  .hero-ambient-glow { width: 300px; height: 150px; }
+  .bottle-glow { width: 250px; height: 250px; }
 }
 
 @media (max-width: 480px) {
-  .hero {
-    padding-top: 70px;
-  }
-
-  .hero-bg-name {
-    font-size: clamp(3.5rem, 15vw, 5.5rem);
-    letter-spacing: 5px;
-  }
-
-  .bottle-hero-image {
-    height: 300px;
-  }
-
-  .hero-main-title {
-    font-size: 1.3rem;
-  }
-
-  .hero-tagline {
-    font-size: 0.9rem;
-  }
-
-  .hero-desc {
-    font-size: 0.82rem;
-  }
-
-  .hero-info-bar {
-    padding: 0 1rem 0.5rem;
-  }
-
-  .hero-controls {
-    gap: 1rem;
-  }
-
-  .hero-nav-btn {
-    width: 38px;
-    height: 38px;
-  }
+  .hero { padding-top: 70px; gap: 0.3rem; }
+  .hero-bg-name { font-size: clamp(3.5rem, 15vw, 5.5rem); letter-spacing: 5px; }
+  .bottle-hero-image { height: clamp(200px, 40vh, 300px); }
+  .hero-main-title { font-size: 1.2rem; }
+  .hero-tagline { font-size: 0.85rem; }
+  .hero-desc { font-size: 0.8rem; }
+  .hero-info-bar { padding: 0 1rem 0.5rem; }
+  .hero-controls { gap: 1rem; }
+  .hero-nav-btn { width: 38px; height: 38px; }
+  .hero-nav-btn svg { width: 20px; height: 20px; }
+  .hero-ambient-glow { width: 250px; height: 120px; }
+  .bottle-glow { width: 200px; height: 200px; filter: blur(60px); }
 }
