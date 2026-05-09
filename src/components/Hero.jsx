@@ -106,51 +106,39 @@ const Hero = () => {
   const current = oilProducts[currentIndex]
   const motionTransition = { duration: 0.9, ease: [0.16, 1, 0.3, 1] }
 
-  // Bottle slide + rotate animation
+  // Bottle fade animation
   const bottleVariants = {
     enter: (dir) => ({
-      x: dir > 0 ? 280 : -280,
       opacity: 0,
-      scale: 0.88,
-      rotate: dir > 0 ? 14 : -14,
+      scale: 0.9,
     }),
     center: {
-      x: 0,
       opacity: 1,
       scale: 1,
-      rotate: 0,
-      transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] }
+      transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] }
     },
     exit: (dir) => ({
-      x: dir > 0 ? -200 : 200,
       opacity: 0,
-      scale: 0.88,
-      rotate: dir > 0 ? -12 : 12,
-      transition: { duration: 0.48, ease: [0.4, 0, 1, 1] }
+      scale: 0.9,
+      transition: { duration: 0.8, ease: [0.4, 0, 1, 1] }
     })
   }
 
   // Background text animation — subtle watermark
   const bgTextVariants = {
     enter: (dir) => ({
-      x: dir > 0 ? 120 : -120,
-      y: "-50%",
       opacity: 0,
       scale: 0.98,
     }),
     center: {
-      x: 0,
-      y: "-50%",
       opacity: 0.06,
       scale: 1,
-      transition: { duration: 0.75, ease: [0.16, 1, 0.3, 1], delay: 0.05 }
+      transition: { duration: 1.0, ease: [0.16, 1, 0.3, 1], delay: 0.05 }
     },
     exit: (dir) => ({
-      x: dir > 0 ? -120 : 120,
-      y: "-50%",
       opacity: 0,
       scale: 0.98,
-      transition: { duration: 0.4, ease: 'easeOut' }
+      transition: { duration: 0.6, ease: 'easeOut' }
     })
   }
 
