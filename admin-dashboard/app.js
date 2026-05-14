@@ -340,6 +340,7 @@ async function loadBatches() {
       <tr>
         <td>${b.id}</td>
         <td><strong>${b.batch_name}</strong></td>
+        <td><span style="font-size:12px;color:var(--text3)">${b.scheme_name || '—'}</span></td>
         <td>${fmt(b.total_codes)}</td>
         <td>${fmt(b.used_codes)}</td>
         <td>${fmt((b.total_codes || 0) - (b.used_codes || 0))}</td>
@@ -350,11 +351,11 @@ async function loadBatches() {
         <td>${fmtDate(b.created_at)}</td>
         <td>
           <div style="display:flex;gap:6px">
-            <button class="btn-sm btn-outline" onclick="exportBatch(${b.id})">⬇ Export</button>
+            <button class="btn-sm btn-outline" onclick="exportBatch(${b.id})">Export</button>
             <button class="btn-sm btn-danger" onclick="deleteBatch(${b.id})">Delete</button>
           </div>
         </td>
-      </tr>`).join('') : '<tr><td colspan="8" class="loading-row">No batches found</td></tr>';
+      </tr>`).join('') : '<tr><td colspan="9" class="loading-row">No batches found</td></tr>';
     populateSchemesDropdown();
   } catch {
     document.getElementById('batches-tbody').innerHTML = MOCK.batches.map(b => `

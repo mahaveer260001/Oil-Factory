@@ -180,30 +180,79 @@ def list_batches():
 @AdminAuthDecorator.admin_required
 @log_admin_action("QRBatch", "export")
 def export_batch(batch_id):
-    """Export QR codes as ZIP"""
+    """Export QR codes as ZIP containing PNG images + manifest CSV"""
     try:
-        admin_id = get_jwt_identity()
-        
-        from app.utils import QRExporter
-        
-        # Generate ZIP
-        zip_data = QRExporter.export_batch_zip(batch_id)
-        
-        logger.info(f"Admin {admin_id} exported batch {batch_id}")
-        
+        import io as _io
+        import zipfile
+        import csv
+        from app.models import QRCode, QRBatch
+        from app.utils import QRCodeGenerator
+
+        batch = QRBatch.query.get(batch_id)
+        if not batch:
+            return format_response(error="Batch not found", status_code=404)
+
+        base_url = request.args.get("base_url", "http://localhost:3000")
+
+        zip_buffer = _io.BytesIO()
+        with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zf:
+            # Manifest CSV
+            csv_buf = _io.StringIO()
+            writer = csv.writer(csv_buf)
+            writer.writerow(["Code", "Claim URL", "Image File"])
+
+            for qr in QRCode.query.filter_by(batch_id=batch_id).yield_per(200):
+                claim_url = f"{base_url}/r/{qr.unique_code}"
+                fname = f"{qr.unique_code}.png"
+                writer.writerow([qr.unique_code, claim_url, fname])
+                try:
+                    img_bytes = QRCodeGenerator.generate_qr_image(qr.unique_code, base_url=base_url)
+                    zf.writestr(fname, img_bytes)
+                except Exception as e:
+                    logger.error(f"QR gen error for {qr.unique_code}: {e}")
+
+            zf.writestr("manifest.csv", csv_buf.getvalue())
+
+        zip_buffer.seek(0)
         return send_file(
-            io.BytesIO(zip_data),
-            mimetype='application/zip',
+            zip_buffer,
+            mimetype="application/zip",
             as_attachment=True,
-            download_name=f"qr_batch_{batch_id}.zip"
+            download_name=f"batch_{batch_id}_{batch.batch_name}.zip",
         )
-        
+
     except Exception as e:
         logger.error(f"Export batch error: {str(e)}")
-        return format_response(
-            error="Export failed",
-            status_code=500
+        return format_response(error="Export failed", status_code=500)
+
+
+@admin_bp.route("/qr/<qr_code>/image", methods=["GET"])
+@AdminAuthDecorator.admin_required
+def preview_qr_image(qr_code):
+    """Return a single QR code PNG — for admin preview"""
+    try:
+        import io as _io
+        from app.models import QRCode
+        from app.utils import QRCodeGenerator
+
+        qr = QRCode.query.filter_by(unique_code=qr_code.upper()).first()
+        if not qr:
+            return format_response(error="QR code not found", status_code=404)
+
+        base_url = request.args.get("base_url", "http://localhost:3000")
+        img_bytes = QRCodeGenerator.generate_qr_image(qr.unique_code, base_url=base_url)
+
+        return send_file(
+            _io.BytesIO(img_bytes),
+            mimetype="image/png",
+            as_attachment=False,
+            download_name=f"{qr.unique_code}.png",
         )
+
+    except Exception as e:
+        logger.error(f"Preview QR error: {str(e)}")
+        return format_response(error="Failed to generate QR image", status_code=500)
+
 
 
 @admin_bp.route("/batch/<int:batch_id>", methods=["DELETE"])

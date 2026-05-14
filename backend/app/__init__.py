@@ -40,7 +40,7 @@ def create_app(config_name=None):
     limiter = Limiter(
         app=app,
         key_func=get_remote_address,
-        storage_uri=app.config.get("RATELIMIT_STORAGE_URL")
+        storage_uri="memory://"  # In-memory rate limiting (no Redis required)
     )
     
     # Register blueprints

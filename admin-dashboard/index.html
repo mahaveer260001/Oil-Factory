@@ -14,26 +14,21 @@
 
 <!-- LOGIN SCREEN -->
 <div id="login-screen" class="screen active">
-  <div class="login-bg">
-    <div class="login-orb orb1"></div>
-    <div class="login-orb orb2"></div>
-    <div class="login-orb orb3"></div>
-  </div>
   <div class="login-card">
     <div class="login-logo">
       <div class="logo-icon">🛢️</div>
       <h1>FMCG Admin</h1>
-      <p>Reward Campaign Control Panel</p>
+      <p>Reward Campaign Portal</p>
     </div>
     <form id="login-form" onsubmit="handleLogin(event)">
       <div class="form-group">
         <label for="username">Username</label>
-        <input type="text" id="username" placeholder="Enter admin username" required autocomplete="username" />
+        <input type="text" id="username" placeholder="admin" required autocomplete="username" />
       </div>
       <div class="form-group">
         <label for="password">Password</label>
         <div class="password-wrap">
-          <input type="password" id="password" placeholder="Enter password" required autocomplete="current-password" />
+          <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password" />
           <button type="button" class="toggle-pw" onclick="togglePassword()">👁</button>
         </div>
       </div>
@@ -44,8 +39,7 @@
       </button>
     </form>
     <div class="login-hint">
-      <strong style="color:var(--warning)">⚡ Demo Mode:</strong> username <code style="color:var(--primary)">admin</code> / password <code style="color:var(--primary)">admin123</code><br/>
-      <span style="opacity:0.6">Backend API: <span id="api-base-display">http://localhost:5000</span></span>
+      Default: <strong>admin</strong> / <strong>Admin@1234</strong> &nbsp;|&nbsp; Demo: admin / admin123
     </div>
   </div>
 </div>
@@ -57,29 +51,32 @@
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <div class="sidebar-logo">
-        <span class="logo-icon-sm">🛢️</span>
+        <div class="logo-icon-sm">🛢️</div>
         <span class="sidebar-brand">FMCG Admin</span>
       </div>
       <button class="sidebar-close" onclick="toggleSidebar()" id="sidebar-close-btn">✕</button>
     </div>
     <nav class="sidebar-nav">
+      <div class="nav-section-label">Overview</div>
       <a href="#" class="nav-item active" onclick="navigate('dashboard', this)" id="nav-dashboard">
-        <span class="nav-icon">📊</span><span class="nav-label">Dashboard</span>
+        <span class="nav-icon">▦</span><span class="nav-label">Dashboard</span>
       </a>
+      <div class="nav-section-label">Manage</div>
       <a href="#" class="nav-item" onclick="navigate('schemes', this)" id="nav-schemes">
-        <span class="nav-icon">📋</span><span class="nav-label">Campaigns</span>
+        <span class="nav-icon">◈</span><span class="nav-label">Campaigns</span>
       </a>
       <a href="#" class="nav-item" onclick="navigate('batches', this)" id="nav-batches">
-        <span class="nav-icon">📦</span><span class="nav-label">QR Batches</span>
+        <span class="nav-icon">▤</span><span class="nav-label">QR Batches</span>
       </a>
       <a href="#" class="nav-item" onclick="navigate('submissions', this)" id="nav-submissions">
-        <span class="nav-icon">📥</span><span class="nav-label">Submissions</span>
+        <span class="nav-icon">↓</span><span class="nav-label">Submissions</span>
       </a>
       <a href="#" class="nav-item" onclick="navigate('winners', this)" id="nav-winners">
-        <span class="nav-icon">🏆</span><span class="nav-label">Winners</span>
+        <span class="nav-icon">★</span><span class="nav-label">Winners</span>
       </a>
+      <div class="nav-section-label">Account</div>
       <a href="#" class="nav-item" onclick="navigate('profile', this)" id="nav-profile">
-        <span class="nav-icon">👤</span><span class="nav-label">Profile</span>
+        <span class="nav-icon">◉</span><span class="nav-label">Profile</span>
       </a>
     </nav>
     <div class="sidebar-footer">
@@ -172,7 +169,7 @@
           <table class="data-table" id="batches-table">
             <thead>
               <tr>
-                <th>ID</th><th>Batch Name</th><th>Total Codes</th><th>Used</th><th>Remaining</th><th>Usage %</th><th>Created</th><th>Actions</th>
+                <th>ID</th><th>Batch Name</th><th>Campaign</th><th>Total Codes</th><th>Used</th><th>Remaining</th><th>Usage %</th><th>Created</th><th>Actions</th>
               </tr>
             </thead>
             <tbody id="batches-tbody"><tr><td colspan="8" class="loading-row">Loading batches…</td></tr></tbody>

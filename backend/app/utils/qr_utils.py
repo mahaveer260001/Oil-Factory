@@ -39,40 +39,46 @@ class QRCodeGenerator:
         return f"QR{batch_id}{index:06d}" + unique_code[:8]
     
     @staticmethod
-    def generate_qr_image(qr_code: str, size: int = 10, border: int = 2) -> bytes:
+    def generate_qr_image(unique_code: str, base_url: str = None, size: int = 12, border: int = 2) -> bytes:
         """
-        Generate QR image as bytes
-        Only called during export, not stored permanently
-        
+        Generate QR image that encodes the full claim URL.
+        Customers scan this — they land on the claim form with code pre-filled.
+
         Args:
-            qr_code: The code to encode
-            size: Size per box in pixels
+            unique_code: The unique QR identifier
+            base_url: Base URL of the claim site (defaults to config)
+            size: Box size in pixels (higher = bigger image)
             border: Border in boxes
-            
+
         Returns:
             PNG image bytes
         """
         try:
+            if base_url is None:
+                base_url = current_app.config.get("BASE_URL", "http://localhost:3000")
+
+            claim_url = f"{base_url}/r/{unique_code}"
+
             qr = qrcode.QRCode(
                 version=1,
-                error_correction=qrcode.constants.ERROR_CORRECT_L,
+                error_correction=qrcode.constants.ERROR_CORRECT_M,  # Medium — better for print
                 box_size=size,
                 border=border,
             )
-            qr.add_data(qr_code)
+            qr.add_data(claim_url)
             qr.make(fit=True)
-            
+
             img = qr.make_image(fill_color="black", back_color="white")
-            
-            # Convert to bytes
+
             img_bytes = io.BytesIO()
             img.save(img_bytes, format="PNG")
             img_bytes.seek(0)
-            
+
             return img_bytes.getvalue()
         except Exception as e:
             logger.error(f"Error generating QR image: {str(e)}")
             raise
+
     
     @staticmethod
     def generate_qr_url(qr_code: str, base_url: str = None) -> str:

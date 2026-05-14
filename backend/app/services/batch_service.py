@@ -120,6 +120,8 @@ class QRBatchService:
             "used_codes": used,
             "unused_codes": unused,
             "usage_percentage": round(usage_percentage, 2),
+            "scheme_id": batch.scheme_id,
+            "scheme_name": batch.scheme.title if batch.scheme else "—",
             "created_at": batch.created_at.isoformat(),
             "created_by": batch.created_by_admin.username if batch.created_by_admin else "Unknown"
         }

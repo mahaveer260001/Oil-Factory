@@ -42,13 +42,15 @@ class QRBatch(db.Model):
     batch_code = db.Column(db.String(50), unique=True, nullable=False, index=True)
     quantity = db.Column(db.Integer, nullable=False)
     used_count = db.Column(db.Integer, default=0)
+    scheme_id = db.Column(db.Integer, db.ForeignKey("schemes.id"), nullable=True, index=True)
     created_by = db.Column(db.Integer, db.ForeignKey("admins.id"), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, index=True)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    
+
     # Relationships
     qr_codes = db.relationship("QRCode", backref="batch", lazy="dynamic", cascade="all, delete-orphan")
-    
+    scheme   = db.relationship("Scheme", foreign_keys=[scheme_id])
+
     __table_args__ = (
         db.Index("idx_batch_name_date", "batch_name", "created_at"),
     )
