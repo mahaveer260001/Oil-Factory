@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import '../styles/Navbar.css'
 
-const Navbar = () => {
+const Navbar = ({ onScanClick }) => {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
 
@@ -55,15 +55,28 @@ const Navbar = () => {
           ))}
         </ul>
 
-        {/* CTA Button */}
-        <motion.a
-          href="#products"
-          className="navbar-cta"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          Our Products
-        </motion.a>
+        {/* Scan QR + CTA */}
+        <div className="navbar-actions">
+          <motion.button
+            className="navbar-scan-btn"
+            onClick={onScanClick}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            aria-label="Scan QR Code"
+          >
+            <span className="navbar-scan-icon">📷</span>
+            <span className="navbar-scan-text">Scan QR</span>
+          </motion.button>
+
+          <motion.a
+            href="#products"
+            className="navbar-cta"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Our Products
+          </motion.a>
+        </div>
 
         {/* Mobile Hamburger */}
         <button
@@ -98,6 +111,16 @@ const Navbar = () => {
                 {link.label}
               </motion.a>
             ))}
+            {/* Scan QR in mobile menu */}
+            <motion.button
+              className="mobile-scan-btn"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: navLinks.length * 0.05 }}
+              onClick={() => { setMobileOpen(false); onScanClick && onScanClick() }}
+            >
+              📷 Scan QR Code — Claim Reward
+            </motion.button>
           </motion.div>
         )}
       </AnimatePresence>

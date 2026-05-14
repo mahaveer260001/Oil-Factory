@@ -152,10 +152,14 @@ function navigate(page, el) {
   if (target) { target.classList.remove('hidden'); target.classList.add('active'); }
   if (el) el.classList.add('active');
   document.getElementById('page-title').textContent = el ? el.querySelector('.nav-label').textContent : page;
-  const loaders = { dashboard: loadDashboard, schemes: loadSchemes, batches: loadBatches, submissions: loadSubmissions, winners: loadWinners, profile: loadProfile };
+  const loaders = { dashboard: loadDashboard, schemes: loadSchemes, batches: loadBatches, submissions: loadSubmissions, winners: loadWinners, profile: loadProfile, qrgen: loadQRGen };
   if (loaders[page]) loaders[page]();
+  // Auto-refresh submissions when on that page
+  if (page === 'submissions') startSubmissionsAutoRefresh();
+  else { clearInterval(subAutoRefresh); subAutoRefresh = null; }
   if (window.innerWidth <= 768) document.getElementById('sidebar').classList.remove('mobile-open');
 }
+
 
 function toggleSidebar() {
   const sb = document.getElementById('sidebar');
@@ -404,38 +408,83 @@ async function deleteBatch(id) {
 
 // ── Submissions ────────────────────────────────────────────────
 let subPage = 1;
+let subAutoRefresh = null;
+
 async function loadSubmissions(page = 1) {
   subPage = page;
   const city = document.getElementById('filter-city')?.value || '';
+  const name = document.getElementById('filter-name')?.value || '';
   const period = document.getElementById('filter-period')?.value || '';
   try {
     if (DEMO_MODE) throw new Error('demo');
-    const res = await apiFetch(`/api/admin/submissions?page=${page}&per_page=25${city ? '&city=' + city : ''}${period ? '&period=' + period : ''}`);
+    const params = new URLSearchParams({ page, per_page: 25 });
+    if (city) params.set('city', city);
+    if (period) params.set('period', period);
+    const res = await apiFetch(`/api/admin/submissions?${params}`);
     const subs = res.data?.submissions || [];
     const pag = res.data?.pagination || {};
-    document.getElementById('submissions-tbody').innerHTML = subs.length ? subs.map(s => `
+    const total = pag.total_items || subs.length;
+
+    // Show summary
+    const sumEl = document.getElementById('submissions-summary');
+    if (sumEl) {
+      sumEl.innerHTML = `<span>📊 Total Entries: <strong>${fmt(total)}</strong></span><span style="margin-left:16px;color:var(--success)">✅ Live Data from Backend</span>`;
+      sumEl.classList.remove('hidden');
+    }
+
+    // Filter by name client-side if needed
+    const filtered = name ? subs.filter(s => s.name?.toLowerCase().includes(name.toLowerCase())) : subs;
+
+    document.getElementById('submissions-tbody').innerHTML = filtered.length ? filtered.map((s, idx) => `
       <tr>
-        <td>${s.id}</td>
-        <td>${s.name}</td>
-        <td>${s.phone}</td>
-        <td>${s.city}</td>
-        <td>${s.state || '—'}</td>
-        <td><code style="font-size:11px;color:var(--text3)">${s.qr_code}</code></td>
+        <td><strong>${(page-1)*25 + idx + 1}</strong></td>
+        <td>
+          <div style="font-weight:600;color:var(--text1)">${s.name}</div>
+        </td>
+        <td><a href="tel:${s.phone}" style="color:var(--primary);font-weight:500">${s.phone}</a></td>
+        <td>${s.city || '—'}</td>
+        <td><span style="font-size:11px;color:var(--text3)">${s.state || '—'}</span></td>
+        <td><span style="font-size:11px;color:var(--text3)">${fmtProduct(s.purchase_details?.product_type)}</span></td>
+        <td><code style="font-size:10px;color:var(--text3);background:var(--bg2);padding:2px 6px;border-radius:4px">${s.qr_code || '—'}</code></td>
         <td>${fmtDate(s.submitted_at)}</td>
-        <td>${s.is_winner ? '<span class="status-pill pill-winner">🏆 Winner</span>' : '—'}</td>
-      </tr>`).join('') : '<tr><td colspan="8" class="loading-row">No submissions found</td></tr>';
+        <td>${s.is_winner ? '<span class="status-pill pill-winner">🏆 Winner</span>' : '<span style="color:var(--text3);font-size:12px">Entered</span>'}</td>
+      </tr>`).join('') : '<tr><td colspan="9" class="loading-row">No entries found</td></tr>';
     renderPagination('submissions-pagination', pag, (p) => loadSubmissions(p));
   } catch {
     let subs = MOCK.submissions;
     if (city) subs = subs.filter(s => s.city.toLowerCase().includes(city.toLowerCase()));
-    document.getElementById('submissions-tbody').innerHTML = subs.map(s => `
+    if (name) subs = subs.filter(s => s.name.toLowerCase().includes(name.toLowerCase()));
+
+    // Show demo summary
+    const sumEl = document.getElementById('submissions-summary');
+    if (sumEl) {
+      sumEl.innerHTML = `<span>📊 Showing Demo Data — <strong>${subs.length} entries</strong></span><span style="margin-left:16px;color:#f59e0b">⚡ Connect backend for live data</span>`;
+      sumEl.classList.remove('hidden');
+    }
+
+    document.getElementById('submissions-tbody').innerHTML = subs.map((s, idx) => `
       <tr>
-        <td>${s.id}</td><td>${s.name}</td><td>${s.phone}</td><td>${s.city}</td><td>${s.state}</td>
-        <td><code style="font-size:11px;color:var(--text3)">${s.qr_code}</code></td>
+        <td><strong>${idx+1}</strong></td>
+        <td><div style="font-weight:600;color:var(--text1)">${s.name}</div></td>
+        <td>${s.phone}</td>
+        <td>${s.city}</td>
+        <td><span style="font-size:11px;color:var(--text3)">${s.state}</span></td>
+        <td><span style="font-size:11px;color:var(--text3)">—</span></td>
+        <td><code style="font-size:10px;color:var(--text3);background:var(--bg2);padding:2px 6px;border-radius:4px">${s.qr_code}</code></td>
         <td>${fmtDate(s.submitted_at)}</td>
-        <td>${s.is_winner ? '<span class="status-pill pill-winner">🏆 Winner</span>' : '—'}</td>
+        <td>${s.is_winner ? '<span class="status-pill pill-winner">🏆 Winner</span>' : '<span style="color:var(--text3);font-size:12px">Entered</span>'}</td>
       </tr>`).join('');
   }
+}
+
+function fmtProduct(p) {
+  const map = { mustard_oil: '🟡 Mustard Oil', soyabean_oil: '🟢 Soyabean Oil', cottonseed_oil: '🟠 Cottonseed Oil', other: 'Other' };
+  return map[p] || '—';
+}
+
+function startSubmissionsAutoRefresh() {
+  clearInterval(subAutoRefresh);
+  subAutoRefresh = setInterval(() => { if (!DEMO_MODE) loadSubmissions(subPage); }, 30000);
 }
 
 function exportSubmissions() {
@@ -622,6 +671,90 @@ function showToast(msg, type = 'info') {
   t.textContent = msg; t.className = `toast ${type}`;
   t.classList.remove('hidden');
   setTimeout(() => t.classList.add('hidden'), 3500);
+}
+
+// ── QR Generator ────────────────────────────────────────────────
+function loadQRGen() {
+  // Set default base URL if empty
+  const el = document.getElementById('qrgen-baseurl');
+  if (el && !el.value) el.value = window.location.hostname === 'localhost' ? 'http://localhost:5173' : `${window.location.protocol}//${window.location.hostname}`;
+}
+
+function generateRandomCode() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  const rand = Array.from({length: 8}, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+  const code = `QR${Date.now().toString().slice(-6)}${rand}`;
+  document.getElementById('qrgen-code').value = code;
+}
+
+async function generateQRPreview() {
+  const code = document.getElementById('qrgen-code').value.trim().toUpperCase();
+  const base = document.getElementById('qrgen-baseurl').value.trim().replace(/\/$/, '');
+  const label = document.getElementById('qrgen-label').value.trim();
+
+  if (!code) { showToast('Please enter a QR code', 'error'); return; }
+  if (!base) { showToast('Please enter a base URL', 'error'); return; }
+
+  const claimUrl = `${base}/r/${code}`;
+  const wrap = document.getElementById('qrgen-canvas-wrap');
+  wrap.innerHTML = '<div class="qrgen-loading">Generating QR code…</div>';
+
+  try {
+    // Use QR Server API to generate QR code image
+    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(claimUrl)}&format=png&ecc=M&margin=10`;
+    const img = document.createElement('img');
+    img.id = 'qrgen-canvas-img';
+    img.style.cssText = 'width:240px;height:240px;border-radius:12px;border:2px solid var(--border);display:block;margin:0 auto';
+    img.alt = `QR code for ${code}`;
+    img.onload = () => {
+      wrap.innerHTML = '';
+      wrap.appendChild(img);
+      if (label) {
+        const lbl = document.createElement('div');
+        lbl.style.cssText = 'text-align:center;font-size:12px;color:var(--text2);margin-top:8px;font-weight:600';
+        lbl.textContent = label;
+        wrap.appendChild(lbl);
+      }
+      const urlEl = document.getElementById('qrgen-url-display');
+      urlEl.textContent = claimUrl;
+      urlEl.style.display = 'block';
+      const actEl = document.getElementById('qrgen-actions');
+      actEl.style.display = 'flex';
+      actEl.dataset.url = claimUrl;
+      actEl.dataset.code = code;
+    };
+    img.onerror = () => {
+      wrap.innerHTML = '<div class="qrgen-placeholder" style="color:#ef4444">Failed to load QR image. Check internet connection.</div>';
+    };
+    img.src = qrApiUrl;
+  } catch (err) {
+    wrap.innerHTML = `<div class="qrgen-placeholder" style="color:#ef4444">Error: ${err.message}</div>`;
+  }
+}
+
+function downloadQR() {
+  const img = document.getElementById('qrgen-canvas-img');
+  if (!img) return;
+  const code = document.getElementById('qrgen-actions').dataset.code || 'qr_code';
+  const link = document.createElement('a');
+  link.href = img.src;
+  link.download = `${code}.png`;
+  link.target = '_blank';
+  link.click();
+}
+
+function copyQRUrl() {
+  const url = document.getElementById('qrgen-actions').dataset.url;
+  if (!url) return;
+  navigator.clipboard.writeText(url).then(() => showToast('URL copied!', 'success')).catch(() => {
+    const tmp = document.createElement('textarea');
+    tmp.value = url;
+    document.body.appendChild(tmp);
+    tmp.select();
+    document.execCommand('copy');
+    document.body.removeChild(tmp);
+    showToast('URL copied!', 'success');
+  });
 }
 
 // ── Helpers ────────────────────────────────────────────────────

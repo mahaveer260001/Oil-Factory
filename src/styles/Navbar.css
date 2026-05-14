@@ -108,6 +108,40 @@
   width: 100%;
 }
 
+/* Actions group */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Scan QR Button */
+.navbar-scan-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.5rem 1.2rem;
+  background: linear-gradient(135deg, rgba(245,87,108,0.15), rgba(240,147,251,0.15));
+  border: 1.5px solid rgba(245,87,108,0.5);
+  color: #f093fb;
+  font-size: 0.88rem;
+  font-weight: 700;
+  border-radius: 50px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+.navbar-scan-btn:hover {
+  background: linear-gradient(135deg, rgba(245,87,108,0.25), rgba(240,147,251,0.25));
+  border-color: rgba(245,87,108,0.8);
+  color: #fff;
+}
+
+.navbar-scan-icon { font-size: 16px; }
+.navbar-scan-text { font-size: 0.85rem; }
+
 /* CTA */
 .navbar-cta {
   padding: 0.6rem 1.5rem;
@@ -122,6 +156,27 @@
 .navbar-cta:hover {
   background: var(--gold-light);
 }
+
+/* Mobile Scan Button */
+.mobile-scan-btn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.8rem 0;
+  color: #f093fb;
+  font-size: 1.05rem;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  background: none;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: color 0.3s;
+  letter-spacing: 0.2px;
+}
+.mobile-scan-btn:hover { color: #fff; }
 
 /* Hamburger */
 .hamburger {
@@ -203,9 +258,10 @@
     padding: 0.5rem 1rem;
   }
 
-  .navbar-links, .navbar-cta {
+  .navbar-links, .navbar-actions {
     display: none;
   }
+
 
   .hamburger {
     display: flex;

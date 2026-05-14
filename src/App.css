@@ -87,3 +87,40 @@
     font-size: 0.9rem;
   }
 }
+
+/* ===== SCANNER MODAL ===== */
+.scanner-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 9999;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  overflow-y: auto;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: sc-backdrop-in 0.3s ease both;
+}
+
+@keyframes sc-backdrop-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.scanner-modal-inner {
+  width: 100%;
+  max-width: 560px;
+  animation: sc-modal-slide 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes sc-modal-slide {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@media (max-width: 560px) {
+  .scanner-modal-inner {
+    max-width: 100%;
+  }
+}
