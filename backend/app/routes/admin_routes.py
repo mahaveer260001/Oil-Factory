@@ -180,45 +180,71 @@ def list_batches():
 @AdminAuthDecorator.admin_required
 @log_admin_action("QRBatch", "export")
 def export_batch(batch_id):
-    """Export QR codes as ZIP containing PNG images + manifest CSV"""
+    """Export QR codes as PDF"""
     try:
         import io as _io
-        import zipfile
-        import csv
         from app.models import QRCode, QRBatch
         from app.utils import QRCodeGenerator
+        from reportlab.pdfgen import canvas
+        from reportlab.lib.pagesizes import A4
+        from reportlab.lib.units import mm
+        from reportlab.lib.utils import ImageReader
 
         batch = QRBatch.query.get(batch_id)
         if not batch:
             return format_response(error="Batch not found", status_code=404)
 
-        base_url = request.args.get("base_url", "http://localhost:3000")
+        base_url = request.args.get("base_url", "http://localhost:5173")
 
-        zip_buffer = _io.BytesIO()
-        with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zf:
-            # Manifest CSV
-            csv_buf = _io.StringIO()
-            writer = csv.writer(csv_buf)
-            writer.writerow(["Code", "Claim URL", "Image File"])
+        pdf_buffer = _io.BytesIO()
+        c = canvas.Canvas(pdf_buffer, pagesize=A4)
+        width, height = A4
+        
+        # Grid layout settings (4x6 grid)
+        margin = 15 * mm
+        cols = 4
+        rows = 6
+        qr_size = 35 * mm
+        x_spacing = (width - 2 * margin - cols * qr_size) / (cols - 1) if cols > 1 else 0
+        y_spacing = (height - 2 * margin - rows * qr_size) / (rows - 1) if rows > 1 else 0
 
-            for qr in QRCode.query.filter_by(batch_id=batch_id).yield_per(200):
-                claim_url = f"{base_url}/r/{qr.unique_code}"
-                fname = f"{qr.unique_code}.png"
-                writer.writerow([qr.unique_code, claim_url, fname])
-                try:
-                    img_bytes = QRCodeGenerator.generate_qr_image(qr.unique_code, base_url=base_url)
-                    zf.writestr(fname, img_bytes)
-                except Exception as e:
-                    logger.error(f"QR gen error for {qr.unique_code}: {e}")
+        x_idx = 0
+        y_idx = 0
 
-            zf.writestr("manifest.csv", csv_buf.getvalue())
+        for qr in QRCode.query.filter_by(batch_id=batch_id).yield_per(200):
+            try:
+                img_bytes = QRCodeGenerator.generate_qr_image(qr.unique_code, base_url=base_url)
+                
+                # Calculate position
+                x = margin + x_idx * (qr_size + x_spacing)
+                # Y is from bottom in reportlab
+                y = height - margin - qr_size - y_idx * (qr_size + y_spacing)
 
-        zip_buffer.seek(0)
+                img_reader = ImageReader(_io.BytesIO(img_bytes))
+                c.drawImage(img_reader, x, y, width=qr_size, height=qr_size)
+                
+                # Add text label below QR
+                c.setFont("Helvetica", 8)
+                c.drawCentredString(x + qr_size/2, y - 10, qr.unique_code)
+
+                x_idx += 1
+                if x_idx >= cols:
+                    x_idx = 0
+                    y_idx += 1
+                    if y_idx >= rows:
+                        y_idx = 0
+                        c.showPage()
+            except Exception as e:
+                logger.error(f"QR gen error for {qr.unique_code}: {e}")
+
+        c.save()
+        pdf_buffer.seek(0)
+        
         return send_file(
-            zip_buffer,
-            mimetype="application/zip",
+            pdf_buffer,
+            mimetype="application/pdf",
             as_attachment=True,
-            download_name=f"batch_{batch_id}_{batch.batch_name}.zip",
+            download_name=f"batch_{batch_id}_{batch.batch_name}.pdf",
         )
 
     except Exception as e:

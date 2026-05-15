@@ -355,7 +355,7 @@ async function loadBatches() {
         <td>${fmtDate(b.created_at)}</td>
         <td>
           <div style="display:flex;gap:6px">
-            <button class="btn-sm btn-outline" onclick="exportBatch(${b.id})">Export</button>
+            <button class="btn-sm btn-outline" onclick="exportBatch(${b.id})">⬇ Export PDF</button>
             <button class="btn-sm btn-danger" onclick="deleteBatch(${b.id})">Delete</button>
           </div>
         </td>
@@ -393,8 +393,35 @@ async function handleCreateBatch(e) {
   } catch (err) { errEl.textContent = err.message; errEl.classList.remove('hidden'); }
 }
 
-function exportBatch(id) {
-  window.open(`${API}/api/admin/batch/${id}/export?token=${getToken()}`, '_blank');
+async function exportBatch(id) {
+  try {
+    showToast('Preparing PDF export...', 'info');
+    const res = await fetch(`${API}/api/admin/batch/${id}/export`, {
+      headers: { 'Authorization': `Bearer ${getToken()}` }
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || 'Failed to export batch');
+    }
+    const blob = await res.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    // Extract filename from headers if possible
+    const disp = res.headers.get('Content-Disposition');
+    let filename = `batch_${id}.pdf`;
+    if (disp && disp.includes('filename=')) {
+      filename = disp.split('filename=')[1].replace(/"/g, '');
+    }
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+    showToast('Export successful!', 'success');
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
 }
 
 async function deleteBatch(id) {
@@ -692,17 +719,26 @@ async function generateQRPreview() {
   const base = document.getElementById('qrgen-baseurl').value.trim().replace(/\/$/, '');
   const label = document.getElementById('qrgen-label').value.trim();
 
-  if (!code) { showToast('Please enter a QR code', 'error'); return; }
+  if (!code) { showToast('Please enter a QR code identifier', 'error'); return; }
   if (!base) { showToast('Please enter a base URL', 'error'); return; }
 
   const claimUrl = `${base}/r/${code}`;
   const wrap = document.getElementById('qrgen-canvas-wrap');
-  wrap.innerHTML = '<div class="qrgen-loading">Generating QR code…</div>';
+  wrap.innerHTML = '<div class="qrgen-loading">⏳ Generating QR code…</div>';
 
-  try {
-    // Use QR Server API to generate QR code image
-    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(claimUrl)}&format=png&ecc=M&margin=10`;
-    const img = document.createElement('img');
+  // Multiple QR API fallbacks
+  const qrApis = [
+    `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(claimUrl)}&format=png&ecc=M&margin=10`,
+    `https://chart.googleapis.com/chart?chs=240x240&cht=qr&chl=${encodeURIComponent(claimUrl)}&choe=UTF-8`,
+    `https://quickchart.io/qr?text=${encodeURIComponent(claimUrl)}&size=240&margin=2`
+  ];
+
+  const tryLoadImage = (urls, idx = 0) => {
+    if (idx >= urls.length) {
+      wrap.innerHTML = '<div class="qrgen-placeholder" style="color:#ef4444">⚠️ Could not generate QR. Check your internet connection.</div>';
+      return;
+    }
+    const img = new Image();
     img.id = 'qrgen-canvas-img';
     img.style.cssText = 'width:240px;height:240px;border-radius:12px;border:2px solid var(--border);display:block;margin:0 auto';
     img.alt = `QR code for ${code}`;
@@ -722,14 +758,13 @@ async function generateQRPreview() {
       actEl.style.display = 'flex';
       actEl.dataset.url = claimUrl;
       actEl.dataset.code = code;
+      showToast(`QR generated for ${code}`, 'success');
     };
-    img.onerror = () => {
-      wrap.innerHTML = '<div class="qrgen-placeholder" style="color:#ef4444">Failed to load QR image. Check internet connection.</div>';
-    };
-    img.src = qrApiUrl;
-  } catch (err) {
-    wrap.innerHTML = `<div class="qrgen-placeholder" style="color:#ef4444">Error: ${err.message}</div>`;
-  }
+    img.onerror = () => tryLoadImage(urls, idx + 1);
+    img.src = urls[idx];
+  };
+
+  tryLoadImage(qrApis);
 }
 
 function downloadQR() {

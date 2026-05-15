@@ -285,51 +285,16 @@
       <!-- QR GENERATOR PAGE -->
       <section id="page-qrgen" class="page hidden">
         <div class="page-header">
-          <h2>QR Code Generator</h2>
-          <p style="font-size:13px;color:var(--text3);margin-top:4px">Generate real QR codes that link to the claim page</p>
+          <h2>Bulk QR Code Generator</h2>
+          <p style="font-size:13px;color:var(--text3);margin-top:4px">Generate unique QR codes in bulk and export them as a print-ready PDF</p>
         </div>
-        <div class="qrgen-grid">
-          <!-- Generator Form -->
-          <div class="qrgen-form-card">
-            <h3>Generate Single QR Code</h3>
-            <div class="form-group">
-              <label>QR Code (unique identifier)</label>
-              <div style="display:flex;gap:8px">
-                <input type="text" id="qrgen-code" placeholder="e.g. QR1000001ABCD1234" style="flex:1" />
-                <button class="btn-secondary" onclick="generateRandomCode()">Random</button>
-              </div>
-            </div>
-            <div class="form-group">
-              <label>Base URL</label>
-              <input type="text" id="qrgen-baseurl" value="http://localhost:5173" />
-            </div>
-            <div class="form-group">
-              <label>Label (optional)</label>
-              <input type="text" id="qrgen-label" placeholder="e.g. Summer Campaign Batch A" />
-            </div>
-            <button class="btn-primary" onclick="generateQRPreview()">⊞ Generate QR Code</button>
-          </div>
-
-          <!-- QR Preview -->
-          <div class="qrgen-preview-card" id="qrgen-preview-card">
-            <h3>Preview</h3>
-            <div id="qrgen-canvas-wrap">
-              <div class="qrgen-placeholder">Enter a code and click Generate</div>
-            </div>
-            <div id="qrgen-url-display" class="qrgen-url" style="display:none"></div>
-            <div id="qrgen-actions" style="display:none;margin-top:12px;display:none;gap:8px;flex-wrap:wrap">
-              <button class="btn-primary" onclick="downloadQR()">⬇ Download PNG</button>
-              <button class="btn-outline" onclick="copyQRUrl()">📋 Copy URL</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Bulk Generator -->
-        <div class="qrgen-bulk-card">
-          <h3>Bulk Generate via Admin API</h3>
-          <p style="font-size:13px;color:var(--text3);margin-bottom:12px">Use the QR Batches section to generate thousands of codes in bulk. After creating a batch, export them as a ZIP of PNG images for printing.</p>
-          <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <button class="btn-primary" onclick="navigate('batches', document.getElementById('nav-batches'))">📦 Create QR Batch →</button>
+        
+        <div class="qrgen-bulk-card" style="margin-top: 20px;">
+          <h3>Create a New Batch</h3>
+          <p style="font-size:14px;color:var(--text2);margin-bottom:20px;line-height:1.6">Generate thousands of unique, secure QR codes instantly. Once generated, you can download them as a formatted PDF document ready for printing and packaging.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <button class="btn-primary" onclick="openModal('create-batch-modal')">📦 Create New QR Batch</button>
+            <button class="btn-outline" onclick="navigate('batches', document.getElementById('nav-batches'))">View Existing Batches →</button>
           </div>
         </div>
       </section>
