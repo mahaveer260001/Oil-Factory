@@ -1,0 +1,145 @@
+.health-section {
+  padding: 100px 0;
+  background: linear-gradient(135deg, #11111a 0%, #1a1a2e 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.health-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.health-subtitle {
+  color: #a0a0b0;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+
+.health-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.health-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.health-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateX(10px);
+  border-color: rgba(212, 175, 55, 0.3);
+}
+
+.health-icon {
+  font-size: 2rem;
+  background: rgba(212, 175, 55, 0.1);
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.health-text h4 {
+  color: #fff;
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.health-text p {
+  color: #888;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Visual Side */
+.health-visual {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.health-circle {
+  position: relative;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.health-circle::before {
+  content: '';
+  position: absolute;
+  inset: 20px;
+  border: 2px dashed rgba(212, 175, 55, 0.3);
+  border-radius: 50%;
+  animation: rotateSlow 20s linear infinite;
+}
+
+@keyframes rotateSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.health-can-img {
+  width: 220px;
+  z-index: 2;
+  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5));
+}
+
+.health-badge {
+  position: absolute;
+  background: var(--bg-dark);
+  color: var(--gold-primary);
+  border: 1px solid var(--gold-primary);
+  padding: 8px 16px;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  z-index: 3;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+}
+
+.badge-1 { top: 10%; right: 5%; }
+.badge-2 { bottom: 20%; left: -5%; }
+.badge-3 { bottom: 10%; right: 10%; }
+
+@media (max-width: 968px) {
+  .health-layout {
+    grid-template-columns: 1fr;
+    gap: 60px;
+  }
+  .health-content {
+    order: 2;
+  }
+  .health-visual {
+    order: 1;
+  }
+  .health-circle {
+    width: 300px;
+    height: 300px;
+  }
+  .health-can-img {
+    width: 160px;
+  }
+}

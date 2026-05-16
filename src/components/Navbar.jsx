@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import '../styles/Navbar.css'
 
-const Navbar = ({ onScanClick }) => {
+const Navbar = ({ onRewardsClick }) => {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
 
@@ -16,9 +16,10 @@ const Navbar = ({ onScanClick }) => {
 
   const navLinks = [
     { label: 'Home', href: '#products' },
+    { label: 'Health', href: '#nutrition' },
+    { label: 'Recipes', href: '#recipes' },
     { label: 'Why Us', href: '#features' },
-    { label: 'About', href: '#about' },
-    { label: 'Contact', href: '#footer' }
+    { label: 'About', href: '#about' }
   ]
 
   return (
@@ -55,17 +56,29 @@ const Navbar = ({ onScanClick }) => {
           ))}
         </ul>
 
-        {/* Scan QR + CTA */}
+        {/* CTA */}
         <div className="navbar-actions">
           <motion.button
             className="navbar-scan-btn"
-            onClick={onScanClick}
+            onClick={onRewardsClick}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            aria-label="Scan QR Code"
+            aria-label="View Rewards"
+            style={{
+              background: 'linear-gradient(135deg, #f5576c, #f093fb)',
+              border: 'none',
+              padding: '10px 24px',
+              borderRadius: '50px',
+              color: '#fff',
+              fontWeight: '700',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              cursor: 'pointer'
+            }}
           >
-            <span className="navbar-scan-icon">📷</span>
-            <span className="navbar-scan-text">Scan QR</span>
+            <span className="navbar-scan-icon" style={{ fontSize: '1.2rem' }}></span>
+            <span className="navbar-scan-text">View Rewards</span>
           </motion.button>
 
           <motion.a
@@ -111,15 +124,15 @@ const Navbar = ({ onScanClick }) => {
                 {link.label}
               </motion.a>
             ))}
-            {/* Scan QR in mobile menu */}
+            {/* View Rewards in mobile menu */}
             <motion.button
               className="mobile-scan-btn"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: navLinks.length * 0.05 }}
-              onClick={() => { setMobileOpen(false); onScanClick && onScanClick() }}
+              onClick={() => { setMobileOpen(false); onRewardsClick && onRewardsClick() }}
             >
-              📷 Scan QR Code — Claim Reward
+              View Rewards & Offers
             </motion.button>
           </motion.div>
         )}

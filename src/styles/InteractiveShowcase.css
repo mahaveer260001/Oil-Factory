@@ -1,0 +1,363 @@
+.kitchen-banner {
+  background: linear-gradient(135deg, #33743e 0%, #275B32 50%, #173d1f 100%);
+  text-align: center;
+  padding: 40px 20px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.kitchen-banner::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 40%;
+  height: 200%;
+  background: radial-gradient(ellipse at center, rgba(255,255,255,0.2) 0%, transparent 60%);
+  border-radius: 50%;
+  transform: rotate(30deg);
+}
+
+.kitchen-banner::after {
+  content: '';
+  position: absolute;
+  bottom: -50%;
+  left: -5%;
+  width: 30%;
+  height: 200%;
+  background: radial-gradient(ellipse at center, rgba(255,255,255,0.15) 0%, transparent 60%);
+  border-radius: 50%;
+  transform: rotate(-15deg);
+}
+
+.kitchen-banner h2 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0;
+  text-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.showcase-section {
+  position: relative;
+  width: 100%;
+  min-height: 400px;
+  background-color: #fcf9f2; /* Off-white warm background like fortune */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 40px 0;
+  font-family: 'Outfit', sans-serif;
+}
+
+/* Big dynamic background shape on the left */
+.showcase-bg-shape {
+  position: absolute;
+  top: 50%;
+  left: -10%;
+  transform: translateY(-50%);
+  width: 450px;
+  height: 450px;
+  border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+  opacity: 0.15;
+  transition: background-color 0.8s ease;
+  z-index: 1;
+  animation: morphBg 8s ease-in-out infinite alternate;
+}
+
+@keyframes morphBg {
+  0% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+  100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+}
+
+.showcase-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 2;
+  padding: 0 20px;
+}
+
+.showcase-container.row-reverse {
+  flex-direction: row-reverse;
+}
+
+/* LEFT: Dish area */
+.showcase-left {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.showcase-dish-wrapper {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.showcase-dish-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  opacity: 0.2;
+  transform: scale(1.1);
+  filter: blur(20px);
+  transition: background-color 0.8s ease;
+}
+
+.showcase-dish-img-container {
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  border: 10px solid #fff;
+}
+
+.showcase-dish-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.showcase-dish-label {
+  position: absolute;
+  bottom: 0;
+  background: #fff;
+  padding: 8px 24px;
+  border-radius: 30px;
+  font-weight: 700;
+  color: #333;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+  z-index: 10;
+  font-size: 1rem;
+}
+
+/* CENTER: Product area */
+.showcase-center {
+  flex: 0.8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.showcase-product-wrapper {
+  position: relative;
+  height: 300px;
+  width: 180px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.showcase-product-img {
+  position: absolute;
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 15px 20px rgba(0,0,0,0.25));
+}
+
+.showcase-controls {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.showcase-btn {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  transition: transform 0.2s, background-color 0.5s;
+}
+
+.showcase-btn:hover {
+  transform: scale(1.1);
+}
+
+/* RIGHT: Text area */
+.showcase-right {
+  flex: 1.2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 40px;
+}
+
+.showcase-text-wrapper {
+  position: relative;
+}
+
+.showcase-title {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+
+.title-line1 {
+  transition: color 0.5s;
+}
+
+.title-line2 {
+  color: #ff9800; /* Usually orange text for brand */
+  color: #e65100;
+}
+
+.showcase-subtitle {
+  font-size: 1.2rem;
+  color: #ef5350;
+  font-weight: 600;
+  margin-bottom: 25px;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+}
+
+.showcase-cta {
+  border: none;
+  color: #fff;
+  padding: 12px 30px;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.5s, transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  display: inline-block;
+  width: fit-content;
+}
+
+.showcase-cta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.3);
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .showcase-container, .showcase-container.row-reverse {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .showcase-right {
+    order: 1;
+    padding-left: 0;
+    padding-right: 0 !important;
+    margin-bottom: 40px;
+    align-items: center;
+    width: 100%;
+  }
+
+  .showcase-center {
+    order: 2;
+    margin-bottom: 40px;
+  }
+  
+  .showcase-left {
+    order: 3;
+    margin-bottom: 0;
+  }
+  
+  .showcase-text-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .showcase-title {
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .kitchen-banner {
+    padding: 25px 15px;
+  }
+
+  .kitchen-banner h2 {
+    font-size: 2rem;
+  }
+
+  .showcase-section {
+    padding: 30px 0;
+  }
+
+  .showcase-bg-shape {
+    width: 300px;
+    height: 300px;
+    left: 50% !important;
+    right: auto !important;
+    transform: translate(-50%, -50%);
+  }
+
+  .showcase-title {
+    font-size: 2.2rem;
+  }
+  
+  .showcase-subtitle {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+  }
+  
+  .showcase-product-wrapper {
+    height: 250px;
+    width: 140px;
+  }
+
+  .showcase-dish-wrapper {
+    width: 250px;
+    height: 250px;
+  }
+  
+  .showcase-dish-img-container {
+    width: 200px;
+    height: 200px;
+    border-width: 6px;
+  }
+  
+  /* Make decorative veggies much smaller on mobile */
+  svg.veggie-anim {
+    transform: scale(0.6) !important;
+    opacity: 0.05 !important;
+  }
+}
+
+/* Vegetable Floating Animations */
+.veggie-anim {
+  animation: floatVeggie 6s ease-in-out infinite alternate;
+  transform-origin: center;
+}
+
+.veggie-tomato { animation-duration: 7s; }
+.veggie-chili { animation-duration: 5.5s; animation-direction: alternate-reverse; }
+.veggie-garlic { animation-duration: 8s; }
+.veggie-onion { animation-duration: 6.5s; animation-direction: alternate-reverse; }
+
+@keyframes floatVeggie {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(5deg); }
+  100% { transform: translateY(10px) rotate(-3deg); }
+}

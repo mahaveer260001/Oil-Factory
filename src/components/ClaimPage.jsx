@@ -104,7 +104,7 @@ export default function ClaimPage() {
     <div className="cp-wrap">
       <div className="cp-card cp-card--loading">
         <div className="cp-pulse-ring" />
-        <div className="cp-loader-icon">🔍</div>
+        <div className="cp-loader-icon"></div>
         <p className="cp-checking">Verifying your QR code…</p>
         <p className="cp-checking-sub">Please wait a moment</p>
       </div>
@@ -134,7 +134,7 @@ export default function ClaimPage() {
           ))}
         </div>
         <div className="cp-result-icon cp-result-icon--success">✓</div>
-        <h1>Entry Recorded! 🎉</h1>
+        <h1>Entry Recorded!</h1>
         <p>Thank you, <strong>{form.name}</strong>! Your participation has been registered.</p>
         {submissionId && (
           <div className="cp-ref-box">
@@ -144,15 +144,15 @@ export default function ClaimPage() {
         )}
         <div className="cp-success-details">
           <div className="cp-detail-row">
-            <span>📱</span><span>We'll contact you at <strong>{form.phone}</strong></span>
+            <span></span><span>We'll contact you at <strong>{form.phone}</strong></span>
           </div>
           <div className="cp-detail-row">
-            <span>📍</span><span>{form.city}, {form.state}</span>
+            <span></span><span>{form.city}, {form.state}</span>
           </div>
         </div>
         <div className="cp-success-note">
-          <p>🏆 Winners are announced after the campaign ends.</p>
-          <p>💰 Exciting prizes await — stay tuned!</p>
+          <p>Winners are announced after the campaign ends.</p>
+          <p>Exciting prizes await — stay tuned!</p>
         </div>
         <a href="/" className="cp-back-btn cp-back-btn--success">← Explore Our Products</a>
       </div>
@@ -171,7 +171,7 @@ export default function ClaimPage() {
         {/* Header */}
         <div className="cp-header">
           <div className="cp-brand-badge">
-            <span className="cp-brand-icon">🛢️</span>
+            <span className="cp-brand-icon"></span>
             <span className="cp-brand-name">Gold Mairani</span>
           </div>
           <h1 className="cp-title">Claim Your Reward!</h1>
@@ -194,13 +194,13 @@ export default function ClaimPage() {
 
           {/* Reward Info */}
           <div className="cp-reward-panel">
-            <div className="cp-reward-badge">🎁 Your Reward</div>
+            <div className="cp-reward-badge">Your Reward</div>
             <p className="cp-reward-text">
               {scheme?.reward_text || 'Win exciting prizes & cashback!'}
             </p>
             <div className="cp-reward-tags">
-              <span className="cp-tag">✅ Verified</span>
-              <span className="cp-tag">🔒 Secure</span>
+              <span className="cp-tag">Verified</span>
+              <span className="cp-tag">Secure</span>
             </div>
           </div>
         </div>
@@ -225,7 +225,7 @@ export default function ClaimPage() {
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="cp-form" noValidate>
-          <div className="cp-form-section-label">📋 Your Details</div>
+          <div className="cp-form-section-label">Your Details</div>
 
           <div className="cp-field">
             <label htmlFor="cp-name">
@@ -246,7 +246,7 @@ export default function ClaimPage() {
               Mobile Number <span className="cp-required">*</span>
             </label>
             <div className="cp-phone-wrap">
-              <span className="cp-phone-prefix">🇮🇳 +91</span>
+              <span className="cp-phone-prefix">+91</span>
               <input
                 id="cp-phone"
                 name="phone"
@@ -292,16 +292,16 @@ export default function ClaimPage() {
             <label htmlFor="cp-product">Product Purchased</label>
             <select id="cp-product" name="product_type" value={form.product_type} onChange={handleChange}>
               <option value="">Select product (optional)</option>
-              <option value="mustard_oil">🟡 Mustard Oil (Kachi Ghani)</option>
-              <option value="soyabean_oil">🟢 Soyabean Oil</option>
-              <option value="cottonseed_oil">🟠 Cottonseed Oil</option>
+              <option value="mustard_oil">Mustard Oil (Kachi Ghani)</option>
+              <option value="soyabean_oil">Soyabean Oil</option>
+              <option value="cottonseed_oil">Cottonseed Oil</option>
               <option value="other">Other</option>
             </select>
           </div>
 
           {formError && (
             <div className="cp-error" role="alert">
-              ⚠️ {formError}
+              {formError}
             </div>
           )}
 
@@ -313,13 +313,13 @@ export default function ClaimPage() {
             {status === 'submitting' ? (
               <><span className="cp-btn-spinner" /> Submitting Entry…</>
             ) : (
-              <>🚀 Submit My Entry</>
+              <>Submit My Entry</>
             )}
           </button>
         </form>
 
         <p className="cp-privacy">
-          🔒 Your information is 100% secure and used only for this campaign.
+          Your information is 100% secure and used only for this campaign.
           <br />One entry per QR code is allowed.
         </p>
       </div>

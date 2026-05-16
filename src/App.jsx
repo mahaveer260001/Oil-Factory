@@ -1,54 +1,62 @@
 import React, { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
+import { AnimatePresence, motion } from 'framer-motion'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
-import ProductCarousels from './components/ProductCarousels'
+import InteractiveShowcase from './components/InteractiveShowcase'
+import HealthBenefits from './components/HealthBenefits'
 import Features from './components/Features'
 import About from './components/About'
 import Footer from './components/Footer'
 import ProductDetail from './components/ProductDetail'
 import ClaimPage from './components/ClaimPage'
-import ScannerPage from './components/ScannerPage'
+import Rewards from './components/Rewards'
 import './App.css'
 
 function AppInner() {
   const location = useLocation()
   const isClaim = location.pathname.startsWith('/r/')
-  const isScanner = location.pathname === '/scan'
-  const [scannerOpen, setScannerOpen] = useState(false)
-
-  const hideChrome = isClaim || isScanner
+  const [rewardsOpen, setRewardsOpen] = useState(false)
+  const hideChrome = isClaim
 
   return (
     <>
-      {!hideChrome && <Navbar onScanClick={() => setScannerOpen(true)} />}
+      {!hideChrome && <Navbar onRewardsClick={() => setRewardsOpen(true)} />}
 
       <Routes>
         <Route path="/" element={
           <>
-            <Hero onScanClick={() => setScannerOpen(true)} />
-            <ProductCarousels />
+            <Hero onRewardsClick={() => setRewardsOpen(true)} />
+            <InteractiveShowcase />
+            <HealthBenefits />
             <Features />
             <About />
           </>
         } />
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/r/:code" element={<ClaimPage />} />
-        <Route path="/scan" element={<ScannerPage />} />
       </Routes>
 
       {!hideChrome && <Footer />}
 
-      {/* Scanner modal overlay */}
-      {scannerOpen && (
-        <div className="scanner-modal-backdrop" onClick={(e) => {
-          if (e.target === e.currentTarget) setScannerOpen(false)
-        }}>
-          <div className="scanner-modal-inner">
-            <ScannerPage onClose={() => setScannerOpen(false)} />
+      {/* Rewards Modal Overlay */}
+      <AnimatePresence>
+        {rewardsOpen && (
+          <div className="scanner-modal-backdrop" onClick={(e) => {
+            if (e.target === e.currentTarget) setRewardsOpen(false)
+          }}>
+            <motion.div 
+               className="scanner-modal-inner"
+               initial={{ opacity: 0, y: 50, scale: 0.95 }}
+               animate={{ opacity: 1, y: 0, scale: 1 }}
+               exit={{ opacity: 0, y: 20, scale: 0.95 }}
+               transition={{ duration: 0.3 }}
+            >
+              <Rewards onClose={() => setRewardsOpen(false)} />
+            </motion.div>
           </div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
     </>
   )
 }

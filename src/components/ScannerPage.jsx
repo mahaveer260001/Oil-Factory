@@ -112,7 +112,7 @@ export default function ScannerPage({ onClose }) {
         {/* Header */}
         <div className="sc-header">
           <div className="sc-icon-wrap">
-            <span className="sc-icon">📷</span>
+            <span className="sc-icon"></span>
             <div className="sc-icon-pulse" />
           </div>
           <h1 className="sc-title">Scan QR Code</h1>
@@ -132,7 +132,7 @@ export default function ScannerPage({ onClose }) {
           {/* Overlay when idle */}
           {scanStatus === 'idle' && (
             <div className="sc-overlay-idle">
-              <div className="sc-idle-icon">🔲</div>
+              <div className="sc-idle-icon"></div>
               <p>Camera preview will appear here</p>
             </div>
           )}
@@ -168,7 +168,7 @@ export default function ScannerPage({ onClose }) {
 
         {scanStatus === 'error' && (
           <div className="sc-status sc-status--error">
-            ⚠️ {errorMsg}
+            {errorMsg}
           </div>
         )}
 
@@ -176,7 +176,7 @@ export default function ScannerPage({ onClose }) {
         <div className="sc-actions">
           {scanStatus === 'idle' || scanStatus === 'error' ? (
             <button className="sc-btn sc-btn--primary" onClick={startScanner}>
-              <span>📷</span> Start Scanning
+              Start Scanning
             </button>
           ) : scanStatus === 'scanning' ? (
             <button className="sc-btn sc-btn--secondary" onClick={stopScanner}>
@@ -209,7 +209,7 @@ export default function ScannerPage({ onClose }) {
             </div>
             <div className="sc-step">
               <span className="sc-step-num">4</span>
-              <p>Wait for the announcement — you could win exciting prizes! 🎉</p>
+              <p>Wait for the announcement — you could win exciting prizes!</p>
             </div>
           </div>
         </div>

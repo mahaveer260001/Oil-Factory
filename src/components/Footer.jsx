@@ -51,9 +51,9 @@ const Footer = () => {
           <div className="footer-col">
             <h4 className="footer-col-title">Get in Touch</h4>
             <div className="footer-contact-info">
-              <p>📧 info@mateshwariindustries.com</p>
-              <p>📞 +91 XXXXX XXXXX</p>
-              <p>📍 Rajasthan, India</p>
+              <p>info@mateshwariindustries.com</p>
+              <p>+91 XXXXX XXXXX</p>
+              <p>Rajasthan, India</p>
             </div>
           </div>
         </div>
@@ -67,7 +67,7 @@ const Footer = () => {
             © {year} Mateshwari Industries. All rights reserved.
           </p>
           <p className="footer-tagline">
-            Gold Mairani — Swad Ka Powerful Blast! 🌶️
+            Gold Mairani — Swad Ka Powerful Blast!
           </p>
         </div>
       </div>

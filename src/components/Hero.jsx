@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import '../styles/Hero.css'
 
-const Hero = ({ onScanClick }) => {
+const Hero = ({ onRewardsClick }) => {
   const oilProducts = useMemo(() => [
     {
       id: 'mustard',
@@ -287,14 +287,14 @@ const Hero = ({ onScanClick }) => {
                 </svg>
               </motion.a>
 
-              {onScanClick && (
+              {onRewardsClick && (
                 <motion.button
                   className="btn-scan-hero"
-                  onClick={onScanClick}
+                  onClick={onRewardsClick}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  📷 Scan QR &amp; Win
+                  View Rewards
                 </motion.button>
               )}
             </div>
