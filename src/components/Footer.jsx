@@ -1,9 +1,25 @@
 import React from 'react'
 import { motion } from 'framer-motion'
+import { useLocation, Link } from 'react-router-dom'
 import '../styles/Footer.css'
 
 const Footer = () => {
   const year = new Date().getFullYear()
+  const location = useLocation()
+  const isHome = location.pathname === '/'
+
+  const handleScrollTo = (e, sectionId) => {
+    e.preventDefault()
+    if (isHome) {
+      const el = document.getElementById(sectionId)
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    } else {
+      localStorage.setItem('scroll_to_section', sectionId)
+      window.location.href = '#/'
+    }
+  }
 
   return (
     <footer className="footer" id="footer">
@@ -29,10 +45,10 @@ const Footer = () => {
           <div className="footer-col">
             <h4 className="footer-col-title">Products</h4>
             <ul className="footer-links">
-              <li><a href="#products">Pure Mustard Oil</a></li>
-              <li><a href="#products">Refined Soya Oil</a></li>
-              <li><a href="#products">Refined Cottonseed Oil</a></li>
-              <li><a href="#products">All Products</a></li>
+              <li><Link to="/product/mustard">Pure Mustard Oil</Link></li>
+              <li><Link to="/product/soyabean">Refined Soya Oil</Link></li>
+              <li><Link to="/product/cottonseed">Refined Cottonseed Oil</Link></li>
+              <li><a href="#/" onClick={(e) => handleScrollTo(e, 'products')}>All Products</a></li>
             </ul>
           </div>
 
@@ -40,10 +56,10 @@ const Footer = () => {
           <div className="footer-col">
             <h4 className="footer-col-title">Company</h4>
             <ul className="footer-links">
-              <li><a href="#about">About Us</a></li>
-              <li><a href="#features">Quality Standards</a></li>
-              <li><a href="#about">FSSAI Certified</a></li>
-              <li><a href="#footer">Contact</a></li>
+              <li><a href="#/" onClick={(e) => handleScrollTo(e, 'about')}>About Us</a></li>
+              <li><a href="#/" onClick={(e) => handleScrollTo(e, 'features')}>Quality Standards</a></li>
+              <li><span style={{ color: 'var(--text-light)', cursor: 'default' }}>FSSAI Certified</span></li>
+              <li><a href="#/" onClick={(e) => handleScrollTo(e, 'footer')}>Contact</a></li>
             </ul>
           </div>
 
