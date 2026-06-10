@@ -41,9 +41,12 @@ const ProductDetail = () => {
         { type: 'Tin', size: '15 Liter', image: './images/bottle-models/Mustard Tin.png', description: 'Commercial & large family size', customClass: 'pack-tin' }
       ],
       images: [
-        './images/ads/10.png',
-        './images/ads/11.png',
-        './images/ads/12.png'
+        './images/ads/M1.png',
+        './images/ads/M2.png',
+        './images/ads/M3.png',
+        './images/ads/M4.png',
+        './images/ads/M5.png',
+        './images/ads/M6.png'
       ]
     },
     soyabean: {
@@ -76,9 +79,12 @@ const ProductDetail = () => {
         { type: 'Tin', size: '15 Liter', image: './images/bottle-models/Soyabean Tin.png', description: 'Commercial & large family size', customClass: 'pack-tin' }
       ],
       images: [
-        './images/ads/13.png',
-        './images/ads/14.png',
-        './images/ads/15.png'
+        './images/ads/S1.png',
+        './images/ads/S2.png',
+        './images/ads/S3.png',
+        './images/ads/S4.png',
+        './images/ads/S5.png',
+        './images/ads/S6.png'
       ]
     },
     cottonseed: {
@@ -109,9 +115,12 @@ const ProductDetail = () => {
         { type: 'Tin', size: '15 Liter', image: './images/bottle-models/Cottonseed Tin.png', description: 'Commercial & large family size', customClass: 'pack-tin' }
       ],
       images: [
-        './images/ads/16.png',
-        './images/ads/17.png',
-        './images/ads/18.png'
+        './images/ads/C1.png',
+        './images/ads/C2.png',
+        './images/ads/C3.png',
+        './images/ads/C4.png',
+        './images/ads/C5.png',
+        './images/ads/C6.png'
       ]
     }
   }
@@ -297,7 +306,7 @@ const ProductDetail = () => {
             <span style={{ marginLeft: '10px', fontWeight: 'bold', color: '#333' }}>Blinkit</span>
           </div>
           <div style={{ background: '#fff', padding: '10px 20px', borderRadius: '12px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)', display: 'flex', alignItems: 'center' }}>
-            <img src="./images/indiamart-logo.svg" alt="IndiaMART" style={{ height: '35px', objectFit: 'contain' }} />
+            <img src="./images/indiamart.png" alt="IndiaMART" style={{ height: '35px', objectFit: 'contain' }} />
           </div>
           <div style={{ background: '#fff', padding: '10px 20px', borderRadius: '12px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)', display: 'flex', alignItems: 'center' }}>
             <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon" style={{ height: '35px', objectFit: 'contain' }} />

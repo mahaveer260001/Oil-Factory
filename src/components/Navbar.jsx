@@ -71,7 +71,6 @@ const Navbar = ({ onRewardsClick }) => {
               <motion.a
                 href={link.href}
                 onClick={(e) => {
-                  if (link.dropdown) return; // Hover handles dropdown, clicking it scrolls to #products if we want
                   e.preventDefault();
                   const targetId = link.href.split('#').pop();
                   if (isHome) {
@@ -208,16 +207,14 @@ const Navbar = ({ onRewardsClick }) => {
                   transition={{ delay: i * 0.05 }}
                   onClick={(e) => {
                     e.preventDefault();
-                    if (!link.dropdown) {
-                      setMobileOpen(false);
-                      const targetId = link.href.split('#').pop();
-                      if (isHome) {
-                        const el = document.getElementById(targetId);
-                        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                      } else {
-                        localStorage.setItem('scroll_to_section', targetId);
-                        navigate('/');
-                      }
+                    setMobileOpen(false);
+                    const targetId = link.href.split('#').pop();
+                    if (isHome) {
+                      const el = document.getElementById(targetId);
+                      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    } else {
+                      localStorage.setItem('scroll_to_section', targetId);
+                      navigate('/');
                     }
                   }}
                 >

@@ -23,7 +23,6 @@ const PackSizesMarquee = () => {
       name: "Cottonseed Oil",
       variants: [
         { size: "1L", img: "./images/bottle-models/Cottonseed.png", imgClass: "size-small" },
-        { size: "5L", img: "./images/bottle-models/Cottonseed Can.png", imgClass: "size-medium" },
         { size: "15L", img: "./images/bottle-models/Cottonseed Tin.png", imgClass: "size-large" }
       ]
     }

@@ -55,6 +55,9 @@ function AppInner() {
             <InteractiveShowcase />
             <HealthBenefits />
             <PackSizesMarquee />
+            <div className="homepage-strip" style={{ width: '100%', overflow: 'hidden', padding: '2rem 5%', background: '#fff' }}>
+               <img src="./images/ads/Strip.png" alt="Gold Mairani Quality" style={{ width: '100%', maxWidth: '1200px', margin: '0 auto', display: 'block', borderRadius: '16px', boxShadow: '0 8px 30px rgba(0,0,0,0.08)' }} />
+            </div>
             <Features />
             <FAQ />
             <About />

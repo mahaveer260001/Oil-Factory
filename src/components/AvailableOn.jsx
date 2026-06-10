@@ -14,7 +14,7 @@ const AvailableOn = () => {
     },
     {
       name: 'IndiaMART',
-      logo: 'https://upload.wikimedia.org/wikipedia/commons/9/91/IndiaMART_logo.svg',
+      logo: './images/indiamart.png',
       height: '40px'
     },
     {

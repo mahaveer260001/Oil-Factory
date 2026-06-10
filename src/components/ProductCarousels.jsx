@@ -19,7 +19,7 @@ const ProductCarousels = () => {
       gradientBg: 'linear-gradient(180deg, rgba(211,47,47,0.13) 0%, rgba(211,47,47,0.03) 100%)',
       borderColor: 'rgba(211,47,47,0.30)',
       image: './images/bottle-models/Mustard Small.png',
-      poster: './images/ads/10.png',
+      poster: './images/ads/M1.png',
     },
     {
       id: 'soyabean',
@@ -32,7 +32,7 @@ const ProductCarousels = () => {
       gradientBg: 'linear-gradient(180deg, rgba(76,175,80,0.13) 0%, rgba(76,175,80,0.03) 100%)',
       borderColor: 'rgba(76,175,80,0.30)',
       image: './images/bottle-models/Soyabean Small.png',
-      poster: './images/ads/13.png',
+      poster: './images/ads/S1.png',
     },
     {
       id: 'cottonseed',
@@ -45,7 +45,7 @@ const ProductCarousels = () => {
       gradientBg: 'linear-gradient(180deg, rgba(25,118,210,0.13) 0%, rgba(25,118,210,0.03) 100%)',
       borderColor: 'rgba(25,118,210,0.30)',
       image: './images/bottle-models/Cottonseed Small.png',
-      poster: './images/ads/16.png',
+      poster: './images/ads/C1.png',
     },
   ]
 
