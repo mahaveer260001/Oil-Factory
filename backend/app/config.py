@@ -28,6 +28,11 @@ class Config:
         "pool_size": 20,
         "pool_recycle": 3600,
         "pool_pre_ping": True,
+        "use_native_hstore": False,
+        "connect_args": {
+            "client_encoding": "utf8",
+            "sslmode": "require"
+        }
     }
     
     # JWT
