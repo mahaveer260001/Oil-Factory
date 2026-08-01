@@ -99,7 +99,7 @@ const ContactPage = () => {
       >
         <div className="contact-map-section">
           <iframe 
-            src="https://maps.google.com/maps?q=Riico+Industrial+Area,+Sheoganj,+Rajasthan+307027&t=&z=14&ie=UTF8&iwloc=&output=embed" 
+            src="https://maps.google.com/maps?q=25.1269169,73.0516052(Mateshwari+Industries)&t=&z=16&ie=UTF8&iwloc=&output=embed" 
             allowFullScreen="" 
             loading="lazy" 
             referrerPolicy="no-referrer-when-downgrade"
@@ -176,7 +176,13 @@ const ContactPage = () => {
           <p>support@goldmairani.com</p>
         </div>
         
-        <div className="info-card">
+        <a 
+          href="https://www.google.com/maps/place/25%C2%B007'36.9%22N+73%C2%B003'05.8%22E/@25.1269169,73.0490303,632m/data=!3m2!1e3!4b1!4m4!3m3!8m2!3d25.1269169!4d73.0516052!5m1!1e2?hl=en&entry=ttu&g_ep=EgoyMDI2MDcyOS4wIKXMDSoASAFQAw%3D%3D"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="info-card"
+          style={{ textDecoration: 'none', color: 'inherit', cursor: 'pointer' }}
+        >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
             <circle cx="12" cy="10" r="3"></circle>
@@ -184,7 +190,8 @@ const ContactPage = () => {
           <h3>Head Office</h3>
           <p>Riico industrial area</p>
           <p>Sheoganj, Rajasthan 307027</p>
-        </div>
+          <p style={{ marginTop: '10px', fontSize: '0.85rem', color: '#d4af37', fontWeight: '600' }}>View on Google Maps &rarr;</p>
+        </a>
       </motion.div>
     </section>
     <FAQ />

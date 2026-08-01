@@ -91,12 +91,12 @@ const About = () => {
 
             {/* FSSAI License Badge Section */}
             <div className="about-fssai-license">
-              <div className="fssai-badge-container">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="fssai-badge-svg">
-                  <path d="M12 2L3 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z" />
-                  <path d="M9 11l3 3 5-5" />
-                </svg>
-                <div className="fssai-badge-brand">fssai</div>
+              <div className="fssai-badge-container" style={{ background: '#fff', border: 'none', padding: '6px', width: '56px', height: '56px' }}>
+                <img 
+                  src="https://upload.wikimedia.org/wikipedia/commons/e/e0/FSSAI_Logo.png" 
+                  alt="FSSAI Logo" 
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
+                />
               </div>
               <div className="fssai-text-details">
                 <span className="fssai-label">REGISTRATION AUTHORITY LICENSE</span>

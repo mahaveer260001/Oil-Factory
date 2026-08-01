@@ -36,7 +36,7 @@ const Footer = () => {
               </div>
             </div>
             <p className="footer-brand-desc">
-              Premium cooking oils trusted by families across India. 
+              Premium cooking oils trusted by families across India.
               Pure quality in every drop.
             </p>
           </div>
@@ -68,10 +68,24 @@ const Footer = () => {
           <div className="footer-col" style={{ flex: '1.5' }}>
             <h4 className="footer-col-title">Get in Touch</h4>
             <div className="footer-contact-info">
-              <p><a href="mailto:mateshwariindustries5758@gmail.com" style={{color: 'inherit', textDecoration: 'none', transition: 'color 0.2s'}} onMouseOver={(e)=>e.target.style.color='var(--gold-primary)'} onMouseOut={(e)=>e.target.style.color='inherit'}>mateshwariindustries5758@gmail.com</a></p>
-              <p><a href="tel:+919001909266" style={{color: 'inherit', textDecoration: 'none', transition: 'color 0.2s'}} onMouseOver={(e)=>e.target.style.color='var(--gold-primary)'} onMouseOut={(e)=>e.target.style.color='inherit'}>+91 90019 09266</a></p>
-              <p>Sheoganj, Rajasthan 307027</p>
-              <p style={{marginTop: '10px'}}><a href="https://www.instagram.com/gold_mairani" target="_blank" rel="noreferrer" style={{color: 'var(--gold-primary)', textDecoration: 'none'}}>Follow us on Instagram</a></p>
+              <p><a href="mailto:mateshwariindustries5758@gmail.com" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.2s' }} onMouseOver={(e) => e.target.style.color = 'var(--gold-primary)'} onMouseOut={(e) => e.target.style.color = 'inherit'}>mateshwariindustries5758@gmail.com</a></p>
+              <p><a href="tel:+919001909266" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.2s' }} onMouseOver={(e) => e.target.style.color = 'var(--gold-primary)'} onMouseOut={(e) => e.target.style.color = 'inherit'}>+91 90019 09266</a></p>
+              <p>Sheoganj, Pali, Rajasthan 307027</p>
+              <div style={{ marginTop: '12px' }}>
+                <a
+                  href="https://www.instagram.com/gold_mairani"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="footer-instagram-logo"
+                  aria-label="Follow us on Instagram"
+                >
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                  </svg>
+                </a>
+              </div>
               {/* Map removed per user request */}
             </div>
           </div>

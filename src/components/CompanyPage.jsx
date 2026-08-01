@@ -103,17 +103,17 @@ const CompanyPage = () => {
                 </p>
                 <div className="contact-details">
                   <div className="contact-item">
-                    <strong>Email:</strong> exports@mateshwari.com
+                    <strong>Email:</strong> <a href="mailto:mateshwariindustries5758@gmail.com" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.2s' }} onMouseOver={(e)=>e.target.style.color='var(--gold-primary)'} onMouseOut={(e)=>e.target.style.color='inherit'}>mateshwariindustries5758@gmail.com</a>
                   </div>
                   <div className="contact-item">
-                    <strong>Phone:</strong> +91 98765 43210
+                    <strong>Phone:</strong> <a href="tel:+919001909266" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.2s' }} onMouseOver={(e)=>e.target.style.color='var(--gold-primary)'} onMouseOut={(e)=>e.target.style.color='inherit'}>+91 90019 09266</a>
                   </div>
                   <div className="contact-item">
                     <strong>Headquarters:</strong> Rajasthan, India
                   </div>
                 </div>
                 <div className="partnership-actions">
-                  <a href="mailto:exports@mateshwari.com" className="primary-btn">Contact Export Team</a>
+                  <a href="mailto:mateshwariindustries5758@gmail.com" className="primary-btn">Contact Export Team</a>
                   <a href="#/" className="secondary-btn" onClick={(e) => {
                     e.preventDefault();
                     localStorage.setItem('scroll_to_section', 'products');

@@ -34,6 +34,8 @@ class Config:
             "sslmode": "require"
         }
     }
+    if "sqlite" in db_url.lower():
+        SQLALCHEMY_ENGINE_OPTIONS = {}
     
     # JWT
     JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "jwt-secret-key-change-in-production")

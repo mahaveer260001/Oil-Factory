@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://goldmairani.com/sitemap.xml
+Sitemap: https://mateshwariindustries.in/sitemap.xml

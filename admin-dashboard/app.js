@@ -1,5 +1,7 @@
 /* FMCG Admin Dashboard — app.js */
-const API = 'https://oil-factory.onrender.com';
+const API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:5000'
+  : 'https://oil-factory.onrender.com';
 
 // ── Demo Mode ─────────────────────────────────────────────────
 // When backend is offline, login with: admin / admin123

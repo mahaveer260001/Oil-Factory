@@ -305,9 +305,32 @@ const ProductDetail = () => {
             <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Blinkit-yellow-app-icon.svg" alt="Blinkit" style={{ height: '40px', objectFit: 'contain' }} />
             <span style={{ marginLeft: '10px', fontWeight: 'bold', color: '#333' }}>Blinkit</span>
           </div>
-          <div style={{ background: '#fff', padding: '10px 20px', borderRadius: '12px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)', display: 'flex', alignItems: 'center' }}>
+          <a 
+            href="https://m.indiamart.com/mateshwari-industries-sirohi/aboutus.html" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            style={{ 
+              background: '#fff', 
+              padding: '10px 20px', 
+              borderRadius: '12px', 
+              boxShadow: '0 4px 15px rgba(0,0,0,0.05)', 
+              display: 'flex', 
+              alignItems: 'center', 
+              cursor: 'pointer', 
+              textDecoration: 'none',
+              transition: 'transform 0.2s, box-shadow 0.2s' 
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.08)';
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.05)';
+            }}
+          >
             <img src="./images/indiamart.png" alt="IndiaMART" style={{ height: '35px', objectFit: 'contain' }} />
-          </div>
+          </a>
           <div style={{ background: '#fff', padding: '10px 20px', borderRadius: '12px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)', display: 'flex', alignItems: 'center' }}>
             <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon" style={{ height: '35px', objectFit: 'contain' }} />
           </div>

@@ -18,6 +18,7 @@ import ContactPage from './components/ContactPage'
 import CompanyPage from './components/CompanyPage'
 import './App.css'
 
+
 function AppInner() {
   const location = useLocation()
   const isClaim = location.pathname.startsWith('/r/')
@@ -58,7 +59,7 @@ function AppInner() {
             <HealthBenefits />
             <PackSizesMarquee />
             <div className="homepage-strip" style={{ width: '100%', overflow: 'hidden', padding: '2rem 5%', background: '#fff' }}>
-               <img src="./images/ads/Strip.png" alt="Gold Mairani Quality" style={{ width: '100%', maxWidth: '1200px', margin: '0 auto', display: 'block', borderRadius: '16px', boxShadow: '0 8px 30px rgba(0,0,0,0.08)' }} />
+              <img src="./images/ads/Strip.png" alt="Gold Mairani Quality" style={{ width: '100%', maxWidth: '1200px', margin: '0 auto', display: 'block', borderRadius: '16px', boxShadow: '0 8px 30px rgba(0,0,0,0.08)' }} />
             </div>
             <Features />
             <About />
@@ -78,12 +79,12 @@ function AppInner() {
           <div className="scanner-modal-backdrop" onClick={(e) => {
             if (e.target === e.currentTarget) setRewardsOpen(false)
           }}>
-            <motion.div 
-               className="scanner-modal-inner"
-               initial={{ opacity: 0, y: 50, scale: 0.95 }}
-               animate={{ opacity: 1, y: 0, scale: 1 }}
-               exit={{ opacity: 0, y: 20, scale: 0.95 }}
-               transition={{ duration: 0.3 }}
+            <motion.div
+              className="scanner-modal-inner"
+              initial={{ opacity: 0, y: 50, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 20, scale: 0.95 }}
+              transition={{ duration: 0.3 }}
             >
               <ScannerPage onClose={() => setRewardsOpen(false)} />
             </motion.div>

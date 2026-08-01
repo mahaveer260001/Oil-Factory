@@ -10,17 +10,20 @@ const AvailableOn = () => {
     {
       name: 'Blinkit',
       logo: 'https://upload.wikimedia.org/wikipedia/commons/2/2f/Blinkit-yellow-app-icon.svg',
-      height: '45px'
+      height: '45px',
+      link: null
     },
     {
       name: 'IndiaMART',
       logo: './images/indiamart.png',
-      height: '40px'
+      height: '40px',
+      link: 'https://m.indiamart.com/mateshwari-industries-sirohi/aboutus.html'
     },
     {
       name: 'Amazon',
       logo: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg',
-      height: '40px'
+      height: '40px',
+      link: null
     }
   ]
 
@@ -40,22 +43,44 @@ const AvailableOn = () => {
           </div>
           
           <div className="available-logos">
-            {partners.map((partner, index) => (
-              <motion.div 
-                key={partner.name}
-                className="partner-card"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={inView ? { opacity: 1, scale: 1 } : {}}
-                transition={{ duration: 0.5, delay: 0.2 + (index * 0.1) }}
-                whileHover={{ y: -5, boxShadow: '0 10px 25px rgba(212, 175, 55, 0.15)' }}
-              >
+            {partners.map((partner, index) => {
+              const cardProps = {
+                key: partner.name,
+                className: "partner-card",
+                initial: { opacity: 0, scale: 0.8 },
+                animate: inView ? { opacity: 1, scale: 1 } : {},
+                transition: { duration: 0.5, delay: 0.2 + (index * 0.1) },
+                whileHover: { y: -5, boxShadow: '0 10px 25px rgba(212, 175, 55, 0.15)' }
+              };
+
+              const CardContent = (
                 <img 
                   src={partner.logo} 
                   alt={partner.name} 
                   style={{ height: partner.height, objectFit: 'contain' }} 
                 />
-              </motion.div>
-            ))}
+              );
+
+              if (partner.link) {
+                return (
+                  <motion.a 
+                    {...cardProps}
+                    href={partner.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  >
+                    {CardContent}
+                  </motion.a>
+                );
+              }
+
+              return (
+                <motion.div {...cardProps}>
+                  {CardContent}
+                </motion.div>
+              );
+            })}
           </div>
         </motion.div>
       </div>
