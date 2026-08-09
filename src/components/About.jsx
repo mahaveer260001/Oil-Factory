@@ -92,10 +92,10 @@ const About = () => {
             {/* FSSAI License Badge Section */}
             <div className="about-fssai-license">
               <div className="fssai-badge-container" style={{ background: '#fff', border: 'none', padding: '6px', width: '56px', height: '56px' }}>
-                <img 
-                  src="https://upload.wikimedia.org/wikipedia/commons/e/e0/FSSAI_Logo.png" 
-                  alt="FSSAI Logo" 
-                  style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
+                <img
+                  src="./images/fssai-logo.png"
+                  alt="FSSAI Logo"
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                 />
               </div>
               <div className="fssai-text-details">
