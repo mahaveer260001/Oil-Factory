@@ -162,31 +162,62 @@ class QRBatchService:
     @staticmethod
     def delete_batch(batch_id: int) -> tuple:
         """
-        Delete batch and associated QR codes
+        Force-delete a batch and all associated records regardless of scan status.
+        Handles the full FK chain: WinnerSelection → Submission → DuplicateSubmissionCheck → QRCode → QRBatch.
         
         Returns:
             Tuple (success, error_message)
         """
         try:
+            from app.models import Submission, WinnerSelection, DuplicateSubmissionCheck
+
             batch = QRBatch.query.get(batch_id)
             if not batch:
                 return False, "Batch not found"
-            
-            # Check if any codes are used
-            used_count = QRCode.query.filter_by(batch_id=batch_id, is_used=True).count()
-            if used_count > 0:
-                return False, f"Cannot delete batch with {used_count} used codes"
-            
-            # Delete QR codes
-            QRCode.query.filter_by(batch_id=batch_id).delete()
-            
-            # Delete batch
+
+            # 1. Get all QR code IDs in this batch
+            qr_ids = [q.id for q in QRCode.query.filter_by(batch_id=batch_id).with_entities(QRCode.id).all()]
+
+            if qr_ids:
+                # 2. Get all submission IDs linked to those QR codes
+                submission_ids = [
+                    s.id for s in Submission.query
+                    .filter(Submission.qr_code_id.in_(qr_ids))
+                    .with_entities(Submission.id).all()
+                ]
+
+                if submission_ids:
+                    # 3. Delete WinnerSelections referencing those submissions
+                    WinnerSelection.query.filter(
+                        WinnerSelection.submission_id.in_(submission_ids)
+                    ).delete(synchronize_session=False)
+
+                # 4. Break the circular FK: QRCode.used_by_submission_id → submissions
+                QRCode.query.filter(QRCode.id.in_(qr_ids)).update(
+                    {QRCode.used_by_submission_id: None}, synchronize_session=False
+                )
+
+                if submission_ids:
+                    # 5. Delete Submissions
+                    Submission.query.filter(
+                        Submission.qr_code_id.in_(qr_ids)
+                    ).delete(synchronize_session=False)
+
+                # 6. Delete DuplicateSubmissionChecks linked to these QRs
+                DuplicateSubmissionCheck.query.filter(
+                    DuplicateSubmissionCheck.qr_code_id.in_(qr_ids)
+                ).delete(synchronize_session=False)
+
+                # 7. Delete the QR codes
+                QRCode.query.filter_by(batch_id=batch_id).delete(synchronize_session=False)
+
+            # 8. Delete batch
             db.session.delete(batch)
             db.session.commit()
-            
-            logger.info(f"Deleted batch {batch_id}")
+
+            logger.info(f"Force-deleted batch {batch_id} and all associated records")
             return True, None
-            
+
         except Exception as e:
             db.session.rollback()
             logger.error(f"Error deleting batch: {str(e)}")

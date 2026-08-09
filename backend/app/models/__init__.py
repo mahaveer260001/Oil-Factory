@@ -226,3 +226,36 @@ class ContactMessage(db.Model):
     is_read = db.Column(db.Boolean, default=False, index=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, index=True)
 
+
+class PopupAnnouncement(db.Model):
+    """Website popup announcement model"""
+    __tablename__ = "popup_announcements"
+    
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.Text, nullable=True)
+    image_url = db.Column(db.String(500), nullable=True)
+    button_text = db.Column(db.String(100), nullable=True, default="Learn More")
+    button_link = db.Column(db.String(255), nullable=True, default="")
+    is_active = db.Column(db.Boolean, default=True, index=True)
+    display_delay = db.Column(db.Integer, default=1)  # Delay in seconds
+    show_once_per_session = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, index=True)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "description": self.description,
+            "image_url": self.image_url,
+            "button_text": self.button_text,
+            "button_link": self.button_link,
+            "is_active": self.is_active,
+            "display_delay": self.display_delay,
+            "show_once_per_session": self.show_once_per_session,
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+            "updated_at": self.updated_at.isoformat() if self.updated_at else None,
+        }
+
+

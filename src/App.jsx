@@ -16,6 +16,7 @@ import ContactWidget from './components/ContactWidget'
 import PackSizesMarquee from './components/PackSizesMarquee'
 import ContactPage from './components/ContactPage'
 import CompanyPage from './components/CompanyPage'
+import AnnouncementPopup from './components/AnnouncementPopup'
 import './App.css'
 
 
@@ -24,6 +25,13 @@ function AppInner() {
   const isClaim = location.pathname.startsWith('/r/')
   const [rewardsOpen, setRewardsOpen] = useState(false)
   const hideChrome = isClaim
+
+  // Listen for the custom 'open-scanner' event dispatched by AnnouncementPopup CTA
+  React.useEffect(() => {
+    const handler = () => setRewardsOpen(true)
+    window.addEventListener('open-scanner', handler)
+    return () => window.removeEventListener('open-scanner', handler)
+  }, [])
 
   React.useEffect(() => {
     if (location.pathname === '/') {
@@ -93,6 +101,7 @@ function AppInner() {
       </AnimatePresence>
 
       {!hideChrome && <ContactWidget />}
+      {!hideChrome && <AnnouncementPopup />}
     </>
   )
 }

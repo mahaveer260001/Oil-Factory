@@ -99,8 +99,8 @@ const About = () => {
                 />
               </div>
               <div className="fssai-text-details">
-                <span className="fssai-label">REGISTRATION AUTHORITY LICENSE</span>
-                <span className="fssai-license-num">No. 10721031000954</span>
+                <span className="fssai-label">FSSAI CERTIFIED</span>
+                <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 500 }}>Food Safety &amp; Standards Authority of India</span>
               </div>
             </div>
           </motion.div>

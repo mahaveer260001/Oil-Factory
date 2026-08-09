@@ -3,14 +3,14 @@ Flask Application Factory
 Initializes and configures the Flask application
 """
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, send_from_directory
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from app.config import get_config
 from app.models import db
-from app.routes import auth_bp, qr_bp, admin_bp, scheme_bp, winner_bp, contact_bp
+from app.routes import auth_bp, qr_bp, admin_bp, scheme_bp, winner_bp, contact_bp, popup_bp
 import logging
 import os
 
@@ -52,6 +52,15 @@ def create_app(config_name=None):
     app.register_blueprint(scheme_bp)
     app.register_blueprint(winner_bp)
     app.register_blueprint(contact_bp)
+    app.register_blueprint(popup_bp)
+    
+    # Uploads static file handler
+    @app.route('/uploads/<path:filename>', methods=['GET'])
+    def uploaded_file(filename):
+        root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        upload_folder = os.path.join(root_dir, 'uploads')
+        return send_from_directory(upload_folder, filename)
+
     
     # Error handlers
     @app.errorhandler(404)

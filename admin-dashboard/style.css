@@ -510,7 +510,9 @@ body {
 /* ── Modals ────────────────────────────────── */
 .modal-overlay {
   position: fixed; inset: 0;
-  background: rgba(0,0,0,.35);
+  background: rgba(0,0,0,.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   z-index: 400;
 }
 .modal {
@@ -520,13 +522,15 @@ body {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 24px;
-  width: min(480px, 92vw);
-  box-shadow: 0 8px 32px rgba(0,0,0,.12);
+  padding: 20px 24px;
+  width: min(520px, 92vw);
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  box-shadow: 0 16px 48px rgba(0,0,0,.2);
 }
 .modal-header {
   display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--border);
+  margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border);
 }
 .modal-header h3 { font-size: 16px; font-weight: 600; color: var(--text); }
 .modal-header > button {
@@ -534,7 +538,19 @@ body {
   font-size: 18px; padding: 2px 6px; border-radius: 4px; line-height: 1;
 }
 .modal-header > button:hover { background: var(--surface2); color: var(--text2); }
-.modal-footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); }
+.modal-footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); }
+
+@media (max-width: 640px) {
+  .modal {
+    padding: 16px;
+    width: 95vw;
+    max-height: calc(100vh - 20px);
+  }
+  .form-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
 
 /* ── Toast ─────────────────────────────────── */
 .toast {

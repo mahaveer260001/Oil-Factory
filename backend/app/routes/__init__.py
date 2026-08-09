@@ -5,6 +5,7 @@ from .admin_routes import admin_bp
 from .scheme_routes import scheme_bp
 from .winner_routes import winner_bp
 from .contact_routes import contact_bp
+from .popup_routes import popup_bp
 
 __all__ = [
     "auth_bp",
@@ -13,4 +14,6 @@ __all__ = [
     "scheme_bp",
     "winner_bp",
     "contact_bp",
+    "popup_bp",
 ]
+
