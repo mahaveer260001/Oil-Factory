@@ -464,8 +464,19 @@
       <textarea id="popup-desc" placeholder="Scan your QR code to win exciting rewards…" rows="3"></textarea>
     </div>
     <div class="form-group">
-      <label>Banner Image URL <span style="font-weight:400;color:var(--text3)">(optional — paste a direct image link)</span></label>
-      <input id="popup-image" placeholder="https://example.com/banner.png" />
+      <label>Banner Image <span style="font-weight:400;color:var(--text3)">(Upload from storage or enter URL)</span></label>
+      <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 8px; flex-wrap: wrap;">
+        <input type="file" id="popup-file-input" accept="image/*" style="display: none;" onchange="handlePopupFileSelect(event)" />
+        <button type="button" class="btn-secondary" onclick="document.getElementById('popup-file-input').click()" style="display:flex;align-items:center;gap:6px">
+          📁 Choose Image from Device
+        </button>
+        <span id="popup-file-status" style="font-size:12px;color:var(--text2)">No file chosen</span>
+      </div>
+      <input id="popup-image" placeholder="Or enter direct Image URL (e.g. https://... or /uploads/...)" oninput="updatePopupPreview()" />
+      <div id="popup-image-preview-container" class="hidden" style="margin-top: 10px; position: relative; max-width: 220px;">
+        <img id="popup-image-preview" src="" alt="Banner Preview" style="width: 100%; border-radius: 8px; border: 1px solid var(--border); max-height: 120px; object-fit: cover;" />
+        <button type="button" onclick="clearPopupImage()" style="position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center;" title="Remove image">✕</button>
+      </div>
     </div>
     <div class="form-row">
       <div class="form-group">

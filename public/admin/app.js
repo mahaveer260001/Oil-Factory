@@ -916,11 +916,98 @@ function resetPopupForm() {
   document.getElementById('popup-title').value = '';
   document.getElementById('popup-desc').value = '';
   document.getElementById('popup-image').value = '';
+  const fileInput = document.getElementById('popup-file-input');
+  if (fileInput) fileInput.value = '';
+  const fileStatus = document.getElementById('popup-file-status');
+  if (fileStatus) fileStatus.textContent = 'No file chosen';
+  updatePopupPreview();
   document.getElementById('popup-btn-text').value = 'Scan Now & Win!';
   document.getElementById('popup-delay').value = '2';
   document.getElementById('popup-active').checked = true;
   document.getElementById('popup-once').checked = true;
   document.getElementById('popup-error').classList.add('hidden');
+}
+
+async function uploadPopupImage(file) {
+  const token = getToken();
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const res = await fetch(`${API}/api/admin/popups/upload-image`, {
+    method: 'POST',
+    headers: {
+      ...(token ? { Authorization: `Bearer ${token}` } : {})
+    },
+    body: formData
+  });
+
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(json.error || json.message || `Upload failed (HTTP ${res.status})`);
+  return json.data.image_url;
+}
+
+async function handlePopupFileSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const statusEl = document.getElementById('popup-file-status');
+  const errEl = document.getElementById('popup-error');
+  errEl.classList.add('hidden');
+
+  statusEl.textContent = `Uploading ${file.name}…`;
+
+  try {
+    let imageUrl = '';
+    if (DEMO_MODE) {
+      imageUrl = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (evt) => resolve(evt.target.result);
+        reader.onerror = () => reject(new Error('Failed to read file'));
+        reader.readAsDataURL(file);
+      });
+      statusEl.textContent = `Loaded: ${file.name}`;
+    } else {
+      imageUrl = await uploadPopupImage(file);
+      statusEl.textContent = `Uploaded: ${file.name}`;
+    }
+
+    document.getElementById('popup-image').value = imageUrl;
+    updatePopupPreview();
+    showToast('Image uploaded successfully!', 'success');
+  } catch (err) {
+    statusEl.textContent = 'Upload failed';
+    errEl.textContent = err.message || 'Image upload failed';
+    errEl.classList.remove('hidden');
+  }
+}
+
+function updatePopupPreview() {
+  const urlInput = document.getElementById('popup-image');
+  const container = document.getElementById('popup-image-preview-container');
+  const img = document.getElementById('popup-image-preview');
+
+  if (!urlInput || !container || !img) return;
+
+  let url = urlInput.value.trim();
+  if (url) {
+    if (!url.startsWith('http') && !url.startsWith('data:')) {
+      url = `${API}${url}`;
+    }
+    img.src = url;
+    container.classList.remove('hidden');
+  } else {
+    img.src = '';
+    container.classList.add('hidden');
+  }
+}
+
+function clearPopupImage() {
+  document.getElementById('popup-image').value = '';
+  const fileInput = document.getElementById('popup-file-input');
+  if (fileInput) fileInput.value = '';
+  const fileStatus = document.getElementById('popup-file-status');
+  if (fileStatus) fileStatus.textContent = 'No file chosen';
+  updatePopupPreview();
 }
 
 async function openEditPopup(id) {
@@ -935,6 +1022,7 @@ async function openEditPopup(id) {
     document.getElementById('popup-title').value = popup.title || '';
     document.getElementById('popup-desc').value = popup.description || '';
     document.getElementById('popup-image').value = popup.image_url || '';
+    updatePopupPreview();
     document.getElementById('popup-btn-text').value = popup.button_text || '';
     document.getElementById('popup-delay').value = popup.display_delay ?? 2;
     document.getElementById('popup-active').checked = !!popup.is_active;
