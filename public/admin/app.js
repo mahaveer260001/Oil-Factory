@@ -156,7 +156,7 @@ function navigate(page, el) {
   if (target) { target.classList.remove('hidden'); target.classList.add('active'); }
   if (el) el.classList.add('active');
   document.getElementById('page-title').textContent = el ? el.querySelector('.nav-label').textContent : page;
-  const loaders = { dashboard: loadDashboard, schemes: loadSchemes, batches: loadBatches, submissions: loadSubmissions, winners: loadWinners, profile: loadProfile, qrgen: loadQRGen, contacts: loadContacts };
+  const loaders = { dashboard: loadDashboard, schemes: loadSchemes, batches: loadBatches, submissions: loadSubmissions, winners: loadWinners, profile: loadProfile, qrgen: loadQRGen, contacts: loadContacts, popups: loadPopups };
   if (loaders[page]) loaders[page]();
   // Auto-refresh submissions when on that page
   if (page === 'submissions') startSubmissionsAutoRefresh();
@@ -869,5 +869,123 @@ async function markContactRead(id) {
     await apiFetch(`/api/admin/contacts/${id}/read`, { method: 'PUT' });
     showToast('Marked as read', 'success');
     loadContacts();
+  } catch (err) { showToast(err.message, 'error'); }
+}
+
+// ── Popup Announcements ─────────────────────────────────────────
+async function loadPopups() {
+  const tbody = document.getElementById('popups-tbody');
+  if (!tbody) return;
+  try {
+    if (DEMO_MODE) {
+      tbody.innerHTML = `<tr><td colspan="8" class="loading-row">Demo mode — connect backend to manage announcements</td></tr>`;
+      return;
+    }
+    const res = await apiFetch('/api/admin/popups');
+    const popups = res.data || [];
+    if (!popups.length) {
+      tbody.innerHTML = `<tr><td colspan="8" class="loading-row">No announcements yet — create one!</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = popups.map(p => `
+      <tr>
+        <td>${p.id}</td>
+        <td><strong>${p.title}</strong>${p.description ? `<br><small style="color:var(--text3);">${p.description.substring(0,60)}${p.description.length>60?'…':''}</small>` : ''}</td>
+        <td>${p.button_text || '—'}</td>
+        <td>${p.display_delay ?? 1}s</td>
+        <td>${p.show_once_per_session ? '<span class="status-pill pill-active">Yes</span>' : '<span class="status-pill pill-inactive">No</span>'}</td>
+        <td>
+          <span class="status-pill ${p.is_active ? 'pill-active' : 'pill-inactive'}">${p.is_active ? '🟢 Active' : '⚫ Inactive'}</span>
+        </td>
+        <td>${fmtDate(p.created_at)}</td>
+        <td style="display:flex;gap:6px;flex-wrap:wrap">
+          <button class="btn-sm btn-secondary" onclick="openEditPopup(${p.id})">✏️ Edit</button>
+          <button class="btn-sm ${p.is_active ? 'btn-outline' : 'btn-primary'}" onclick="togglePopupActive(${p.id}, ${p.is_active})">${p.is_active ? 'Deactivate' : 'Activate'}</button>
+          <button class="btn-sm btn-danger" onclick="deletePopup(${p.id})">Delete</button>
+        </td>
+      </tr>`)  .join('');
+  } catch (err) {
+    tbody.innerHTML = `<tr><td colspan="8" class="loading-row">Failed to load announcements</td></tr>`;
+  }
+}
+
+function resetPopupForm() {
+  document.getElementById('popup-edit-id').value = '';
+  document.getElementById('popup-modal-title').textContent = 'New Popup Announcement';
+  document.getElementById('popup-save-btn').textContent = 'Create Announcement';
+  document.getElementById('popup-title').value = '';
+  document.getElementById('popup-desc').value = '';
+  document.getElementById('popup-image').value = '';
+  document.getElementById('popup-btn-text').value = 'Scan Now & Win!';
+  document.getElementById('popup-delay').value = '2';
+  document.getElementById('popup-active').checked = true;
+  document.getElementById('popup-once').checked = true;
+  document.getElementById('popup-error').classList.add('hidden');
+}
+
+async function openEditPopup(id) {
+  try {
+    const res = await apiFetch('/api/admin/popups');
+    const popup = (res.data || []).find(p => p.id === id);
+    if (!popup) { showToast('Popup not found', 'error'); return; }
+    resetPopupForm();
+    document.getElementById('popup-edit-id').value = popup.id;
+    document.getElementById('popup-modal-title').textContent = 'Edit Popup Announcement';
+    document.getElementById('popup-save-btn').textContent = 'Save Changes';
+    document.getElementById('popup-title').value = popup.title || '';
+    document.getElementById('popup-desc').value = popup.description || '';
+    document.getElementById('popup-image').value = popup.image_url || '';
+    document.getElementById('popup-btn-text').value = popup.button_text || '';
+    document.getElementById('popup-delay').value = popup.display_delay ?? 2;
+    document.getElementById('popup-active').checked = !!popup.is_active;
+    document.getElementById('popup-once').checked = !!popup.show_once_per_session;
+    openModal('create-popup-modal');
+  } catch (err) { showToast('Failed to load popup data', 'error'); }
+}
+
+async function handleSavePopup(e) {
+  e.preventDefault();
+  const errEl = document.getElementById('popup-error');
+  errEl.classList.add('hidden');
+  const editId = document.getElementById('popup-edit-id').value;
+  const payload = {
+    title: document.getElementById('popup-title').value.trim(),
+    description: document.getElementById('popup-desc').value.trim(),
+    image_url: document.getElementById('popup-image').value.trim(),
+    button_text: document.getElementById('popup-btn-text').value.trim(),
+    display_delay: parseInt(document.getElementById('popup-delay').value) || 2,
+    is_active: document.getElementById('popup-active').checked,
+    show_once_per_session: document.getElementById('popup-once').checked,
+  };
+  try {
+    if (editId) {
+      await apiFetch(`/api/admin/popups/${editId}`, { method: 'PUT', body: JSON.stringify(payload) });
+      showToast('Announcement updated!', 'success');
+    } else {
+      await apiFetch('/api/admin/popups', { method: 'POST', body: JSON.stringify(payload) });
+      showToast('Announcement created!', 'success');
+    }
+    closeAllModals();
+    loadPopups();
+  } catch (err) {
+    errEl.textContent = err.message || 'Failed to save announcement';
+    errEl.classList.remove('hidden');
+  }
+}
+
+async function togglePopupActive(id, currentlyActive) {
+  try {
+    await apiFetch(`/api/admin/popups/${id}`, { method: 'PUT', body: JSON.stringify({ is_active: !currentlyActive }) });
+    showToast(`Announcement ${currentlyActive ? 'deactivated' : 'activated'}!`, 'success');
+    loadPopups();
+  } catch (err) { showToast(err.message, 'error'); }
+}
+
+async function deletePopup(id) {
+  if (!confirm('Delete this announcement permanently?')) return;
+  try {
+    await apiFetch(`/api/admin/popups/${id}`, { method: 'DELETE' });
+    showToast('Announcement deleted', 'success');
+    loadPopups();
   } catch (err) { showToast(err.message, 'error'); }
 }
