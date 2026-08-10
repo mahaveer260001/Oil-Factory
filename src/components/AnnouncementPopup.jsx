@@ -7,6 +7,7 @@ const API = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 export default function AnnouncementPopup() {
   const [popup, setPopup] = useState(null)
   const [isVisible, setIsVisible] = useState(false)
+  const [imageError, setImageError] = useState(false)
 
   useEffect(() => {
     let isMounted = true
@@ -66,10 +67,13 @@ export default function AnnouncementPopup() {
 
   if (!popup || !isVisible) return null
 
-  const imageUrl = popup.image_url
-    ? popup.image_url.startsWith('http') || popup.image_url.startsWith('data:')
-      ? popup.image_url
-      : `${API}${popup.image_url}`
+  const rawUrl = (popup.image_url || '').trim()
+  const imageUrl = rawUrl
+    ? rawUrl.startsWith('http') || rawUrl.startsWith('data://')
+      ? rawUrl
+      : rawUrl.startsWith('//')
+        ? 'https:' + rawUrl
+        : `${API}${rawUrl.startsWith('/') ? rawUrl : '/' + rawUrl}`
     : null
 
   return (
@@ -95,9 +99,14 @@ export default function AnnouncementPopup() {
           </div>
 
           {/* Image Banner */}
-          {imageUrl && (
+          {imageUrl && !imageError && (
             <div className="popup-image-container">
-              <img src={imageUrl} alt={popup.title} className="popup-banner-img" />
+              <img
+                src={imageUrl}
+                alt={popup.title}
+                className="popup-banner-img"
+                onError={() => setImageError(true)}
+              />
             </div>
           )}
 
