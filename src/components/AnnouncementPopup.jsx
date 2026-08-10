@@ -69,7 +69,7 @@ export default function AnnouncementPopup() {
 
   const rawUrl = (popup.image_url || '').trim()
   const imageUrl = rawUrl
-    ? rawUrl.startsWith('http') || rawUrl.startsWith('data://')
+    ? rawUrl.startsWith('http') || rawUrl.startsWith('data:')
       ? rawUrl
       : rawUrl.startsWith('//')
         ? 'https:' + rawUrl
