@@ -10,6 +10,7 @@ export default function AnnouncementPopup() {
 
   useEffect(() => {
     let isMounted = true
+    let timeoutId
 
     async function fetchActivePopup() {
       try {
@@ -28,7 +29,14 @@ export default function AnnouncementPopup() {
           }
 
           setPopup(popupData)
-          setIsVisible(true)
+          const delayMs = (popupData.display_delay || 0) * 1000
+          if (delayMs > 0) {
+            timeoutId = setTimeout(() => {
+              if (isMounted) setIsVisible(true)
+            }, delayMs)
+          } else {
+            setIsVisible(true)
+          }
         }
       } catch (err) {
         console.log('No active website popup found or backend offline:', err)
@@ -39,6 +47,7 @@ export default function AnnouncementPopup() {
 
     return () => {
       isMounted = false
+      if (timeoutId) clearTimeout(timeoutId)
     }
   }, [])
 
