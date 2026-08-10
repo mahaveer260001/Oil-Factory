@@ -196,7 +196,12 @@ def delete_popup(popup_id):
 @popup_bp.route("/admin/popups/upload-image", methods=["POST"])
 @AdminAuthDecorator.admin_required
 def upload_popup_image():
-    """Upload image for popup announcement"""
+    """Upload image for popup announcement.
+    
+    Converts image to a compressed base64 data URL and stores it directly
+    in the database — avoids any filesystem / ephemeral storage issues on
+    cloud platforms such as Render.
+    """
     try:
         if "file" not in request.files:
             return format_response(error="No file provided", status_code=400)
@@ -206,28 +211,45 @@ def upload_popup_image():
             return format_response(error="No file selected", status_code=400)
 
         if not allowed_file(file.filename):
-            return format_response(error="Invalid file type. Allowed: PNG, JPG, GIF, WEBP, SVG", status_code=400)
+            return format_response(
+                error="Invalid file type. Allowed: PNG, JPG, GIF, WEBP, SVG",
+                status_code=400
+            )
 
-        # Build uploads directory path
-        root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        upload_dir = os.path.join(root_dir, "backend", "uploads", "popups")
-        os.makedirs(upload_dir, exist_ok=True)
+        from PIL import Image
+        import io
+        import base64
 
-        filename = secure_filename(file.filename)
-        ext = filename.rsplit(".", 1)[1].lower() if "." in filename else "png"
-        unique_filename = f"popup_{uuid.uuid4().hex[:10]}.{ext}"
-        filepath = os.path.join(upload_dir, unique_filename)
+        img = Image.open(file.stream)
 
-        file.save(filepath)
+        # Convert palette / RGBA to RGB for JPEG compatibility
+        if img.mode in ("RGBA", "P", "LA"):
+            background = Image.new("RGB", img.size, (255, 255, 255))
+            if img.mode == "RGBA":
+                background.paste(img, mask=img.split()[3])
+            else:
+                background.paste(img)
+            img = background
+        elif img.mode != "RGB":
+            img = img.convert("RGB")
 
-        # Image URL to serve via Flask endpoint /uploads/popups/<filename>
-        image_url = f"/uploads/popups/{unique_filename}"
+        # Resize: keep aspect ratio, max 900×500 px
+        img.thumbnail((900, 500), Image.LANCZOS)
+
+        # Encode to JPEG at 80 % quality → keeps data URL compact
+        buf = io.BytesIO()
+        img.save(buf, format="JPEG", quality=80, optimize=True)
+        buf.seek(0)
+
+        b64 = base64.b64encode(buf.read()).decode("utf-8")
+        image_url = f"data:image/jpeg;base64,{b64}"
 
         return format_response(
             data={"image_url": image_url},
-            message="Image uploaded successfully",
+            message="Image uploaded and encoded successfully",
             status_code=200
         )
+
     except Exception as e:
         logger.error(f"Error uploading popup image: {str(e)}")
         return format_response(error="Failed to upload image", status_code=500)
