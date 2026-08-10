@@ -105,8 +105,26 @@ def create_app(config_name=None):
     
     # Create database tables
     with app.app_context():
+        from sqlalchemy import text as sa_text
         db.create_all()
         logger.info("Database tables created/verified")
+
+        # Auto-migration: widen image_url to TEXT so base64 images can be stored.
+        # Only runs on PostgreSQL; SQLite ignores this gracefully.
+        db_uri = app.config.get("SQLALCHEMY_DATABASE_URI", "")
+        if "postgresql" in db_uri or "postgres" in db_uri:
+            try:
+                db.session.execute(
+                    sa_text(
+                        "ALTER TABLE popup_announcements "
+                        "ALTER COLUMN image_url TYPE TEXT"
+                    )
+                )
+                db.session.commit()
+                logger.info("Migration applied: image_url → TEXT")
+            except Exception as mig_err:
+                db.session.rollback()
+                logger.info(f"Migration skipped (already applied or not needed): {mig_err}")
     
     logger.info("Flask application initialized")
     
