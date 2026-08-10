@@ -234,7 +234,7 @@ class PopupAnnouncement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=False)
     description = db.Column(db.Text, nullable=True)
-    image_url = db.Column(db.String(500), nullable=True)
+    image_url = db.Column(db.Text, nullable=True)
     button_text = db.Column(db.String(100), nullable=True, default="Learn More")
     button_link = db.Column(db.String(255), nullable=True, default="")
     is_active = db.Column(db.Boolean, default=True, index=True)

@@ -233,12 +233,12 @@ def upload_popup_image():
         elif img.mode != "RGB":
             img = img.convert("RGB")
 
-        # Resize: keep aspect ratio, max 900×500 px
-        img.thumbnail((900, 500), Image.LANCZOS)
+        # Resize: keep aspect ratio, max 600×340 px  (keeps base64 ≈ 60-120 KB)
+        img.thumbnail((600, 340), Image.LANCZOS)
 
-        # Encode to JPEG at 80 % quality → keeps data URL compact
+        # Encode to JPEG at 65 % quality → compact base64, still visually fine
         buf = io.BytesIO()
-        img.save(buf, format="JPEG", quality=80, optimize=True)
+        img.save(buf, format="JPEG", quality=65, optimize=True)
         buf.seek(0)
 
         b64 = base64.b64encode(buf.read()).decode("utf-8")
