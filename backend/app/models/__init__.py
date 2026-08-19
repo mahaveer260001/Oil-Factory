@@ -144,7 +144,6 @@ class Submission(db.Model):
     __table_args__ = (
         db.Index("idx_submission_phone_city_date", "phone", "city", "submitted_at"),
         db.Index("idx_submission_qr_code", "qr_code_id"),
-        db.Index("idx_submission_is_winner", "is_winner"),
         db.UniqueConstraint("qr_code_id", name="uq_submission_qr_code"),  # One submission per QR
     )
 
