@@ -465,7 +465,11 @@ async function exportBatch(id, totalCodes = 0) {
 }
 
 async function deleteBatch(id) {
-  if (!confirm('Delete this batch? This cannot be undone.')) return;
+  const conf = prompt('Type DELETE to confirm deletion of this batch (This will also delete all associated scanned data):');
+  if (conf !== 'DELETE') {
+    if (conf !== null) showToast('Deletion cancelled. You must type DELETE to confirm.', 'info');
+    return;
+  }
   try {
     await apiFetch(`/api/admin/batch/${id}`, { method: 'DELETE' });
     showToast('Batch deleted', 'success');
