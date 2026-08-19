@@ -308,6 +308,7 @@ async function loadSchemes() {
         <td><span class="status-pill ${s.is_active ? 'pill-active' : 'pill-inactive'}">${s.is_active ? '● Active' : '● Inactive'}</span></td>
         <td>
           <div style="display:flex;gap:6px">
+            <button class="btn-sm btn-secondary" onclick="openEditSchemeModal(${s.id})">Edit</button>
             <button class="btn-sm btn-secondary" onclick="toggleScheme(${s.id},${s.is_active})">${s.is_active ? 'Deactivate' : 'Activate'}</button>
           </div>
         </td>
@@ -336,13 +337,62 @@ async function toggleScheme(id, isActive) {
   } catch (err) { showToast(err.message, 'error'); }
 }
 
-async function handleCreateScheme(e) {
+async function openEditSchemeModal(id) {
+  try {
+    const res = await apiFetch(`/api/schemes/${id}`);
+    const s = res.data;
+    document.getElementById('s-id').value = s.id;
+    document.getElementById('s-title').value = s.title || '';
+    document.getElementById('s-desc').value = s.description || '';
+    document.getElementById('s-reward-text').value = s.reward_text || '';
+    document.getElementById('s-reward-details').value = s.reward_details || '';
+    
+    // Format dates for datetime-local input
+    const toLocalString = (dateStr) => {
+      if (!dateStr) return '';
+      const d = new Date(dateStr);
+      return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+    };
+    
+    document.getElementById('s-start').value = toLocalString(s.start_date);
+    document.getElementById('s-end').value = toLocalString(s.end_date);
+    
+    document.getElementById('scheme-modal-title').innerText = 'Edit Campaign';
+    document.getElementById('scheme-submit-btn').innerText = 'Update Campaign';
+    
+    openModal('create-scheme-modal');
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+function openCreateSchemeModal() {
+  document.getElementById('s-id').value = '';
+  document.getElementById('s-title').value = '';
+  document.getElementById('s-desc').value = '';
+  document.getElementById('s-reward-text').value = '';
+  document.getElementById('s-reward-details').value = '';
+  document.getElementById('s-start').value = '';
+  document.getElementById('s-end').value = '';
+  
+  document.getElementById('scheme-modal-title').innerText = 'Create New Campaign';
+  document.getElementById('scheme-submit-btn').innerText = 'Create Campaign';
+  openModal('create-scheme-modal');
+}
+
+async function handleSaveScheme(e) {
   e.preventDefault();
   const errEl = document.getElementById('scheme-error');
   errEl.classList.add('hidden');
+  
+  const sId = document.getElementById('s-id').value;
+  const isEditing = !!sId;
+  const method = isEditing ? 'PUT' : 'POST';
+  const url = isEditing ? `/api/schemes/${sId}` : '/api/schemes';
+
   try {
-    await apiFetch('/api/schemes', {
-      method: 'POST',
+    await apiFetch(url, {
+      method: method,
       body: JSON.stringify({
         title: document.getElementById('s-title').value,
         description: document.getElementById('s-desc').value,
@@ -352,7 +402,7 @@ async function handleCreateScheme(e) {
         end_date: document.getElementById('s-end').value,
       })
     });
-    showToast('Campaign created!', 'success');
+    showToast(`Campaign ${isEditing ? 'updated' : 'created'}!`, 'success');
     closeAllModals(); loadSchemes();
   } catch (err) { errEl.textContent = err.message; errEl.classList.remove('hidden'); }
 }

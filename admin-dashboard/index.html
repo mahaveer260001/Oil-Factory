@@ -160,7 +160,7 @@
       <section id="page-schemes" class="page hidden">
         <div class="page-header">
           <h2>Campaign Schemes</h2>
-          <button class="btn-primary" onclick="openModal('create-scheme-modal')">+ New Campaign</button>
+          <button class="btn-primary" onclick="openCreateSchemeModal()">+ New Campaign</button>
         </div>
         <div class="table-wrap">
           <table class="data-table" id="schemes-table">
@@ -382,10 +382,11 @@
 <!-- Create Scheme Modal -->
 <div class="modal hidden" id="create-scheme-modal">
   <div class="modal-header">
-    <h3>Create New Campaign</h3>
+    <h3 id="scheme-modal-title">Create New Campaign</h3>
     <button onclick="closeAllModals()">✕</button>
   </div>
-  <form onsubmit="handleCreateScheme(event)">
+  <form onsubmit="handleSaveScheme(event)">
+    <input type="hidden" id="s-id" value="" />
     <div class="form-group"><label>Campaign Title *</label><input id="s-title" placeholder="Spring Campaign 2024" required /></div>
     <div class="form-group"><label>Description</label><textarea id="s-desc" placeholder="Campaign description…" rows="2"></textarea></div>
     <div class="form-group"><label>Reward Text *</label><input id="s-reward-text" placeholder="Win a free bottle!" required /></div>
@@ -397,7 +398,7 @@
     <div id="scheme-error" class="alert-error hidden"></div>
     <div class="modal-footer">
       <button type="button" class="btn-outline" onclick="closeAllModals()">Cancel</button>
-      <button type="submit" class="btn-primary">Create Campaign</button>
+      <button type="submit" class="btn-primary" id="scheme-submit-btn">Create Campaign</button>
     </div>
   </form>
 </div>
