@@ -4,6 +4,9 @@ import './AnnouncementPopup.css'
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
+// Track dismissed popups in memory so they reset on F5 reload but persist during SPA navigation
+const dismissedPopups = new Set()
+
 export default function AnnouncementPopup() {
   const [popup, setPopup] = useState(null)
   const [isVisible, setIsVisible] = useState(false)
@@ -21,12 +24,9 @@ export default function AnnouncementPopup() {
         const popupData = json.data
 
         if (popupData && popupData.is_active && isMounted) {
-          // Check session storage if show_once_per_session is enabled
-          if (popupData.show_once_per_session) {
-            const dismissedKey = `popup_dismissed_${popupData.id}`
-            if (sessionStorage.getItem(dismissedKey)) {
-              return
-            }
+          // Check memory set if show_once_per_session is enabled
+          if (popupData.show_once_per_session && dismissedPopups.has(popupData.id)) {
+            return
           }
 
           setPopup(popupData)
@@ -51,7 +51,7 @@ export default function AnnouncementPopup() {
   const handleClose = () => {
     setIsVisible(false)
     if (popup && popup.show_once_per_session) {
-      sessionStorage.setItem(`popup_dismissed_${popup.id}`, 'true')
+      dismissedPopups.add(popup.id)
     }
   }
 
