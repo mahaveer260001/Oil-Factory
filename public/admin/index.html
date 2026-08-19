@@ -377,114 +377,111 @@
 
       <!-- USER MANUAL PAGE -->
       <section id="page-manual" class="page hidden" style="max-width: 900px; margin: 0 auto;">
-        <div class="page-header">
-          <h2>Help & User Manual</h2>
+        <div class="page-header" style="border-bottom: 1px solid var(--border); padding-bottom: 16px; margin-bottom: 24px;">
+          <h2 style="font-size: 26px; color: var(--text1); font-weight: 700; margin: 0;">Administration Manual</h2>
+          <p style="color: var(--text3); font-size: 14px; margin-top: 6px;">System documentation and operational guidelines</p>
         </div>
+        
         <div class="manual-content" style="background: var(--card-bg); padding: 32px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.05); line-height: 1.7;">
           
-          <div style="text-align: center; margin-bottom: 30px;">
-            <div style="font-size: 40px; margin-bottom: 10px;">📖</div>
-            <h3 style="color: var(--primary); font-size: 24px; margin-bottom: 8px;">Welcome to the Dashboard Guide</h3>
-            <p style="color: var(--text2); max-width: 600px; margin: 0 auto;">This visual guide will show you exactly where to click to manage your campaigns, batches, and website popups.</p>
-          </div>
-          
-          <hr style="border: none; border-top: 1px solid var(--border); margin: 30px 0;" />
-          
           <div style="display: flex; gap: 16px; margin-bottom: 40px;">
-            <div style="font-size: 32px; margin-top: -4px;">🎯</div>
+            <div style="font-size: 24px; margin-top: -2px; color: var(--primary);">01.</div>
             <div>
-              <h4 style="margin-bottom: 12px; font-size: 18px; color: var(--text1);">1. Creating & Managing Campaigns</h4>
-              <p style="margin-bottom: 16px; color: var(--text2);">A Campaign is your main marketing offer. You must create one before generating QR codes.</p>
+              <h4 style="margin-bottom: 12px; font-size: 18px; color: var(--text1); font-weight: 600;">Campaign Initialization</h4>
+              <p style="margin-bottom: 16px; color: var(--text2);">A Campaign serves as the foundational marketing entity. It must be configured prior to QR code generation.</p>
               
               <div style="background: var(--bg); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
-                <ol style="padding-left: 20px; margin: 0;">
-                  <li style="margin-bottom: 12px;">
-                    Click on <strong>Campaigns</strong> in the left sidebar menu.
-                  </li>
-                  <li style="margin-bottom: 12px;">
-                    Click the blue button at the top right: <span class="btn-primary" style="display:inline-block; padding: 4px 10px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">+ New Campaign</span>
-                  </li>
-                  <li style="margin-bottom: 12px;">
-                    Fill out the form (Title, Reward, Dates) and click <span class="btn-primary" style="display:inline-block; padding: 4px 10px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">Create Campaign</span>.
-                  </li>
-                  <li>
-                    To pause a live campaign, find it in the table and click <span class="btn-secondary" style="display:inline-block; padding: 3px 8px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">Deactivate</span>.
-                  </li>
+                <ol style="padding-left: 20px; margin: 0; color: var(--text2);">
+                  <li style="margin-bottom: 12px;">Navigate to <strong>Campaigns</strong> in the side navigation panel.</li>
+                  <li style="margin-bottom: 12px;">Click the action button: <span class="btn-primary" style="display:inline-block; padding: 4px 10px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">+ New Campaign</span></li>
+                  <li style="margin-bottom: 12px;">Define the parameters (Title, Reward, Operational Dates) and click <span class="btn-primary" style="display:inline-block; padding: 4px 10px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">Create Campaign</span>.</li>
+                  <li>To suspend an active campaign, locate it in the directory and select <span class="btn-secondary" style="display:inline-block; padding: 3px 8px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">Deactivate</span>.</li>
                 </ol>
               </div>
             </div>
           </div>
 
           <div style="display: flex; gap: 16px; margin-bottom: 40px;">
-            <div style="font-size: 32px; margin-top: -4px;">🖨️</div>
+            <div style="font-size: 24px; margin-top: -2px; color: var(--primary);">02.</div>
             <div>
-              <h4 style="margin-bottom: 12px; font-size: 18px; color: var(--text1);">2. Generating QR Codes for Printing</h4>
-              <p style="margin-bottom: 16px; color: var(--text2);">Once your campaign is ready, you need to generate a "Batch" of physical QR codes to send to the printer.</p>
+              <h4 style="margin-bottom: 12px; font-size: 18px; color: var(--text1); font-weight: 600;">QR Code Provisioning</h4>
+              <p style="margin-bottom: 16px; color: var(--text2);">Following campaign creation, cryptographic QR batches must be provisioned for physical distribution.</p>
               
               <div style="background: var(--bg); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
-                <ol style="padding-left: 20px; margin: 0;">
-                  <li style="margin-bottom: 12px;">
-                    Click on <strong>QR Batches</strong> in the left sidebar menu.
-                  </li>
-                  <li style="margin-bottom: 12px;">
-                    Click the blue button: <span class="btn-primary" style="display:inline-block; padding: 4px 10px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">+ Create Batch</span>
-                  </li>
-                  <li style="margin-bottom: 12px;">
-                    Type how many codes you need (e.g. 10000) and link it to your campaign. Click <span class="btn-primary" style="display:inline-block; padding: 4px 10px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">Generate Batch</span>.
-                  </li>
-                  <li>
-                    When it finishes, look for your batch in the table and click <span class="btn-secondary" style="display:inline-block; padding: 3px 8px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">Export</span>. This downloads a ZIP file containing PDFs of your QR codes ready for printing!
-                  </li>
+                <ol style="padding-left: 20px; margin: 0; color: var(--text2);">
+                  <li style="margin-bottom: 12px;">Navigate to <strong>QR Batches</strong> in the side navigation panel.</li>
+                  <li style="margin-bottom: 12px;">Click the action button: <span class="btn-primary" style="display:inline-block; padding: 4px 10px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">+ Create Batch</span></li>
+                  <li style="margin-bottom: 12px;">Specify allocation quantity and link to the target campaign, then execute via <span class="btn-primary" style="display:inline-block; padding: 4px 10px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">Generate Batch</span>.</li>
+                  <li>Upon completion, locate the batch record and select <span class="btn-secondary" style="display:inline-block; padding: 3px 8px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">Export</span> to retrieve the print-ready PDF assets.</li>
                 </ol>
               </div>
             </div>
           </div>
 
           <div style="display: flex; gap: 16px; margin-bottom: 40px;">
-            <div style="font-size: 32px; margin-top: -4px;">🏆</div>
+            <div style="font-size: 24px; margin-top: -2px; color: var(--primary);">03.</div>
             <div>
-              <h4 style="margin-bottom: 12px; font-size: 18px; color: var(--text1);">3. Selecting Winners</h4>
-              <p style="margin-bottom: 16px; color: var(--text2);">You can let the system pick random winners automatically.</p>
+              <h4 style="margin-bottom: 12px; font-size: 18px; color: var(--text1); font-weight: 600;">Winner Allocation</h4>
+              <p style="margin-bottom: 16px; color: var(--text2);">The system supports secure, randomized winner allocation from the pool of valid user submissions.</p>
               
               <div style="background: var(--bg); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
-                <ol style="padding-left: 20px; margin: 0;">
-                  <li style="margin-bottom: 12px;">
-                    Click on <strong>Winners</strong> in the left sidebar menu.
-                  </li>
-                  <li style="margin-bottom: 12px;">
-                    Click the green button: <span class="btn-primary" style="display:inline-block; background: #10b981; padding: 4px 10px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">🎲 Select Random Winners</span>
-                  </li>
-                  <li>
-                    Choose the Campaign, type how many winners you want, and click Select. The system will instantly pick fair winners and list their contact details!
-                  </li>
+                <ol style="padding-left: 20px; margin: 0; color: var(--text2);">
+                  <li style="margin-bottom: 12px;">Navigate to <strong>Winners</strong> in the side navigation panel.</li>
+                  <li style="margin-bottom: 12px;">Initiate allocation via: <span class="btn-primary" style="display:inline-block; background: #10b981; padding: 4px 10px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px; border-color: #10b981;">🎲 Select Random Winners</span></li>
+                  <li>Specify the target campaign and allocation quota. The system will cryptographically select valid submissions and append them to the winners registry.</li>
                 </ol>
               </div>
             </div>
           </div>
           
-          <div style="display: flex; gap: 16px;">
-            <div style="font-size: 32px; margin-top: -4px;">📢</div>
+          <div style="display: flex; gap: 16px; margin-bottom: 40px;">
+            <div style="font-size: 24px; margin-top: -2px; color: var(--primary);">04.</div>
             <div>
-              <h4 style="margin-bottom: 12px; font-size: 18px; color: var(--text1);">4. Website Announcements (Popups)</h4>
-              <p style="margin-bottom: 16px; color: var(--text2);">Put a special banner on your main website for visitors to see.</p>
+              <h4 style="margin-bottom: 12px; font-size: 18px; color: var(--text1); font-weight: 600;">Website Annoucements</h4>
+              <p style="margin-bottom: 16px; color: var(--text2);">Deploy marketing overlays (popups) directly to the primary storefront.</p>
               
               <div style="background: var(--bg); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
-                <ol style="padding-left: 20px; margin: 0;">
-                  <li style="margin-bottom: 12px;">
-                    Click on <strong>Website Popups</strong> in the left sidebar menu.
-                  </li>
-                  <li style="margin-bottom: 12px;">
-                    Click: <span class="btn-primary" style="display:inline-block; padding: 4px 10px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">+ Create Popup</span>
-                  </li>
-                  <li style="margin-bottom: 12px;">
-                    Upload a nice image banner and fill out the text details.
-                  </li>
-                  <li>
-                    Check the box for <strong>Active</strong> and hit <span class="btn-primary" style="display:inline-block; padding: 4px 10px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">Save Popup</span>. It will instantly appear on your website!
-                  </li>
+                <ol style="padding-left: 20px; margin: 0; color: var(--text2);">
+                  <li style="margin-bottom: 12px;">Navigate to <strong>Website Popups</strong> in the side navigation panel.</li>
+                  <li style="margin-bottom: 12px;">Click the action button: <span class="btn-primary" style="display:inline-block; padding: 4px 10px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">+ Create Popup</span></li>
+                  <li style="margin-bottom: 12px;">Upload the creative asset and configure the copy and routing parameters.</li>
+                  <li>Ensure the <strong>Active</strong> toggle is engaged, then execute via <span class="btn-primary" style="display:inline-block; padding: 4px 10px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">Save Popup</span>.</li>
                 </ol>
               </div>
             </div>
+          </div>
+
+          <hr style="border: none; border-top: 1px solid var(--border); margin: 40px 0 30px 0;" />
+
+          <!-- FAQ SECTION -->
+          <div style="margin-bottom: 20px;">
+            <h3 style="font-size: 20px; color: var(--text1); font-weight: 700; margin-bottom: 24px;">Frequently Asked Questions (FAQ)</h3>
+            
+            <div style="margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border);">
+              <h5 style="font-size: 15px; font-weight: 600; color: var(--text1); margin-bottom: 8px;">Q: What happens if I delete a QR Batch?</h5>
+              <p style="color: var(--text2); margin: 0;">Deleting a batch is a permanent action. It destroys the underlying QR definitions and performs a cascade deletion—meaning any user submissions or winners associated with those specific QR codes will also be irreversibly erased from the system.</p>
+            </div>
+
+            <div style="margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border);">
+              <h5 style="font-size: 15px; font-weight: 600; color: var(--text1); margin-bottom: 8px;">Q: A customer claims their QR code says "Already Scanned". What does this mean?</h5>
+              <p style="color: var(--text2); margin: 0;">This indicates that the cryptographic ID of the QR code has already been registered in the system by a previous submission. This is a security measure to prevent duplicate entries and abuse. You can verify the claim by searching the QR ID in the backend database.</p>
+            </div>
+
+            <div style="margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border);">
+              <h5 style="font-size: 15px; font-weight: 600; color: var(--text1); margin-bottom: 8px;">Q: How does the Random Winner Selection algorithm work?</h5>
+              <p style="color: var(--text2); margin: 0;">The system pulls all verified, non-flagged submissions tied to the specified campaign. It then filters out individuals who have already been designated as winners, ensuring a fair distribution. From the remaining valid pool, it utilizes a cryptographic randomization function to select the requested quota of users.</p>
+            </div>
+
+            <div style="margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border);">
+              <h5 style="font-size: 15px; font-weight: 600; color: var(--text1); margin-bottom: 8px;">Q: Can I edit a Campaign while it is active?</h5>
+              <p style="color: var(--text2); margin: 0;">Yes. Minor copy adjustments (Title, Reward Text) can be made safely. However, we advise against drastically altering the campaign terms while users are actively participating. If major changes are required, it is best practice to pause (deactivate) the campaign first.</p>
+            </div>
+
+            <div style="margin-bottom: 0;">
+              <h5 style="font-size: 15px; font-weight: 600; color: var(--text1); margin-bottom: 8px;">Q: The Website Popup isn't appearing. Why?</h5>
+              <p style="color: var(--text2); margin: 0;">Check two settings: First, ensure the popup is marked "Active". Second, if "Show once per session" is checked, your own browser may have already registered seeing it. To test it, open an Incognito/Private window and navigate to the storefront.</p>
+            </div>
+            
           </div>
           
         </div>
