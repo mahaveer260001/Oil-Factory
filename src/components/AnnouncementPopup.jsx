@@ -30,7 +30,7 @@ export default function AnnouncementPopup() {
           }
 
           setPopup(popupData)
-          const delayMs = 1750 // Hardcoded to 1.75 seconds for all popups
+          const delayMs = 1000 // Hardcoded to 1 second for all popups
           timeoutId = setTimeout(() => {
             if (isMounted) setIsVisible(true)
           }, delayMs)
