@@ -324,7 +324,12 @@ async function loadSchemes() {
         <td><div class="usage-bar"><div class="usage-fill" style="width:${s.usage_percentage}%"></div></div>
           <span style="font-size:11px;color:var(--text3)">${s.usage_percentage.toFixed(1)}%</span></td>
         <td><span class="status-pill ${s.is_active ? 'pill-active' : 'pill-inactive'}">${s.is_active ? '● Active' : '● Inactive'}</span></td>
-        <td><span style="color:var(--text3);font-size:12px">Demo mode</span></td>
+        <td>
+          <div style="display:flex;gap:6px">
+            <button class="btn-sm btn-secondary" onclick="openEditSchemeModal(${s.id})">Edit</button>
+            <span style="color:var(--text3);font-size:12px;margin-top:4px;">Demo mode</span>
+          </div>
+        </td>
       </tr>`).join('');
   }
 }
