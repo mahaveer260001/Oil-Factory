@@ -87,7 +87,7 @@
         <span class="nav-icon">✉</span><span class="nav-label">Queries</span>
       </a>
       <a href="#" class="nav-item" onclick="navigate('popups', this)" id="nav-popups">
-        <span class="nav-icon">📢</span><span class="nav-label">Announcements</span>
+        <span class="nav-icon">🖼</span><span class="nav-label">Website Popups</span>
       </a>
       <div class="nav-section-label">Account</div>
       <a href="#" class="nav-item" onclick="navigate('profile', this)" id="nav-profile">
@@ -160,7 +160,7 @@
       <section id="page-schemes" class="page hidden">
         <div class="page-header">
           <h2>Campaign Schemes</h2>
-          <button class="btn-primary" onclick="openModal('create-scheme-modal')">+ New Campaign</button>
+          <button class="btn-primary" onclick="openCreateSchemeModal()">+ New Campaign</button>
         </div>
         <div class="table-wrap">
           <table class="data-table" id="schemes-table">
@@ -347,24 +347,27 @@
         </div>
       </section>
 
-      <!-- POPUP ANNOUNCEMENTS PAGE -->
+      <!-- POPUPS PAGE -->
       <section id="page-popups" class="page hidden">
         <div class="page-header">
-          <h2>📢 Popup Announcements</h2>
-          <div class="btn-group">
-            <button class="btn-primary" onclick="openModal('create-popup-modal'); resetPopupForm()">+ New Announcement</button>
-            <button class="btn-secondary" onclick="loadPopups()">🔄 Refresh</button>
-          </div>
+          <h2>Website Announcement Popups</h2>
+          <button class="btn-primary" onclick="openCreatePopupModal()">+ Create Popup</button>
         </div>
-        <p style="font-size:13px;color:var(--text3);margin-bottom:18px">Manage campaign popups shown on the website. Only one active popup is shown at a time (the most recently activated one).</p>
         <div class="table-wrap">
           <table class="data-table" id="popups-table">
             <thead>
               <tr>
-                <th>ID</th><th>Title</th><th>Button Text</th><th>Delay (s)</th><th>Once/Session</th><th>Status</th><th>Created</th><th>Actions</th>
+                <th>Image</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>CTA Button</th>
+                <th>Status</th>
+                <th>Actions</th>
               </tr>
             </thead>
-            <tbody id="popups-tbody"><tr><td colspan="8" class="loading-row">Loading announcements…</td></tr></tbody>
+            <tbody id="popups-tbody">
+              <tr><td colspan="6" class="loading-row">Loading website popups…</td></tr>
+            </tbody>
           </table>
         </div>
       </section>
@@ -379,10 +382,11 @@
 <!-- Create Scheme Modal -->
 <div class="modal hidden" id="create-scheme-modal">
   <div class="modal-header">
-    <h3>Create New Campaign</h3>
+    <h3 id="scheme-modal-title">Create New Campaign</h3>
     <button onclick="closeAllModals()">✕</button>
   </div>
-  <form onsubmit="handleCreateScheme(event)">
+  <form onsubmit="handleSaveScheme(event)">
+    <input type="hidden" id="s-id" value="" />
     <div class="form-group"><label>Campaign Title *</label><input id="s-title" placeholder="Spring Campaign 2024" required /></div>
     <div class="form-group"><label>Description</label><textarea id="s-desc" placeholder="Campaign description…" rows="2"></textarea></div>
     <div class="form-group"><label>Reward Text *</label><input id="s-reward-text" placeholder="Win a free bottle!" required /></div>
@@ -394,7 +398,7 @@
     <div id="scheme-error" class="alert-error hidden"></div>
     <div class="modal-footer">
       <button type="button" class="btn-outline" onclick="closeAllModals()">Cancel</button>
-      <button type="submit" class="btn-primary">Create Campaign</button>
+      <button type="submit" class="btn-primary" id="scheme-submit-btn">Create Campaign</button>
     </div>
   </form>
 </div>
@@ -447,61 +451,62 @@
   </form>
 </div>
 
-<!-- Create / Edit Popup Modal -->
-<div class="modal hidden" id="create-popup-modal">
+<!-- Create/Edit Popup Modal -->
+<div class="modal hidden" id="popup-modal">
   <div class="modal-header">
-    <h3 id="popup-modal-title">New Popup Announcement</h3>
+    <h3 id="popup-modal-title">Create Website Popup</h3>
     <button onclick="closeAllModals()">✕</button>
   </div>
   <form onsubmit="handleSavePopup(event)">
-    <input type="hidden" id="popup-edit-id" value="" />
+    <input type="hidden" id="p-id" value="" />
     <div class="form-group">
-      <label>Title *</label>
-      <input id="popup-title" placeholder="🎉 Summer Campaign is Live!" required />
+      <label>Popup Title / Heading *</label>
+      <input id="p-title" placeholder="Special Discount / Festive Announcement!" required />
     </div>
     <div class="form-group">
-      <label>Message / Description</label>
-      <textarea id="popup-desc" placeholder="Scan your QR code to win exciting rewards…" rows="3"></textarea>
+      <label>Short Description / Message</label>
+      <textarea id="p-desc" placeholder="Get exciting offers on Gold Mairani oils this season!" rows="3"></textarea>
     </div>
     <div class="form-group">
-      <label>Banner Image <span style="font-weight:400;color:var(--text3)">(Upload from storage or enter URL)</span></label>
-      <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 8px; flex-wrap: wrap;">
-        <input type="file" id="popup-file-input" accept="image/*" style="display: none;" onchange="handlePopupFileSelect(event)" />
-        <button type="button" class="btn-secondary" onclick="document.getElementById('popup-file-input').click()" style="display:flex;align-items:center;gap:6px">
-          📁 Choose Image from Device
-        </button>
-        <span id="popup-file-status" style="font-size:12px;color:var(--text2)">No file chosen</span>
+      <label>Popup Image</label>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <input type="text" id="p-image-url" placeholder="https://example.com/banner.jpg or /uploads/popups/..." oninput="updatePopupImagePreview(this.value)" />
+        <div style="display:flex; align-items:center; gap:10px;">
+          <label for="p-image-file" class="btn-secondary" style="cursor:pointer; padding: 6px 14px; font-size: 13px; font-weight: 500;">
+            📁 Choose Image File to Upload
+          </label>
+          <span id="p-file-name" style="font-size: 12px; color: var(--text2);">No file chosen</span>
+          <input type="file" id="p-image-file" accept="image/*" style="display:none;" onchange="handleImageFileSelect(event)" />
+        </div>
       </div>
-      <input id="popup-image" placeholder="Or enter direct Image URL (e.g. https://... or /uploads/...)" oninput="updatePopupPreview()" />
-      <div id="popup-image-preview-container" class="hidden" style="margin-top: 10px; position: relative; max-width: 220px;">
-        <img id="popup-image-preview" src="" alt="Banner Preview" style="width: 100%; border-radius: 8px; border: 1px solid var(--border); max-height: 120px; object-fit: cover;" />
-        <button type="button" onclick="clearPopupImage()" style="position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center;" title="Remove image">✕</button>
+      <div id="p-image-preview-wrap" class="hidden" style="margin-top: 10px; background: rgba(0,0,0,0.03); padding: 8px; border-radius: 8px; text-align: center;">
+        <img id="p-image-preview" src="" alt="Popup Preview" style="max-height: 120px; max-width: 100%; border-radius: 6px; object-fit: contain;" />
       </div>
     </div>
     <div class="form-row">
       <div class="form-group">
-        <label>Button Text</label>
-        <input id="popup-btn-text" placeholder="Scan Now &amp; Win!" />
+        <label>CTA Button Text</label>
+        <input id="p-button-text" placeholder="Claim Offer" value="Learn More" />
       </div>
       <div class="form-group">
-        <label>Display Delay (seconds)</label>
-        <input type="number" id="popup-delay" value="2" min="0" max="60" />
+        <label>CTA Link (URL or Route)</label>
+        <input id="p-button-link" placeholder="/contact or https://..." />
       </div>
     </div>
-    <div class="form-row">
-      <div class="form-group" style="display:flex;align-items:center;gap:10px;padding-top:22px">
-        <input type="checkbox" id="popup-active" checked style="width:18px;height:18px;cursor:pointer" />
-        <label for="popup-active" style="margin:0;cursor:pointer">Active (visible on website)</label>
+    <div class="form-row" style="margin-top: 12px; gap: 16px;">
+      <div class="form-group" style="display: flex; align-items: center; gap: 8px;">
+        <input type="checkbox" id="p-once" checked style="width: 18px; height: 18px; cursor: pointer;" />
+        <label for="p-once" style="margin-bottom: 0; cursor: pointer;">Show once per session</label>
       </div>
-      <div class="form-group" style="display:flex;align-items:center;gap:10px;padding-top:22px">
-        <input type="checkbox" id="popup-once" checked style="width:18px;height:18px;cursor:pointer" />
-        <label for="popup-once" style="margin:0;cursor:pointer">Show once per session</label>
+      <div class="form-group" style="display: flex; align-items: center; gap: 8px;">
+        <input type="checkbox" id="p-active" checked style="width: 18px; height: 18px; cursor: pointer;" />
+        <label for="p-active" style="margin-bottom: 0; cursor: pointer; font-weight: 600;">Active (Show on website)</label>
       </div>
     </div>
     <div id="popup-error" class="alert-error hidden"></div>
     <div class="modal-footer">
       <button type="button" class="btn-outline" onclick="closeAllModals()">Cancel</button>
-      <button type="submit" class="btn-primary" id="popup-save-btn">Create Announcement</button>
+      <button type="submit" id="p-submit-btn" class="btn-primary">Save Popup</button>
     </div>
   </form>
 </div>
