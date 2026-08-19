@@ -380,51 +380,113 @@
         <div class="page-header">
           <h2>Help & User Manual</h2>
         </div>
-        <div class="manual-content" style="background: var(--card-bg); padding: 32px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.05); line-height: 1.6;">
-          <h3 style="color: var(--primary); margin-bottom: 16px; font-size: 20px;">Welcome to the FMCG Reward Campaign Dashboard</h3>
-          <p>This manual provides step-by-step instructions on how to manage your QR code campaigns, track submissions, and select winners.</p>
+        <div class="manual-content" style="background: var(--card-bg); padding: 32px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.05); line-height: 1.7;">
           
-          <hr style="border: none; border-top: 1px solid var(--border); margin: 24px 0;" />
+          <div style="text-align: center; margin-bottom: 30px;">
+            <div style="font-size: 40px; margin-bottom: 10px;">📖</div>
+            <h3 style="color: var(--primary); font-size: 24px; margin-bottom: 8px;">Welcome to the Dashboard Guide</h3>
+            <p style="color: var(--text2); max-width: 600px; margin: 0 auto;">This visual guide will show you exactly where to click to manage your campaigns, batches, and website popups.</p>
+          </div>
           
-          <h4 style="margin-bottom: 12px; font-size: 18px;">1. Managing Campaigns (Schemes)</h4>
-          <p>A <strong>Campaign</strong> (or Scheme) is the overarching marketing initiative. It defines the rules, the rewards, and the active period for a promotion.</p>
-          <ul style="padding-left: 20px; margin-bottom: 20px;">
-            <li style="margin-bottom: 8px;"><strong>Create a Campaign:</strong> Go to the <a href="#" onclick="navigate('schemes', document.getElementById('nav-schemes'))" style="color:var(--primary);text-decoration:none;">Campaigns</a> tab and click <code>+ New Campaign</code>. Fill in the title, reward description, and dates.</li>
-            <li style="margin-bottom: 8px;"><strong>Edit a Campaign:</strong> Click the <code>Edit</code> button next to an existing campaign to update its title, reward details, or dates.</li>
-            <li style="margin-bottom: 8px;"><strong>Deactivate/Activate:</strong> You can pause a campaign at any time by clicking <code>Deactivate</code>. While paused, users cannot scan QR codes tied to this campaign.</li>
-          </ul>
-
-          <h4 style="margin-bottom: 12px; font-size: 18px;">2. Generating QR Code Batches</h4>
-          <p>Once a campaign is created, you need to generate physical QR codes to print on your products. You do this by creating a <strong>Batch</strong>.</p>
-          <ul style="padding-left: 20px; margin-bottom: 20px;">
-            <li style="margin-bottom: 8px;"><strong>Generate a Batch:</strong> Go to the <a href="#" onclick="navigate('batches', document.getElementById('nav-batches'))" style="color:var(--primary);text-decoration:none;">QR Batches</a> tab and click <code>+ Create Batch</code>.</li>
-            <li style="margin-bottom: 8px;">Assign the batch to an existing Campaign and specify the quantity (e.g., 10,000 QR codes).</li>
-            <li style="margin-bottom: 8px;"><strong>Export for Printing:</strong> Once generated, click the <code>Export</code> button on the batch row to download a PDF containing all the unique QR codes, which you can send to your printing partner.</li>
-            <li style="margin-bottom: 8px;"><strong>Deleting a Batch:</strong> If you made a mistake, you can delete a batch. <em>Note: If you delete a batch, any user submissions and scan data associated with those QR codes will also be permanently deleted.</em></li>
-          </ul>
-
-          <h4 style="margin-bottom: 12px; font-size: 18px;">3. Tracking Submissions & Scans</h4>
-          <p>When a customer buys your product and scans the QR code, they fill out a form (Name, Phone, City). Their data appears here.</p>
-          <ul style="padding-left: 20px; margin-bottom: 20px;">
-            <li style="margin-bottom: 8px;"><strong>View Entries:</strong> Go to the <a href="#" onclick="navigate('submissions', document.getElementById('nav-submissions'))" style="color:var(--primary);text-decoration:none;">Submissions</a> tab to see a real-time list of all customers who have scanned a QR code.</li>
-            <li style="margin-bottom: 8px;">The system automatically blocks duplicate submissions from the same QR code, ensuring fair play.</li>
-          </ul>
-
-          <h4 style="margin-bottom: 12px; font-size: 18px;">4. Selecting Winners</h4>
-          <p>When a campaign ends (or periodically during the campaign), you can randomly select winners from the pool of valid submissions.</p>
-          <ul style="padding-left: 20px; margin-bottom: 20px;">
-            <li style="margin-bottom: 8px;"><strong>Random Selection:</strong> Go to the <a href="#" onclick="navigate('winners', document.getElementById('nav-winners'))" style="color:var(--primary);text-decoration:none;">Winners</a> tab and click <code>🎲 Select Random Winners</code>.</li>
-            <li style="margin-bottom: 8px;">Choose the Campaign and type in how many winners you want to select (e.g., 50). The system will randomly pick 50 valid entries that haven't won yet.</li>
-            <li style="margin-bottom: 8px;"><strong>Manual Selection:</strong> You can also manually designate a winner from the Submissions tab by clicking the <code>Mark Winner</code> button next to their name.</li>
-            <li style="margin-bottom: 8px;">Once selected, winners appear in the Winners list, where you can easily export their contact details to organize prize distribution.</li>
-          </ul>
+          <hr style="border: none; border-top: 1px solid var(--border); margin: 30px 0;" />
           
-          <h4 style="margin-bottom: 12px; font-size: 18px;">5. Website Announcement Popups</h4>
-          <p>You can push marketing banners and announcements directly to your live website.</p>
-          <ul style="padding-left: 20px; margin-bottom: 20px;">
-            <li style="margin-bottom: 8px;"><strong>Create a Popup:</strong> Go to the <a href="#" onclick="navigate('popups', document.getElementById('nav-popups'))" style="color:var(--primary);text-decoration:none;">Website Popups</a> tab. Upload an image, write a catchy title, and add a Call-To-Action (CTA) link.</li>
-            <li style="margin-bottom: 8px;"><strong>Control Visibility:</strong> Check "Active" to show it on the site immediately, and check "Show once per session" so you don't spam your users on every page load.</li>
-          </ul>
+          <div style="display: flex; gap: 16px; margin-bottom: 40px;">
+            <div style="font-size: 32px; margin-top: -4px;">🎯</div>
+            <div>
+              <h4 style="margin-bottom: 12px; font-size: 18px; color: var(--text1);">1. Creating & Managing Campaigns</h4>
+              <p style="margin-bottom: 16px; color: var(--text2);">A Campaign is your main marketing offer. You must create one before generating QR codes.</p>
+              
+              <div style="background: var(--bg); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
+                <ol style="padding-left: 20px; margin: 0;">
+                  <li style="margin-bottom: 12px;">
+                    Click on <strong>Campaigns</strong> in the left sidebar menu.
+                  </li>
+                  <li style="margin-bottom: 12px;">
+                    Click the blue button at the top right: <span class="btn-primary" style="display:inline-block; padding: 4px 10px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">+ New Campaign</span>
+                  </li>
+                  <li style="margin-bottom: 12px;">
+                    Fill out the form (Title, Reward, Dates) and click <span class="btn-primary" style="display:inline-block; padding: 4px 10px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">Create Campaign</span>.
+                  </li>
+                  <li>
+                    To pause a live campaign, find it in the table and click <span class="btn-secondary" style="display:inline-block; padding: 3px 8px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">Deactivate</span>.
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 16px; margin-bottom: 40px;">
+            <div style="font-size: 32px; margin-top: -4px;">🖨️</div>
+            <div>
+              <h4 style="margin-bottom: 12px; font-size: 18px; color: var(--text1);">2. Generating QR Codes for Printing</h4>
+              <p style="margin-bottom: 16px; color: var(--text2);">Once your campaign is ready, you need to generate a "Batch" of physical QR codes to send to the printer.</p>
+              
+              <div style="background: var(--bg); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
+                <ol style="padding-left: 20px; margin: 0;">
+                  <li style="margin-bottom: 12px;">
+                    Click on <strong>QR Batches</strong> in the left sidebar menu.
+                  </li>
+                  <li style="margin-bottom: 12px;">
+                    Click the blue button: <span class="btn-primary" style="display:inline-block; padding: 4px 10px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">+ Create Batch</span>
+                  </li>
+                  <li style="margin-bottom: 12px;">
+                    Type how many codes you need (e.g. 10000) and link it to your campaign. Click <span class="btn-primary" style="display:inline-block; padding: 4px 10px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">Generate Batch</span>.
+                  </li>
+                  <li>
+                    When it finishes, look for your batch in the table and click <span class="btn-secondary" style="display:inline-block; padding: 3px 8px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">Export</span>. This downloads a ZIP file containing PDFs of your QR codes ready for printing!
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 16px; margin-bottom: 40px;">
+            <div style="font-size: 32px; margin-top: -4px;">🏆</div>
+            <div>
+              <h4 style="margin-bottom: 12px; font-size: 18px; color: var(--text1);">3. Selecting Winners</h4>
+              <p style="margin-bottom: 16px; color: var(--text2);">You can let the system pick random winners automatically.</p>
+              
+              <div style="background: var(--bg); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
+                <ol style="padding-left: 20px; margin: 0;">
+                  <li style="margin-bottom: 12px;">
+                    Click on <strong>Winners</strong> in the left sidebar menu.
+                  </li>
+                  <li style="margin-bottom: 12px;">
+                    Click the green button: <span class="btn-primary" style="display:inline-block; background: #10b981; padding: 4px 10px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">🎲 Select Random Winners</span>
+                  </li>
+                  <li>
+                    Choose the Campaign, type how many winners you want, and click Select. The system will instantly pick fair winners and list their contact details!
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          
+          <div style="display: flex; gap: 16px;">
+            <div style="font-size: 32px; margin-top: -4px;">📢</div>
+            <div>
+              <h4 style="margin-bottom: 12px; font-size: 18px; color: var(--text1);">4. Website Announcements (Popups)</h4>
+              <p style="margin-bottom: 16px; color: var(--text2);">Put a special banner on your main website for visitors to see.</p>
+              
+              <div style="background: var(--bg); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
+                <ol style="padding-left: 20px; margin: 0;">
+                  <li style="margin-bottom: 12px;">
+                    Click on <strong>Website Popups</strong> in the left sidebar menu.
+                  </li>
+                  <li style="margin-bottom: 12px;">
+                    Click: <span class="btn-primary" style="display:inline-block; padding: 4px 10px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">+ Create Popup</span>
+                  </li>
+                  <li style="margin-bottom: 12px;">
+                    Upload a nice image banner and fill out the text details.
+                  </li>
+                  <li>
+                    Check the box for <strong>Active</strong> and hit <span class="btn-primary" style="display:inline-block; padding: 4px 10px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">Save Popup</span>. It will instantly appear on your website!
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          
         </div>
       </section>
 

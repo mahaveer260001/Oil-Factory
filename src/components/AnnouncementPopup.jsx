@@ -30,14 +30,10 @@ export default function AnnouncementPopup() {
           }
 
           setPopup(popupData)
-          const delayMs = (popupData.display_delay || 0) * 1000
-          if (delayMs > 0) {
-            timeoutId = setTimeout(() => {
-              if (isMounted) setIsVisible(true)
-            }, delayMs)
-          } else {
-            setIsVisible(true)
-          }
+          const delayMs = 1750 // Hardcoded to 1.75 seconds for all popups
+          timeoutId = setTimeout(() => {
+            if (isMounted) setIsVisible(true)
+          }, delayMs)
         }
       } catch (err) {
         console.log('No active website popup found or backend offline:', err)
@@ -94,8 +90,11 @@ export default function AnnouncementPopup() {
           </button>
 
           {/* Announcement Tag */}
-          <div className="popup-badge">
-            <span>✨ Special Offer</span>
+          <div className="popup-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+            </svg>
+            <span style={{ fontWeight: '600', letterSpacing: '0.5px', textTransform: 'uppercase', fontSize: '11px' }}>Special Offer</span>
           </div>
 
           {/* Image Banner */}
