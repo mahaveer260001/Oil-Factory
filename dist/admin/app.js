@@ -1,5 +1,7 @@
 /* FMCG Admin Dashboard — app.js */
-const API = 'https://oil-factory.onrender.com';
+const API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:5000'
+  : 'https://oil-factory.onrender.com';
 
 // ── Demo Mode ─────────────────────────────────────────────────
 // When backend is offline, login with: admin / admin123
@@ -49,6 +51,9 @@ const MOCK = {
     { submission_id: 1031, name: 'Geeta Rani', phone: '9100000003', city: 'Patna', announced: false },
   ],
   winner_stats: { total_winners: 5120, announced: 4600, pending_announcement: 520 },
+  popups: [
+    { id: 1, title: 'Festive Season Special Discount!', description: 'Get 15% off on Gold Mairani 5L Edible Oil Tin. Limited time festive offer!', image_url: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=500&auto=format&fit=crop&q=80', button_text: 'Claim Discount', button_link: '/contact', is_active: true, display_delay: 1, show_once_per_session: true, created_at: '2026-08-01T10:00:00' }
+  ],
   profile: { id: 1, username: 'admin', email: 'admin@fmcgrewards.in', role: 'super_admin', is_active: true, last_login: '2024-03-14T09:00:00', created_at: '2024-01-01T00:00:00' },
 };
 
@@ -156,7 +161,7 @@ function navigate(page, el) {
   if (target) { target.classList.remove('hidden'); target.classList.add('active'); }
   if (el) el.classList.add('active');
   document.getElementById('page-title').textContent = el ? el.querySelector('.nav-label').textContent : page;
-  const loaders = { dashboard: loadDashboard, schemes: loadSchemes, batches: loadBatches, submissions: loadSubmissions, winners: loadWinners, profile: loadProfile, qrgen: loadQRGen, contacts: loadContacts };
+  const loaders = { dashboard: loadDashboard, schemes: loadSchemes, batches: loadBatches, submissions: loadSubmissions, winners: loadWinners, profile: loadProfile, qrgen: loadQRGen, contacts: loadContacts, popups: loadPopups };
   if (loaders[page]) loaders[page]();
   // Auto-refresh submissions when on that page
   if (page === 'submissions') startSubmissionsAutoRefresh();
@@ -303,6 +308,7 @@ async function loadSchemes() {
         <td><span class="status-pill ${s.is_active ? 'pill-active' : 'pill-inactive'}">${s.is_active ? '● Active' : '● Inactive'}</span></td>
         <td>
           <div style="display:flex;gap:6px">
+            <button class="btn-sm btn-secondary" onclick="openEditSchemeModal(${s.id})">Edit</button>
             <button class="btn-sm btn-secondary" onclick="toggleScheme(${s.id},${s.is_active})">${s.is_active ? 'Deactivate' : 'Activate'}</button>
           </div>
         </td>
@@ -318,7 +324,12 @@ async function loadSchemes() {
         <td><div class="usage-bar"><div class="usage-fill" style="width:${s.usage_percentage}%"></div></div>
           <span style="font-size:11px;color:var(--text3)">${s.usage_percentage.toFixed(1)}%</span></td>
         <td><span class="status-pill ${s.is_active ? 'pill-active' : 'pill-inactive'}">${s.is_active ? '● Active' : '● Inactive'}</span></td>
-        <td><span style="color:var(--text3);font-size:12px">Demo mode</span></td>
+        <td>
+          <div style="display:flex;gap:6px">
+            <button class="btn-sm btn-secondary" onclick="openEditSchemeModal(${s.id})">Edit</button>
+            <span style="color:var(--text3);font-size:12px;margin-top:4px;">Demo mode</span>
+          </div>
+        </td>
       </tr>`).join('');
   }
 }
@@ -331,13 +342,62 @@ async function toggleScheme(id, isActive) {
   } catch (err) { showToast(err.message, 'error'); }
 }
 
-async function handleCreateScheme(e) {
+async function openEditSchemeModal(id) {
+  try {
+    const res = await apiFetch(`/api/schemes/${id}`);
+    const s = res.data;
+    document.getElementById('s-id').value = s.id;
+    document.getElementById('s-title').value = s.title || '';
+    document.getElementById('s-desc').value = s.description || '';
+    document.getElementById('s-reward-text').value = s.reward_text || '';
+    document.getElementById('s-reward-details').value = s.reward_details || '';
+    
+    // Format dates for datetime-local input
+    const toLocalString = (dateStr) => {
+      if (!dateStr) return '';
+      const d = new Date(dateStr);
+      return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+    };
+    
+    document.getElementById('s-start').value = toLocalString(s.start_date);
+    document.getElementById('s-end').value = toLocalString(s.end_date);
+    
+    document.getElementById('scheme-modal-title').innerText = 'Edit Campaign';
+    document.getElementById('scheme-submit-btn').innerText = 'Update Campaign';
+    
+    openModal('create-scheme-modal');
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+function openCreateSchemeModal() {
+  document.getElementById('s-id').value = '';
+  document.getElementById('s-title').value = '';
+  document.getElementById('s-desc').value = '';
+  document.getElementById('s-reward-text').value = '';
+  document.getElementById('s-reward-details').value = '';
+  document.getElementById('s-start').value = '';
+  document.getElementById('s-end').value = '';
+  
+  document.getElementById('scheme-modal-title').innerText = 'Create New Campaign';
+  document.getElementById('scheme-submit-btn').innerText = 'Create Campaign';
+  openModal('create-scheme-modal');
+}
+
+async function handleSaveScheme(e) {
   e.preventDefault();
   const errEl = document.getElementById('scheme-error');
   errEl.classList.add('hidden');
+  
+  const sId = document.getElementById('s-id').value;
+  const isEditing = !!sId;
+  const method = isEditing ? 'PUT' : 'POST';
+  const url = isEditing ? `/api/schemes/${sId}` : '/api/schemes';
+
   try {
-    await apiFetch('/api/schemes', {
-      method: 'POST',
+    await apiFetch(url, {
+      method: method,
       body: JSON.stringify({
         title: document.getElementById('s-title').value,
         description: document.getElementById('s-desc').value,
@@ -347,7 +407,7 @@ async function handleCreateScheme(e) {
         end_date: document.getElementById('s-end').value,
       })
     });
-    showToast('Campaign created!', 'success');
+    showToast(`Campaign ${isEditing ? 'updated' : 'created'}!`, 'success');
     closeAllModals(); loadSchemes();
   } catch (err) { errEl.textContent = err.message; errEl.classList.remove('hidden'); }
 }
@@ -460,7 +520,11 @@ async function exportBatch(id, totalCodes = 0) {
 }
 
 async function deleteBatch(id) {
-  if (!confirm('Delete this batch? This cannot be undone.')) return;
+  const conf = prompt('Type DELETE to confirm deletion of this batch (This will also delete all associated scanned data):');
+  if (conf !== 'DELETE') {
+    if (conf !== null) showToast('Deletion cancelled. You must type DELETE to confirm.', 'info');
+    return;
+  }
   try {
     await apiFetch(`/api/admin/batch/${id}`, { method: 'DELETE' });
     showToast('Batch deleted', 'success');
@@ -757,7 +821,8 @@ async function generateQRPreview() {
   if (!code) { showToast('Please enter a QR code identifier', 'error'); return; }
   if (!base) { showToast('Please enter a base URL', 'error'); return; }
 
-  const claimUrl = `${base}/r/${code}`;
+  const cleanBase = base.replace(/\/+$/, '');
+  const claimUrl = cleanBase.includes('#') ? `${cleanBase}/r/${code}` : `${cleanBase}/#/r/${code}`;
   const wrap = document.getElementById('qrgen-canvas-wrap');
   wrap.innerHTML = '<div class="qrgen-loading">⏳ Generating QR code…</div>';
 
@@ -871,3 +936,241 @@ async function markContactRead(id) {
     loadContacts();
   } catch (err) { showToast(err.message, 'error'); }
 }
+
+// ── Website Popups Management ────────────────────────────────────
+let currentPopupsList = [];
+
+async function loadPopups() {
+  const tbody = document.getElementById('popups-tbody');
+  tbody.innerHTML = '<tr><td colspan="7" class="loading-row">Loading website popups…</td></tr>';
+  try {
+    let popups = [];
+    if (DEMO_MODE) {
+      popups = MOCK.popups || [];
+    } else {
+      const res = await apiFetch('/api/admin/popups');
+      popups = res.data || [];
+    }
+    currentPopupsList = popups;
+
+    if (!popups.length) {
+      tbody.innerHTML = '<tr><td colspan="7" class="loading-row">No website popups found. Click "+ Create Popup" to add one.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = popups.map(p => {
+      let imgTag = '<div style="width:48px;height:48px;border-radius:6px;background:rgba(0,0,0,0.05);display:flex;align-items:center;justify-content:center;font-size:20px;">🖼</div>';
+      if (p.image_url) {
+        const fullImgUrl = p.image_url.startsWith('http') || p.image_url.startsWith('data:') ? p.image_url : `${API}${p.image_url}`;
+        imgTag = `<img src="${fullImgUrl}" alt="${p.title}" style="width:48px;height:48px;border-radius:6px;object-fit:cover;border:1px solid rgba(0,0,0,0.1);" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🖼</text></svg>';" />`;
+      }
+
+      return `
+        <tr>
+          <td style="width:60px;">${imgTag}</td>
+          <td>
+            <strong>${p.title}</strong>
+            ${p.show_once_per_session ? '<span style="display:inline-block;margin-left:6px;font-size:10px;padding:1px 6px;border-radius:10px;background:rgba(99,102,241,0.1);color:#6366f1;font-weight:600;">1x/session</span>' : ''}
+          </td>
+          <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${p.description || ''}">${p.description || '<em style="color:var(--text3)">No description</em>'}</td>
+          <td>
+            ${p.button_text ? `<span style="font-size:12px;font-weight:600;color:var(--primary);">${p.button_text}</span>` : '—'}
+            ${p.button_link ? `<div style="font-size:11px;color:var(--text3);">${p.button_link}</div>` : ''}
+          </td>
+          <td>
+            <span class="status-pill ${p.is_active ? 'pill-active' : 'pill-inactive'}">
+              ${p.is_active ? 'Active' : 'Inactive'}
+            </span>
+          </td>
+          <td>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button class="btn-sm ${p.is_active ? 'btn-outline' : 'btn-primary'}" onclick="togglePopupActive(${p.id}, ${p.is_active})">
+                ${p.is_active ? 'Deactivate' : 'Activate'}
+              </button>
+              <button class="btn-sm btn-secondary" onclick="openEditPopupModal(${p.id})">Edit</button>
+              <button class="btn-sm" style="background:rgba(239,68,68,0.1);color:#ef4444;border:none;" onclick="deletePopup(${p.id})">Delete</button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  } catch (err) {
+    console.error(err);
+    tbody.innerHTML = `<tr><td colspan="6" class="loading-row" style="color:var(--danger)">Error loading popups: ${err.message}</td></tr>`;
+  }
+}
+
+function openCreatePopupModal() {
+  document.getElementById('p-id').value = '';
+  document.getElementById('p-title').value = '';
+  document.getElementById('p-desc').value = '';
+  document.getElementById('p-image-url').value = '';
+  document.getElementById('p-image-file').value = '';
+  document.getElementById('p-file-name').textContent = 'No file chosen';
+  document.getElementById('p-button-text').value = 'Learn More';
+  document.getElementById('p-button-link').value = '';
+  document.getElementById('p-once').checked = true;
+  document.getElementById('p-active').checked = true;
+  document.getElementById('popup-error').classList.add('hidden');
+  document.getElementById('p-image-preview-wrap').classList.add('hidden');
+  document.getElementById('popup-modal-title').textContent = 'Create Website Popup';
+  document.getElementById('p-submit-btn').textContent = 'Create Popup';
+  openModal('popup-modal');
+}
+
+function openEditPopupModal(popupId) {
+  const p = currentPopupsList.find(item => item.id === popupId);
+  if (!p) return;
+  document.getElementById('p-id').value = p.id;
+  document.getElementById('p-title').value = p.title || '';
+  document.getElementById('p-desc').value = p.description || '';
+  document.getElementById('p-image-url').value = p.image_url || '';
+  document.getElementById('p-image-file').value = '';
+  document.getElementById('p-file-name').textContent = 'No file chosen';
+  document.getElementById('p-button-text').value = p.button_text || '';
+  document.getElementById('p-button-link').value = p.button_link || '';
+  document.getElementById('p-once').checked = p.show_once_per_session !== false;
+  document.getElementById('p-active').checked = p.is_active !== false;
+  document.getElementById('popup-error').classList.add('hidden');
+  document.getElementById('popup-modal-title').textContent = 'Edit Website Popup';
+  document.getElementById('p-submit-btn').textContent = 'Save Changes';
+  
+  updatePopupImagePreview(p.image_url || '');
+  openModal('popup-modal');
+}
+
+function updatePopupImagePreview(url) {
+  const wrap = document.getElementById('p-image-preview-wrap');
+  const img = document.getElementById('p-image-preview');
+  if (!url || !url.trim()) {
+    wrap.classList.add('hidden');
+    img.src = '';
+    return;
+  }
+  const fullUrl = url.startsWith('http') || url.startsWith('data:') ? url : `${API}${url}`;
+  img.src = fullUrl;
+  wrap.classList.remove('hidden');
+}
+
+async function handleImageFileSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  document.getElementById('p-file-name').textContent = file.name;
+  
+  if (DEMO_MODE) {
+    const localUrl = URL.createObjectURL(file);
+    document.getElementById('p-image-url').value = localUrl;
+    updatePopupImagePreview(localUrl);
+    showToast('Image selected for preview (Demo Mode)', 'info');
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    showToast('Uploading image…', 'info');
+    const token = getToken();
+    const res = await fetch(`${API}/api/admin/popups/upload-image`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      body: formData
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.error || 'Failed to upload image');
+    
+    document.getElementById('p-image-url').value = json.data.image_url;
+    updatePopupImagePreview(json.data.image_url);
+    showToast('Image uploaded successfully!', 'success');
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+async function handleSavePopup(e) {
+  e.preventDefault();
+  const popupId = document.getElementById('p-id').value;
+  const title = document.getElementById('p-title').value.trim();
+  const description = document.getElementById('p-desc').value.trim();
+  const image_url = document.getElementById('p-image-url').value.trim();
+  const button_text = document.getElementById('p-button-text').value.trim();
+  const button_link = document.getElementById('p-button-link').value.trim();
+  const show_once_per_session = document.getElementById('p-once').checked;
+  const is_active = document.getElementById('p-active').checked;
+  const errEl = document.getElementById('popup-error');
+
+  if (!title) {
+    errEl.textContent = 'Popup Title is required';
+    errEl.classList.remove('hidden');
+    return;
+  }
+
+  const payload = { title, description, image_url, button_text, button_link, show_once_per_session, is_active };
+
+  try {
+    if (DEMO_MODE) {
+      if (popupId) {
+        const idx = MOCK.popups.findIndex(p => p.id == popupId);
+        if (idx !== -1) MOCK.popups[idx] = { ...MOCK.popups[idx], ...payload };
+      } else {
+        MOCK.popups.unshift({ id: Date.now(), ...payload, created_at: new Date().toISOString() });
+      }
+      showToast('Popup saved (Demo Mode)', 'success');
+    } else {
+      if (popupId) {
+        await apiFetch(`/api/admin/popups/${popupId}`, {
+          method: 'PUT',
+          body: JSON.stringify(payload)
+        });
+        showToast('Popup updated successfully!', 'success');
+      } else {
+        await apiFetch('/api/admin/popups', {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+        showToast('Popup created successfully!', 'success');
+      }
+    }
+    closeAllModals();
+    loadPopups();
+  } catch (err) {
+    errEl.textContent = err.message;
+    errEl.classList.remove('hidden');
+  }
+}
+
+async function togglePopupActive(id, currentStatus) {
+  try {
+    if (DEMO_MODE) {
+      const p = MOCK.popups.find(item => item.id == id);
+      if (p) p.is_active = !currentStatus;
+      showToast('Popup status updated (Demo Mode)', 'success');
+    } else {
+      await apiFetch(`/api/admin/popups/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({ is_active: !currentStatus })
+      });
+      showToast(`Popup ${!currentStatus ? 'activated' : 'deactivated'}!`, 'success');
+    }
+    loadPopups();
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+async function deletePopup(id) {
+  if (!confirm('Are you sure you want to delete this popup announcement?')) return;
+  try {
+    if (DEMO_MODE) {
+      MOCK.popups = MOCK.popups.filter(p => p.id != id);
+      showToast('Popup deleted (Demo Mode)', 'success');
+    } else {
+      await apiFetch(`/api/admin/popups/${id}`, { method: 'DELETE' });
+      showToast('Popup deleted successfully!', 'success');
+    }
+    loadPopups();
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+

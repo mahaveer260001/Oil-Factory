@@ -86,7 +86,13 @@
       <a href="#" class="nav-item" onclick="navigate('contacts', this)" id="nav-contacts">
         <span class="nav-icon">✉</span><span class="nav-label">Queries</span>
       </a>
+      <a href="#" class="nav-item" onclick="navigate('popups', this)" id="nav-popups">
+        <span class="nav-icon">🖼</span><span class="nav-label">Website Popups</span>
+      </a>
       <div class="nav-section-label">Account</div>
+      <a href="#" class="nav-item" onclick="navigate('manual', this)" id="nav-manual">
+        <span class="nav-icon">❓</span><span class="nav-label">Help & Manual</span>
+      </a>
       <a href="#" class="nav-item" onclick="navigate('profile', this)" id="nav-profile">
         <span class="nav-icon">◉</span><span class="nav-label">Profile</span>
       </a>
@@ -157,7 +163,7 @@
       <section id="page-schemes" class="page hidden">
         <div class="page-header">
           <h2>Campaign Schemes</h2>
-          <button class="btn-primary" onclick="openModal('create-scheme-modal')">+ New Campaign</button>
+          <button class="btn-primary" onclick="openCreateSchemeModal()">+ New Campaign</button>
         </div>
         <div class="table-wrap">
           <table class="data-table" id="schemes-table">
@@ -344,6 +350,143 @@
         </div>
       </section>
 
+      <!-- POPUPS PAGE -->
+      <section id="page-popups" class="page hidden">
+        <div class="page-header">
+          <h2>Website Announcement Popups</h2>
+          <button class="btn-primary" onclick="openCreatePopupModal()">+ Create Popup</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table" id="popups-table">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>CTA Button</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="popups-tbody">
+              <tr><td colspan="6" class="loading-row">Loading website popups…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- USER MANUAL PAGE -->
+      <section id="page-manual" class="page hidden" style="max-width: 900px; margin: 0 auto;">
+        <div class="page-header" style="border-bottom: 1px solid var(--border); padding-bottom: 16px; margin-bottom: 24px;">
+          <h2 style="font-size: 26px; color: var(--text1); font-weight: 700; margin: 0;">Administration Manual</h2>
+          <p style="color: var(--text3); font-size: 14px; margin-top: 6px;">System documentation and operational guidelines</p>
+        </div>
+        
+        <div class="manual-content" style="background: var(--card-bg); padding: 32px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.05); line-height: 1.7;">
+          
+          <div style="display: flex; gap: 16px; margin-bottom: 40px;">
+            <div style="font-size: 24px; margin-top: -2px; color: var(--primary);">01.</div>
+            <div>
+              <h4 style="margin-bottom: 12px; font-size: 18px; color: var(--text1); font-weight: 600;">Campaign Initialization</h4>
+              <p style="margin-bottom: 16px; color: var(--text2);">A Campaign serves as the foundational marketing entity. It must be configured prior to QR code generation.</p>
+              
+              <div style="background: var(--bg); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
+                <ol style="padding-left: 20px; margin: 0; color: var(--text2);">
+                  <li style="margin-bottom: 12px;">Navigate to <strong>Campaigns</strong> in the side navigation panel.</li>
+                  <li style="margin-bottom: 12px;">Click the action button: <span class="btn-primary" style="display:inline-block; padding: 4px 10px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">+ New Campaign</span></li>
+                  <li style="margin-bottom: 12px;">Define the parameters (Title, Reward, Operational Dates) and click <span class="btn-primary" style="display:inline-block; padding: 4px 10px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">Create Campaign</span>.</li>
+                  <li>To suspend an active campaign, locate it in the directory and select <span class="btn-secondary" style="display:inline-block; padding: 3px 8px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">Deactivate</span>.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 16px; margin-bottom: 40px;">
+            <div style="font-size: 24px; margin-top: -2px; color: var(--primary);">02.</div>
+            <div>
+              <h4 style="margin-bottom: 12px; font-size: 18px; color: var(--text1); font-weight: 600;">QR Code Provisioning</h4>
+              <p style="margin-bottom: 16px; color: var(--text2);">Following campaign creation, cryptographic QR batches must be provisioned for physical distribution.</p>
+              
+              <div style="background: var(--bg); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
+                <ol style="padding-left: 20px; margin: 0; color: var(--text2);">
+                  <li style="margin-bottom: 12px;">Navigate to <strong>QR Batches</strong> in the side navigation panel.</li>
+                  <li style="margin-bottom: 12px;">Click the action button: <span class="btn-primary" style="display:inline-block; padding: 4px 10px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">+ Create Batch</span></li>
+                  <li style="margin-bottom: 12px;">Specify allocation quantity and link to the target campaign, then execute via <span class="btn-primary" style="display:inline-block; padding: 4px 10px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">Generate Batch</span>.</li>
+                  <li>Upon completion, locate the batch record and select <span class="btn-secondary" style="display:inline-block; padding: 3px 8px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">Export</span> to retrieve the print-ready PDF assets.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 16px; margin-bottom: 40px;">
+            <div style="font-size: 24px; margin-top: -2px; color: var(--primary);">03.</div>
+            <div>
+              <h4 style="margin-bottom: 12px; font-size: 18px; color: var(--text1); font-weight: 600;">Winner Allocation</h4>
+              <p style="margin-bottom: 16px; color: var(--text2);">The system supports secure, randomized winner allocation from the pool of valid user submissions.</p>
+              
+              <div style="background: var(--bg); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
+                <ol style="padding-left: 20px; margin: 0; color: var(--text2);">
+                  <li style="margin-bottom: 12px;">Navigate to <strong>Winners</strong> in the side navigation panel.</li>
+                  <li style="margin-bottom: 12px;">Initiate allocation via: <span class="btn-primary" style="display:inline-block; background: #10b981; padding: 4px 10px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px; border-color: #10b981;">🎲 Select Random Winners</span></li>
+                  <li>Specify the target campaign and allocation quota. The system will cryptographically select valid submissions and append them to the winners registry.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          
+          <div style="display: flex; gap: 16px; margin-bottom: 40px;">
+            <div style="font-size: 24px; margin-top: -2px; color: var(--primary);">04.</div>
+            <div>
+              <h4 style="margin-bottom: 12px; font-size: 18px; color: var(--text1); font-weight: 600;">Website Annoucements</h4>
+              <p style="margin-bottom: 16px; color: var(--text2);">Deploy marketing overlays (popups) directly to the primary storefront.</p>
+              
+              <div style="background: var(--bg); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
+                <ol style="padding-left: 20px; margin: 0; color: var(--text2);">
+                  <li style="margin-bottom: 12px;">Navigate to <strong>Website Popups</strong> in the side navigation panel.</li>
+                  <li style="margin-bottom: 12px;">Click the action button: <span class="btn-primary" style="display:inline-block; padding: 4px 10px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">+ Create Popup</span></li>
+                  <li style="margin-bottom: 12px;">Upload the creative asset and configure the copy and routing parameters.</li>
+                  <li>Ensure the <strong>Active</strong> toggle is engaged, then execute via <span class="btn-primary" style="display:inline-block; padding: 4px 10px; font-size: 12px; pointer-events: none; margin: 0 4px; border-radius: 6px;">Save Popup</span>.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <hr style="border: none; border-top: 1px solid var(--border); margin: 40px 0 30px 0;" />
+
+          <!-- FAQ SECTION -->
+          <div style="margin-bottom: 20px;">
+            <h3 style="font-size: 20px; color: var(--text1); font-weight: 700; margin-bottom: 24px;">Frequently Asked Questions (FAQ)</h3>
+            
+            <div style="margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border);">
+              <h5 style="font-size: 15px; font-weight: 600; color: var(--text1); margin-bottom: 8px;">Q: What happens if I delete a QR Batch?</h5>
+              <p style="color: var(--text2); margin: 0;">Deleting a batch is a permanent action. It destroys the underlying QR definitions and performs a cascade deletion—meaning any user submissions or winners associated with those specific QR codes will also be irreversibly erased from the system.</p>
+            </div>
+
+            <div style="margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border);">
+              <h5 style="font-size: 15px; font-weight: 600; color: var(--text1); margin-bottom: 8px;">Q: A customer claims their QR code says "Already Scanned". What does this mean?</h5>
+              <p style="color: var(--text2); margin: 0;">This indicates that the cryptographic ID of the QR code has already been registered in the system by a previous submission. This is a security measure to prevent duplicate entries and abuse. You can verify the claim by searching the QR ID in the backend database.</p>
+            </div>
+
+            <div style="margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border);">
+              <h5 style="font-size: 15px; font-weight: 600; color: var(--text1); margin-bottom: 8px;">Q: How does the Random Winner Selection algorithm work?</h5>
+              <p style="color: var(--text2); margin: 0;">The system pulls all verified, non-flagged submissions tied to the specified campaign. It then filters out individuals who have already been designated as winners, ensuring a fair distribution. From the remaining valid pool, it utilizes a cryptographic randomization function to select the requested quota of users.</p>
+            </div>
+
+            <div style="margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border);">
+              <h5 style="font-size: 15px; font-weight: 600; color: var(--text1); margin-bottom: 8px;">Q: Can I edit a Campaign while it is active?</h5>
+              <p style="color: var(--text2); margin: 0;">Yes. Minor copy adjustments (Title, Reward Text) can be made safely. However, we advise against drastically altering the campaign terms while users are actively participating. If major changes are required, it is best practice to pause (deactivate) the campaign first.</p>
+            </div>
+
+            <div style="margin-bottom: 0;">
+              <h5 style="font-size: 15px; font-weight: 600; color: var(--text1); margin-bottom: 8px;">Q: The Website Popup isn't appearing. Why?</h5>
+              <p style="color: var(--text2); margin: 0;">Check two settings: First, ensure the popup is marked "Active". Second, if "Show once per session" is checked, your own browser may have already registered seeing it. To test it, open an Incognito/Private window and navigate to the storefront.</p>
+            </div>
+            
+          </div>
+          
+        </div>
+      </section>
+
     </main>
   </div>
 </div>
@@ -354,10 +497,11 @@
 <!-- Create Scheme Modal -->
 <div class="modal hidden" id="create-scheme-modal">
   <div class="modal-header">
-    <h3>Create New Campaign</h3>
+    <h3 id="scheme-modal-title">Create New Campaign</h3>
     <button onclick="closeAllModals()">✕</button>
   </div>
-  <form onsubmit="handleCreateScheme(event)">
+  <form onsubmit="handleSaveScheme(event)">
+    <input type="hidden" id="s-id" value="" />
     <div class="form-group"><label>Campaign Title *</label><input id="s-title" placeholder="Spring Campaign 2024" required /></div>
     <div class="form-group"><label>Description</label><textarea id="s-desc" placeholder="Campaign description…" rows="2"></textarea></div>
     <div class="form-group"><label>Reward Text *</label><input id="s-reward-text" placeholder="Win a free bottle!" required /></div>
@@ -369,7 +513,7 @@
     <div id="scheme-error" class="alert-error hidden"></div>
     <div class="modal-footer">
       <button type="button" class="btn-outline" onclick="closeAllModals()">Cancel</button>
-      <button type="submit" class="btn-primary">Create Campaign</button>
+      <button type="submit" class="btn-primary" id="scheme-submit-btn">Create Campaign</button>
     </div>
   </form>
 </div>
@@ -418,6 +562,66 @@
     <div class="modal-footer">
       <button type="button" class="btn-outline" onclick="closeAllModals()">Cancel</button>
       <button type="submit" class="btn-primary">🎲 Select Winners</button>
+    </div>
+  </form>
+</div>
+
+<!-- Create/Edit Popup Modal -->
+<div class="modal hidden" id="popup-modal">
+  <div class="modal-header">
+    <h3 id="popup-modal-title">Create Website Popup</h3>
+    <button onclick="closeAllModals()">✕</button>
+  </div>
+  <form onsubmit="handleSavePopup(event)">
+    <input type="hidden" id="p-id" value="" />
+    <div class="form-group">
+      <label>Popup Title / Heading *</label>
+      <input id="p-title" placeholder="Special Discount / Festive Announcement!" required />
+    </div>
+    <div class="form-group">
+      <label>Short Description / Message</label>
+      <textarea id="p-desc" placeholder="Get exciting offers on Gold Mairani oils this season!" rows="3"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Popup Image</label>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <input type="text" id="p-image-url" placeholder="https://example.com/banner.jpg or /uploads/popups/..." oninput="updatePopupImagePreview(this.value)" />
+        <div style="display:flex; align-items:center; gap:10px;">
+          <label for="p-image-file" class="btn-secondary" style="cursor:pointer; padding: 6px 14px; font-size: 13px; font-weight: 500;">
+            📁 Choose Image File to Upload
+          </label>
+          <span id="p-file-name" style="font-size: 12px; color: var(--text2);">No file chosen</span>
+          <input type="file" id="p-image-file" accept="image/*" style="display:none;" onchange="handleImageFileSelect(event)" />
+        </div>
+      </div>
+      <div id="p-image-preview-wrap" class="hidden" style="margin-top: 10px; background: rgba(0,0,0,0.03); padding: 8px; border-radius: 8px; text-align: center;">
+        <img id="p-image-preview" src="" alt="Popup Preview" style="max-height: 120px; max-width: 100%; border-radius: 6px; object-fit: contain;" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>CTA Button Text</label>
+        <input id="p-button-text" placeholder="Claim Offer" value="Learn More" />
+      </div>
+      <div class="form-group">
+        <label>CTA Link (URL or Route)</label>
+        <input id="p-button-link" placeholder="/contact or https://..." />
+      </div>
+    </div>
+    <div class="form-row" style="margin-top: 12px; gap: 16px;">
+      <div class="form-group" style="display: flex; align-items: center; gap: 8px;">
+        <input type="checkbox" id="p-once" checked style="width: 18px; height: 18px; cursor: pointer;" />
+        <label for="p-once" style="margin-bottom: 0; cursor: pointer;">Show once per session</label>
+      </div>
+      <div class="form-group" style="display: flex; align-items: center; gap: 8px;">
+        <input type="checkbox" id="p-active" checked style="width: 18px; height: 18px; cursor: pointer;" />
+        <label for="p-active" style="margin-bottom: 0; cursor: pointer; font-weight: 600;">Active (Show on website)</label>
+      </div>
+    </div>
+    <div id="popup-error" class="alert-error hidden"></div>
+    <div class="modal-footer">
+      <button type="button" class="btn-outline" onclick="closeAllModals()">Cancel</button>
+      <button type="submit" id="p-submit-btn" class="btn-primary">Save Popup</button>
     </div>
   </form>
 </div>

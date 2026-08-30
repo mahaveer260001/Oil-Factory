@@ -2,6 +2,23 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './ScannerPage.css'
 
+function extractCleanCode(text) {
+  if (!text) return ''
+  const str = text.trim()
+  // Match /r/<code> in URL or Hash URL (e.g. /r/QR123, /#/r/QR123)
+  const match = str.match(/\/r\/([A-Za-z0-9_-]+)/i)
+  if (match && match[1]) {
+    return match[1].toUpperCase()
+  }
+  // Match QR... pattern directly anywhere in the string
+  const qrMatch = str.match(/(QR[A-Za-z0-9_-]+)/i)
+  if (qrMatch && qrMatch[1]) {
+    return qrMatch[1].toUpperCase()
+  }
+  // Fallback: strip non-alphanumeric chars
+  return str.replace(/[^A-Za-z0-9_-]/g, '').toUpperCase()
+}
+
 export default function ScannerPage({ onClose }) {
   const [activeTab, setActiveTab] = useState('camera') // camera | file
   const [scanStatus, setScanStatus] = useState('idle') // idle | scanning | success | error
@@ -38,30 +55,15 @@ export default function ScannerPage({ onClose }) {
         (decodedText) => {
           // QR decoded!
           setLastCode(decodedText)
-          scanner.stop().catch(() => {})
+          try { scanner.stop().catch(() => {}) } catch {}
 
-          // Extract code from URL /r/<code> or use raw text (handles trailing slashes and query parameters)
-          const match = decodedText.match(/\/r\/([A-Z0-9]+)(?:\/|\?|$)/i)
-          if (match) {
-            setScanStatus('success')
-            setTimeout(() => {
-              navigate(`/r/${match[1].toUpperCase()}`)
-              if (onClose) onClose()
-            }, 800)
-          } else if (/^QR\d+[A-Z0-9]+$/i.test(decodedText.trim())) {
-            setScanStatus('success')
-            setTimeout(() => {
-              navigate(`/r/${decodedText.trim().toUpperCase()}`)
-              if (onClose) onClose()
-            }, 800)
-          } else {
-            // Try navigating anyway with raw text
-            setScanStatus('success')
-            setTimeout(() => {
-              navigate(`/r/${encodeURIComponent(decodedText.trim())}`)
-              if (onClose) onClose()
-            }, 800)
-          }
+          const cleanCode = extractCleanCode(decodedText)
+          setScanStatus('success')
+          setTimeout(() => {
+            stopScanner()
+            navigate(`/r/${cleanCode}`)
+            if (onClose) onClose()
+          }, 600)
         },
         (err) => {
           // Ignore scan errors (just means no QR found yet)
@@ -97,14 +99,12 @@ export default function ScannerPage({ onClose }) {
       setLastCode(decodedText)
       setScanStatus('success')
 
-      // Extract code and redirect (handles trailing slashes and query parameters)
-      const match = decodedText.match(/\/r\/([A-Z0-9]+)(?:\/|\?|$)/i)
-      const finalCode = match ? match[1].toUpperCase() : decodedText.trim().toUpperCase()
+      const cleanCode = extractCleanCode(decodedText)
 
       setTimeout(() => {
-        navigate(`/r/${finalCode}`)
+        navigate(`/r/${cleanCode}`)
         if (onClose) onClose()
-      }, 1000)
+      }, 800)
 
     } catch (err) {
       console.error('File scan error:', err)

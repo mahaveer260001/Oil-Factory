@@ -821,7 +821,8 @@ async function generateQRPreview() {
   if (!code) { showToast('Please enter a QR code identifier', 'error'); return; }
   if (!base) { showToast('Please enter a base URL', 'error'); return; }
 
-  const claimUrl = `${base}/r/${code}`;
+  const cleanBase = base.replace(/\/+$/, '');
+  const claimUrl = cleanBase.includes('#') ? `${cleanBase}/r/${code}` : `${cleanBase}/#/r/${code}`;
   const wrap = document.getElementById('qrgen-canvas-wrap');
   wrap.innerHTML = '<div class="qrgen-loading">⏳ Generating QR code…</div>';
 

@@ -34,6 +34,17 @@ function AppInner() {
   }, [])
 
   React.useEffect(() => {
+    // Automatically convert non-hash /r/CODE URLs (e.g. from camera scanning generated QR codes) to HashRouter #/r/CODE URLs
+    const rawPath = window.location.pathname
+    if (rawPath.includes('/r/') && !window.location.hash.includes('/r/')) {
+      const match = rawPath.match(/\/r\/([A-Za-z0-9_-]+)/i)
+      if (match && match[1]) {
+        const cleanCode = match[1].toUpperCase()
+        window.location.replace(`${window.location.origin}/#/r/${cleanCode}`)
+        return
+      }
+    }
+
     if (location.pathname === '/') {
       const targetId = localStorage.getItem('scroll_to_section')
       if (targetId) {
