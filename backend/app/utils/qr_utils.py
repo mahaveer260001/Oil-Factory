@@ -78,6 +78,7 @@ class QRCodeGenerator:
             img = qr.make_image(fill_color="black", back_color="white")
 
             img_bytes = io.BytesIO()
+            # pyright: ignore [reportUnknownParameterType]
             img.save(img_bytes, format=image_format)
             img_bytes.seek(0)
 
